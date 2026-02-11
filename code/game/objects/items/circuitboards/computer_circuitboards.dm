@@ -365,6 +365,9 @@
 	name = "PanD.E.M.I.C. 2200 (Computer Board)"
 	icon_state = "medical"
 	build_path = /obj/machinery/computer/pandemic
+	req_components = list(
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/stock_parts/matter_bin = 1)
 
 /obj/item/circuitboard/computer/cloning
 	name = "Cloning (Computer Board)"
