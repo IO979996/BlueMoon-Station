@@ -43,7 +43,7 @@
 	///chance to deflect the incoming projectiles, hits, or lesser the effect of ex_act.
 	var/deflect_chance = 10
 	///Modifiers for directional armor
-	var/list/facing_modifiers = list(MECHA_FRONT_ARMOUR = 1.5, MECHA_SIDE_ARMOUR = 1, MECHA_BACK_ARMOUR = 0.5)
+	var/list/facing_modifiers
 	///if we cant use our equipment(such as due to EMP)
 	var/equipment_disabled = FALSE
 	/// Keeps track of the mech's cell
@@ -173,6 +173,10 @@
 	subspace_transmission = TRUE
 
 /obj/vehicle/sealed/mecha/Initialize(mapload)
+	facing_modifiers = list()
+	facing_modifiers[MECHA_FRONT_ARMOUR] = 1.5
+	facing_modifiers[MECHA_SIDE_ARMOUR] = 1
+	facing_modifiers[MECHA_BACK_ARMOUR] = 0.5
 	. = ..()
 	add_radio()
 	add_cabin()

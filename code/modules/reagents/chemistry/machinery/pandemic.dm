@@ -259,7 +259,7 @@
 							found = TRUE
 						break
 				if(!found)
-					// handle invalid ID silently
+					continue
 			
 			if(D.symptoms.len)
 				D.AssignName("Custom Strain [rand(100, 999)]")

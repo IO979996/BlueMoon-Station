@@ -54,7 +54,10 @@
 		return
 	switch(action)
 		if("select")
-			var/list/tab2key = list(TAB_LIBRARY = "library", TAB_SECURE = "library_secure", TAB_PRIVATE = "library_private")
+			var/list/tab2key = list()
+			tab2key[TAB_LIBRARY] = "library"
+			tab2key[TAB_SECURE] = "library_secure"
+			tab2key[TAB_PRIVATE] = "library_private"
 			var/folder = tab2key[params["tab"]]
 			var/list/current_list = SSpersistence.paintings[folder]
 			var/list/chosen_portrait = current_list[params["selected"]]

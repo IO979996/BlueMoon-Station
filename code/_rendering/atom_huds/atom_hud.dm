@@ -3,38 +3,41 @@
 GLOBAL_LIST_EMPTY(all_huds)
 
 //GLOBAL HUD LIST
-GLOBAL_LIST_INIT(huds, list(
-	DATA_HUD_SECURITY_BASIC = new/datum/atom_hud/data/human/security/basic(),
-	DATA_HUD_SECURITY_ADVANCED = new/datum/atom_hud/data/human/security/advanced(),
-	DATA_HUD_MEDICAL_BASIC = new/datum/atom_hud/data/human/medical/basic(),
-	DATA_HUD_MEDICAL_ADVANCED = new/datum/atom_hud/data/human/medical/advanced(),
-	DATA_HUD_DIAGNOSTIC_BASIC = new/datum/atom_hud/data/diagnostic/basic(),
-	DATA_HUD_DIAGNOSTIC_ADVANCED = new/datum/atom_hud/data/diagnostic/advanced(),
-	DATA_HUD_ABDUCTOR = new/datum/atom_hud/abductor(),
-	DATA_HUD_SENTIENT_DISEASE = new/datum/atom_hud/sentient_disease(),
-	DATA_HUD_AI_DETECT = new/datum/atom_hud/ai_detector(),
-	ANTAG_HUD_CULT = new/datum/atom_hud/antag(),
-	ANTAG_HUD_REV = new/datum/atom_hud/antag(),
-	ANTAG_HUD_OPS = new/datum/atom_hud/antag(),
-	ANTAG_HUD_WIZ = new/datum/atom_hud/antag(),
-	ANTAG_HUD_SHADOW = new/datum/atom_hud/antag(),
-	ANTAG_HUD_TRAITOR = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_NINJA = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_CHANGELING = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_ABDUCTOR = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_DEVIL = new/datum/atom_hud/antag(),
-	ANTAG_HUD_SINTOUCHED = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_SOULLESS = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_CLOCKWORK = new/datum/atom_hud/antag(),
-	ANTAG_HUD_BROTHER = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_BLOODSUCKER = new/datum/atom_hud/antag/bloodsucker(),
-	ANTAG_HUD_FUGITIVE = new/datum/atom_hud/antag(),
-	ANTAG_HUD_HERETIC = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_SPACECOP = new/datum/atom_hud/antag(),
-	ANTAG_HUD_GANGSTER = new/datum/atom_hud/antag/hidden(),
-	ANTAG_HUD_SLAVER = new/datum/atom_hud/antag(),
-	DATA_HUD_ANTAGTARGET = new/datum/atom_hud/data/human/antagtarget(),
-	))
+GLOBAL_LIST_INIT(huds, populate_global_huds())
+
+/proc/populate_global_huds()
+	var/list/L = list()
+	L[DATA_HUD_SECURITY_BASIC] = new/datum/atom_hud/data/human/security/basic()
+	L[DATA_HUD_SECURITY_ADVANCED] = new/datum/atom_hud/data/human/security/advanced()
+	L[DATA_HUD_MEDICAL_BASIC] = new/datum/atom_hud/data/human/medical/basic()
+	L[DATA_HUD_MEDICAL_ADVANCED] = new/datum/atom_hud/data/human/medical/advanced()
+	L[DATA_HUD_DIAGNOSTIC_BASIC] = new/datum/atom_hud/data/diagnostic/basic()
+	L[DATA_HUD_DIAGNOSTIC_ADVANCED] = new/datum/atom_hud/data/diagnostic/advanced()
+	L[DATA_HUD_ABDUCTOR] = new/datum/atom_hud/abductor()
+	L[DATA_HUD_SENTIENT_DISEASE] = new/datum/atom_hud/sentient_disease()
+	L[DATA_HUD_AI_DETECT] = new/datum/atom_hud/ai_detector()
+	L[ANTAG_HUD_CULT] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_REV] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_OPS] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_WIZ] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_SHADOW] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_TRAITOR] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_NINJA] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_CHANGELING] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_ABDUCTOR] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_DEVIL] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_SINTOUCHED] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_SOULLESS] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_CLOCKWORK] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_BROTHER] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_BLOODSUCKER] = new/datum/atom_hud/antag/bloodsucker()
+	L[ANTAG_HUD_FUGITIVE] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_HERETIC] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_SPACECOP] = new/datum/atom_hud/antag()
+	L[ANTAG_HUD_GANGSTER] = new/datum/atom_hud/antag/hidden()
+	L[ANTAG_HUD_SLAVER] = new/datum/atom_hud/antag()
+	L[DATA_HUD_ANTAGTARGET] = new/datum/atom_hud/data/human/antagtarget()
+	return L
 
 /datum/atom_hud
 	var/list/atom/hudatoms = list() //list of all atoms which display this hud

@@ -1,5 +1,9 @@
 //Command
 
+/obj/item/circuitboard/computer
+	name = "Computer Circuit Board"
+	parent_type = /obj/item/circuitboard/machine
+
 /obj/item/circuitboard/computer/aiupload
 	name = "AI Upload (Computer Board)"
 	icon_state = "command"
