@@ -18,10 +18,29 @@
 	var/wait
 	var/datum/symptom/selected_symptom
 	var/obj/item/reagent_containers/beaker
+	var/tier = 1
+	var/replicator_cooldown_time = 50
+	var/vaccine_cooldown_time = 200
+	var/custom_virus_cooldown = 0
+	var/custom_virus_cooldown_duration = 1800 // 3 minutes
 
 /obj/machinery/computer/pandemic/Initialize(mapload)
 	. = ..()
 	update_icon()
+
+/obj/machinery/computer/pandemic/RefreshParts()
+	var/rating_total = 0
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
+		rating_total += M.rating
+	
+	if(rating_total > 0)
+		tier = max(1, rating_total)
+	else
+		tier = 1
+
+	replicator_cooldown_time = initial(replicator_cooldown_time) / tier
+	vaccine_cooldown_time = initial(vaccine_cooldown_time) / tier
+
 
 /obj/machinery/computer/pandemic/Destroy()
 	QDEL_NULL(beaker)
@@ -158,6 +177,8 @@
 /obj/machinery/computer/pandemic/ui_data(mob/user)
 	var/list/data = list()
 	data["is_ready"] = !wait
+	data["tier"] = tier
+	data["custom_cooldown"] = max(0, custom_virus_cooldown - world.time)
 	if(beaker)
 		data["has_beaker"] = TRUE
 		data["beaker_empty"] = (!beaker.reagents.total_volume || !beaker.reagents.reagent_list)
@@ -177,7 +198,78 @@
 
 	return data
 
+/obj/machinery/computer/pandemic/ui_static_data(mob/user)
+	var/list/data = list()
+	data["all_symptoms"] = list()
+	for(var/symp_type in SSdisease.list_symptoms)
+		var/datum/symptom/S = new symp_type
+		if(S.name && !S.neutered)
+			data["all_symptoms"] += list(list(
+				"id" = S.id,
+				"name" = S.name,
+				"desc" = S.desc,
+				"level" = S.level,
+				"resistance" = S.resistance,
+				"stage_speed" = S.stage_speed,
+				"transmission" = S.transmittable,
+				"stealth" = S.stealth
+			))
+	return data
+
 /obj/machinery/computer/pandemic/ui_act(action, params)
+	if(..())
+		return
+	switch(action)
+		if("create_custom_virus")
+			if(tier < 4)
+				to_chat(usr, "<span class='warning'>Upgrade the machine to Tier 4 to use this feature.</span>")
+				return
+			if(custom_virus_cooldown > world.time)
+				to_chat(usr, "<span class='warning'>Replication sequencer is cooling down.</span>")
+				return
+			
+			var/list/symptom_ids = params["symptom_ids"]
+			if(!islist(symptom_ids) || !symptom_ids.len)
+				return
+			
+			if(symptom_ids.len > VIRUS_SYMPTOM_LIMIT)
+				to_chat(usr, "<span class='warning'>Too many symptoms selected. Max is [VIRUS_SYMPTOM_LIMIT].</span>")
+				return
+
+			var/datum/disease/advance/D = new()
+			D.symptoms = list()
+			
+			for(var/symp_id in symptom_ids)
+				var/found = FALSE
+				for(var/symp_type in SSdisease.list_symptoms)
+					var/datum/symptom/S = new symp_type
+					if(S.id == symp_id)
+						if(!D.HasSymptom(S))
+							D.symptoms += S
+							found = TRUE
+						break
+				if(!found)
+					// handle invalid ID silently
+			
+			if(D.symptoms.len)
+				D.AssignName("Custom Strain [rand(100, 999)]")
+				D.Refresh()
+				
+				var/obj/item/reagent_containers/glass/bottle/B = new(drop_location())
+				B.name = "[D.name] culture bottle"
+				B.desc = "A small bottle. Contains [D.agent] culture in synthblood medium."
+				var/list/data = list("donor"=null,"viruses"=list(D),"blood_DNA"="SYNTHESIZED", "bloodcolor" = BLOOD_COLOR_SYNTHETIC, "blood_type"="SY","resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null)
+				B.reagents.add_reagent(/datum/reagent/blood/synthetics, 10, data)
+				
+				custom_virus_cooldown = world.time + custom_virus_cooldown_duration
+				var/turf/source_turf = get_turf(src)
+				log_virus("A custom virus [D.admin_details()] was synthesized at [loc_name(source_turf)] by [key_name(usr)]")
+				to_chat(usr, "<span class='notice'>Virus synthesized successfully.</span>")
+				. = TRUE
+			else
+				qdel(D)
+				to_chat(usr, "<span class='warning'>Failed to synthesize virus. No valid symptoms.</span>")
+
 	if(..())
 		return
 	switch(action)
@@ -222,7 +314,7 @@
 			update_icon()
 			var/turf/source_turf = get_turf(src)
 			log_virus("A culture bottle was printed for the virus [A.admin_details()] at [loc_name(source_turf)] by [key_name(usr)]")
-			addtimer(CALLBACK(src, PROC_REF(reset_replicator_cooldown)), 50)
+			addtimer(CALLBACK(src, PROC_REF(reset_replicator_cooldown)), replicator_cooldown_time)
 			. = TRUE
 		if("create_vaccine_bottle")
 			if (wait)
@@ -234,7 +326,7 @@
 			B.reagents.add_reagent(/datum/reagent/vaccine, 15, list(id))
 			wait = TRUE
 			update_icon()
-			addtimer(CALLBACK(src, PROC_REF(reset_replicator_cooldown)), 200)
+			addtimer(CALLBACK(src, PROC_REF(reset_replicator_cooldown)), vaccine_cooldown_time)
 			. = TRUE
 
 

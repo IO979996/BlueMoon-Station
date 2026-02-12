@@ -1,7 +1,7 @@
 import { map } from 'common/collections';
 
-import { useBackend } from '../backend';
-import { Box, Button, Collapsible, Grid, Input, LabeledList, NoticeBox, Section } from '../components';
+import { useBackend, useLocalState } from '../backend';
+import { Box, Button, Collapsible, Grid, Input, LabeledList, NoticeBox, Section, Stack } from '../components';
 import { Window } from '../layouts';
 
 export const PandemicBeakerDisplay = (props, context) => {
@@ -267,6 +267,98 @@ export const PandemicAntibodyDisplay = (props, context) => {
   );
 };
 
+export const PandemicCustomVirus = (props, context) => {
+  const { act, data } = useBackend(context);
+  const {
+    tier,
+    custom_cooldown,
+    all_symptoms = [],
+  } = data;
+  const [searchText, setSearchText] = useLocalState(context, 'searchText', '');
+  const [selectedSymptoms, setSelectedSymptoms] = useLocalState(context, 'selectedSymptoms', []);
+
+  if (tier < 4) return null;
+
+  const toggleSymptom = (id) => {
+    if (selectedSymptoms.includes(id)) {
+      setSelectedSymptoms(selectedSymptoms.filter(s => s !== id));
+    } else {
+      if (selectedSymptoms.length >= 6) return;
+      setSelectedSymptoms([...selectedSymptoms, id]);
+    }
+  };
+
+  const filteredSymptoms = all_symptoms.filter(s =>
+    s.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  return (
+    <Section
+      title="Custom Strain Synthesis (Tier 4+)"
+      buttons={(
+        <Button
+          icon="flask"
+          content="Synthesize"
+          disabled={custom_cooldown > 0 || selectedSymptoms.length === 0}
+          onClick={() => {
+            act('create_custom_virus', { symptom_ids: selectedSymptoms });
+            setSelectedSymptoms([]);
+          }}
+        />
+      )}>
+      {custom_cooldown > 0 && (
+        <NoticeBox>
+          Sequencer Cooling Down: {Math.ceil(custom_cooldown / 10)}s
+        </NoticeBox>
+      )}
+      <Input
+        placeholder="Search Symptoms..."
+        value={searchText}
+        onInput={(e, value) => setSearchText(value)}
+        fluid
+        mb={1}
+      />
+      <Section title="Selected Symptoms" level={2}>
+        {selectedSymptoms.length === 0 ? (
+          <Box color="label">None selected</Box>
+        ) : (
+          selectedSymptoms.map(id => {
+            const s = all_symptoms.find(sym => sym.id === id);
+            return (
+              <Button
+                key={id}
+                content={s ? s.name : id}
+                icon="minus"
+                color="bad"
+                onClick={() => toggleSymptom(id)}
+                mr={0.5}
+                mb={0.5}
+              />
+            );
+          })
+        )}
+      </Section>
+      <Section title="Available Symptoms" level={2}>
+        <Grid>
+          {filteredSymptoms.map(s => (
+            <Grid.Column key={s.id} size={4}>
+              <Button
+                fluid
+                content={`${s.name} (L${s.level})`}
+                icon={selectedSymptoms.includes(s.id) ? "check" : "plus"}
+                color={selectedSymptoms.includes(s.id) ? "good" : "default"}
+                onClick={() => toggleSymptom(s.id)}
+                tooltip={`R:${s.resistance} S:${s.stealth} T:${s.transmission}`}
+                disabled={!selectedSymptoms.includes(s.id) && selectedSymptoms.length >= 6}
+              />
+            </Grid.Column>
+          ))}
+        </Grid>
+      </Section>
+    </Section>
+  );
+};
+
 export const Pandemic = (props, context) => {
   const { data } = useBackend(context);
   return (
@@ -275,6 +367,9 @@ export const Pandemic = (props, context) => {
       height={550}>
       <Window.Content overflow="auto">
         <PandemicBeakerDisplay />
+        {data.tier >= 4 && (
+          <PandemicCustomVirus />
+        )}
         {!!data.has_blood && (
           <>
             <PandemicDiseaseDisplay />
