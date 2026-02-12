@@ -736,6 +736,14 @@
 
 //Medical
 
+/obj/item/circuitboard/machine/pandemic
+	name = "PanD.E.M.I.C. 2200 (Machine Board)"
+	icon_state = "medical"
+	build_path = /obj/machinery/computer/pandemic
+	req_components = list(
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/stock_parts/matter_bin = 1)
+
 /obj/item/circuitboard/machine/chem_dispenser
 	name = "Chem Dispenser (Machine Board)"
 	icon_state = "medical"

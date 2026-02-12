@@ -12,7 +12,7 @@
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 20
 	resistance_flags = ACID_PROOF
-	circuit = /obj/item/circuitboard/computer/pandemic
+	circuit = /obj/item/circuitboard/machine/pandemic
 	unique_icon = TRUE
 
 	var/wait
