@@ -34,20 +34,11 @@
 		rating_total += M.rating
 	
 	if(rating_total > 0)
-		tier = max(1, rating_total) // Assuming standard machine with 2 manipulators, max rating around 4-6? 
-		// Actually stock parts usually replace each other or sum up? 
-		// Standard computer usually has NO manipulators.
-		// I need to check the circuit board.
+		tier = max(1, rating_total) 
 	else
 		tier = 1
 
-	// If the board doesn't require manipulators, I should add them or use whatever is there.
-	// Computers usually take: 2x cable, 1x glass, 1x board.
-	// I might need to modify the circuit board to accept manipulators if I want them to upgrade it.
-	// Or I can just check for "scanning module" or whatever parts computers use.
-	// BUT, the user said "geneticists start working faster", "Pandemic 2200 upgradeable with parts".
-	// So I should probably ADD parts to the requirements.
-	
+
 	replicator_cooldown_time = initial(replicator_cooldown_time) / tier
 	vaccine_cooldown_time = initial(vaccine_cooldown_time) / tier
 
