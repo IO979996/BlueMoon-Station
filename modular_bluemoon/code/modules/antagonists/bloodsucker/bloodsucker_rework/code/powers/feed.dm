@@ -31,8 +31,13 @@
 	. = ..()
 	if(!.)
 		return FALSE
-	if(target_ref) //already sucking blood.
-		return FALSE
+	if(target_ref)
+		// Victim may have moved during stealth feeding - clean up interrupted state immediately
+		var/mob/living/resolved_target = target_ref.resolve()
+		if(!resolved_target || !user.Adjacent(resolved_target))
+			DeactivatePower()
+		else
+			return FALSE // Still actively feeding
 	if(user.is_mouth_covered() && !isplasmaman(user))
 		owner.balloon_alert(owner, "mouth covered!")
 		return FALSE
