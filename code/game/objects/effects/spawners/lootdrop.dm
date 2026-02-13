@@ -600,7 +600,7 @@
 	loot = list(
 				/obj/item/circuitboard/computer/aifixer,
 				/obj/item/circuitboard/machine/rdserver,
-				/obj/item/circuitboard/computer/pandemic,
+				/obj/item/circuitboard/machine/pandemic,
 				/obj/item/circuitboard/machine/mechfab,
 				/obj/item/circuitboard/machine/circuit_imprinter/department,
 				/obj/item/circuitboard/computer/teleporter,
