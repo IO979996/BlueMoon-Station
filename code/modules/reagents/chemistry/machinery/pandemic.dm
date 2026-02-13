@@ -12,7 +12,7 @@
 	use_power = IDLE_POWER_USE
 	idle_power_usage = 20
 	resistance_flags = ACID_PROOF
-	circuit = /obj/item/circuitboard/machine/pandemic
+	circuit = /obj/item/circuitboard/computer/pandemic
 	unique_icon = TRUE
 
 	var/wait
@@ -23,31 +23,29 @@
 	var/vaccine_cooldown_time = 200
 	var/custom_virus_cooldown = 0
 	var/custom_virus_cooldown_duration = 1800 // 3 minutes
+	var/obj/item/pandemic_upgrade/installed_upgrade
 
 /obj/machinery/computer/pandemic/Initialize(mapload)
 	. = ..()
+	update_tier()
 	update_icon()
 
-/obj/machinery/computer/pandemic/RefreshParts()
-	var/rating_total = 0
-	for(var/obj/item/stock_parts/manipulator/M in component_parts)
-		rating_total += M.rating
-	
-	if(rating_total > 0)
-		tier = max(1, rating_total)
-	else
-		tier = 1
-
+/obj/machinery/computer/pandemic/proc/update_tier()
+	tier = installed_upgrade ? installed_upgrade.rating : 1
 	replicator_cooldown_time = initial(replicator_cooldown_time) / tier
 	vaccine_cooldown_time = initial(vaccine_cooldown_time) / tier
 
-
 /obj/machinery/computer/pandemic/Destroy()
+	if(installed_upgrade)
+		installed_upgrade.forceMove(drop_location())
+		installed_upgrade = null
 	QDEL_NULL(beaker)
 	return ..()
 
 /obj/machinery/computer/pandemic/examine(mob/user)
 	. = ..()
+	if(installed_upgrade)
+		. += "Installed replication module: Tier [tier]."
 	if(beaker)
 		var/is_close
 		if(Adjacent(user)) //don't reveal exactly what's inside unless they're close enough to see the UI anyway.
@@ -330,6 +328,25 @@
 
 
 /obj/machinery/computer/pandemic/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/pandemic_upgrade))
+		if(installed_upgrade)
+			to_chat(user, "<span class='warning'>[src] already has a replication module. Use a screwdriver to remove it first.</span>")
+			return
+		if(!user.transferItemToLoc(I, src))
+			return
+		installed_upgrade = I
+		update_tier()
+		to_chat(user, "<span class='notice'>You install [I] into [src]. Replication tier is now [tier].</span>")
+		return
+	if(I.tool_behaviour == TOOL_SCREWDRIVER && installed_upgrade)
+		installed_upgrade.forceMove(drop_location())
+		if(user && Adjacent(user) && user.can_hold_items())
+			user.put_in_hands(installed_upgrade)
+		to_chat(user, "<span class='notice'>You remove [installed_upgrade] from [src].</span>")
+		installed_upgrade = null
+		update_tier()
+		I.play_tool_sound(src)
+		return
 	if(istype(I, /obj/item/reagent_containers) && !(I.item_flags & ABSTRACT) && I.is_open_container())
 		. = TRUE //no afterattack
 		if(machine_stat & (NOPOWER|BROKEN))
@@ -350,5 +367,29 @@
 		return ..()
 
 /obj/machinery/computer/pandemic/on_deconstruction()
+	if(installed_upgrade)
+		installed_upgrade.forceMove(drop_location())
+		installed_upgrade = null
 	eject_beaker()
 	. = ..()
+
+// Upgrade module — insert into built Pandemic to increase tier (faster cooldowns, Tier 4+ unlocks custom virus synthesis).
+/obj/item/pandemic_upgrade
+	name = "Pandemic replication module (Tier 2)"
+	desc = "A module that speeds up culture and vaccine production when installed in a PanD.E.M.I.C. 2200. Use on the machine to install; screwdriver to remove."
+	icon = 'icons/obj/module.dmi'
+	icon_state = "card_mod"
+	w_class = WEIGHT_CLASS_SMALL
+	var/rating = 2
+
+/obj/item/pandemic_upgrade/tier3
+	name = "Pandemic replication module (Tier 3)"
+	rating = 3
+
+/obj/item/pandemic_upgrade/tier4
+	name = "Pandemic replication module (Tier 4)"
+	rating = 4
+
+/obj/item/pandemic_upgrade/tier5
+	name = "Pandemic replication module (Tier 5)"
+	rating = 5

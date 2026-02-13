@@ -6,7 +6,7 @@
 	name = "Computer Design (PanD.E.M.I.C. 2200)"
 	desc = "Allows for the construction of circuit boards used to build a PanD.E.M.I.C. 2200 console."
 	id = "pandemic"
-	build_path = /obj/item/circuitboard/machine/pandemic
+	build_path = /obj/item/circuitboard/computer/pandemic
 	category = list("Computer Boards")
 	departmental_flags = DEPARTMENTAL_FLAG_MEDICAL
 
