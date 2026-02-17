@@ -7,7 +7,7 @@
 	cure_chance = 10
 	agent = "Shitty Adrenal Glands"
 	viable_mobtypes = list(/mob/living/carbon/human)
-	spreading_modifier = 1
+	permeability_mod = 1
 	desc = "If left untreated the subject will suffer from lethargy, dizziness and periodic loss of consciousness."
 	severity = DISEASE_SEVERITY_MEDIUM
 	spread_flags = DISEASE_SPREAD_NON_CONTAGIOUS
@@ -15,24 +15,24 @@
 	visibility_flags = HIDDEN_PANDEMIC
 	bypasses_immunity = TRUE
 
-/datum/disease/adrenal_crisis/stage_act(seconds_per_tick, times_fired)
+/datum/disease/adrenal_crisis/stage_act()
 	. = ..()
 	if(!.)
 		return
 
 	switch(stage)
 		if(1)
-			if(SPT_PROB(2.5, seconds_per_tick))
+			if(prob(2))
 				to_chat(affected_mob, span_warning(pick("You feel lightheaded.", "You feel lethargic.")))
 		if(2)
-			if(SPT_PROB(5, seconds_per_tick))
+			if(prob(5))
 				affected_mob.Unconscious(40)
 
-			if(SPT_PROB(10, seconds_per_tick))
-				affected_mob.adjust_slurring(14 SECONDS)
+			if(prob(10))
+				affected_mob.slurring = max(affected_mob.slurring, 140)
 
-			if(SPT_PROB(7, seconds_per_tick))
-				affected_mob.set_dizzy_if_lower(20 SECONDS)
+			if(prob(7))
+				affected_mob.Dizzy(200)
 
-			if(SPT_PROB(2.5, seconds_per_tick))
+			if(prob(2))
 				to_chat(affected_mob, span_warning(pick("You feel pain shoot down your legs!", "You feel like you are going to pass out at any moment.", "You feel really dizzy.")))

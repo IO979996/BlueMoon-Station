@@ -4,7 +4,7 @@
 	form = "Condition"
 	spread_text = "Unknown"
 	max_stages = 3
-	cure_text = "Anacea" // I ain't about to make a second sandwich to counteract the first one, so closest thing I'm going for is this.
+	cure_text = "Anacea"
 	cures = list(/datum/reagent/toxin/anacea)
 	cure_chance = 4
 	agent = "eating the Death Sandwich wrong"
@@ -14,46 +14,46 @@
 	spread_flags = DISEASE_SPREAD_SPECIAL
 	visibility_flags = HIDDEN_SCANNER
 	bypasses_immunity = TRUE
-	required_organ = ORGAN_SLOT_STOMACH
+	required_organs = list(/obj/item/organ/stomach)
 
-/datum/disease/death_sandwich_poisoning/stage_act(seconds_per_tick, times_fired)
+/datum/disease/death_sandwich_poisoning/stage_act()
 	. = ..()
 	if(!.)
 		return
 
 	switch(stage)
 		if(1)
-			if(SPT_PROB(1.5, seconds_per_tick))
+			if(prob(1))
 				affected_mob.emote("cough")
-			if(SPT_PROB(0.5, seconds_per_tick))
+			if(prob(1))
 				affected_mob.emote("gag")
-			if(SPT_PROB(0.5, seconds_per_tick))
-				affected_mob.adjust_tox_loss(5)
+			if(prob(1))
+				affected_mob.adjustToxLoss(5)
 		if(2)
-			if(SPT_PROB(5, seconds_per_tick))
+			if(prob(5))
 				affected_mob.emote("cough")
-			if(SPT_PROB(2.5, seconds_per_tick))
+			if(prob(2))
 				affected_mob.emote("gag")
-			if(SPT_PROB(1, seconds_per_tick))
+			if(prob(1))
 				to_chat(affected_mob, span_danger("Your body feels hot!"))
 				if(prob(20))
-					affected_mob.take_bodypart_damage(burn = 1)
-			if(SPT_PROB(3, seconds_per_tick))
-				affected_mob.adjust_tox_loss(10)
+					affected_mob.take_bodypart_damage(0, 1)
+			if(prob(3))
+				affected_mob.adjustToxLoss(10)
 
 		if(3)
-			if(SPT_PROB(5, seconds_per_tick))
+			if(prob(5))
 				affected_mob.emote("gag")
-			if(SPT_PROB(10, seconds_per_tick))
+			if(prob(10))
 				affected_mob.emote("gasp")
-			if(SPT_PROB(2.5, seconds_per_tick))
-				affected_mob.vomit(VOMIT_CATEGORY_BLOOD, lost_nutrition = 20)
-			if(SPT_PROB(2.5, seconds_per_tick))
+			if(prob(2))
+				affected_mob.vomit(20, TRUE)
+			if(prob(2))
 				to_chat(affected_mob, span_danger("Your body feels hot!"))
 				if(prob(60))
-					affected_mob.take_bodypart_damage(burn = 2)
-			if(SPT_PROB(6, seconds_per_tick))
-				affected_mob.adjust_tox_loss(15)
-			if(SPT_PROB(1.5, seconds_per_tick))
+					affected_mob.take_bodypart_damage(0, 2)
+			if(prob(6))
+				affected_mob.adjustToxLoss(15)
+			if(prob(1))
 				to_chat(affected_mob, span_danger("You try to scream, but nothing comes out!"))
-				affected_mob.set_silence_if_lower(5 SECONDS)
+				affected_mob.Stun(50)

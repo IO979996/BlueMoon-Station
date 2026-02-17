@@ -46,11 +46,9 @@
 			/datum/disease/fluspanish,
 			/datum/disease/weightlessness,
 			/datum/disease/parasite,
-			/datum/disease/gastrolosis,
 			/datum/disease/anaphylaxis,
 			/datum/disease/adrenal_crisis,
-			/datum/disease/nebula_nausea
-		)
+			/datum/disease/nebula_nausea)
 
 	for(var/mob/living/carbon/human/H in shuffle(GLOB.alive_mob_list))
 		var/turf/T = get_turf(H)

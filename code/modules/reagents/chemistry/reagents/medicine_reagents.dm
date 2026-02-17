@@ -1147,13 +1147,13 @@
 
 /datum/reagent/medicine/sansufentanyl/on_mob_life(mob/living/carbon/M)
 	. = ..()
-	M.adjust_confusion_up_to(3 SECONDS * REM, 5 SECONDS)
-	M.adjust_dizzy_up_to(6 SECONDS * REM, 12 SECONDS)
+	M.Dizzy(3 * REM)
+	M.Jitter(6 * REM)
 	M.adjustStaminaLoss(1 * REM, 0)
 	if(prob(10))
 		to_chat(M, "You feel confused and disoriented.")
 		if(prob(30))
-			SEND_SOUND(M, sound('sound/items/weapons/flash_ring.ogg'))
+			SEND_SOUND(M, sound('sound/effects/genetics.ogg'))
 
 /datum/reagent/medicine/strange_reagent
 	name = "Strange Reagent"

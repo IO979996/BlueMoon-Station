@@ -823,7 +823,6 @@
 #include "code\datums\diseases\wizarditis.dm"
 #include "code\datums\diseases\weightlessness.dm"
 #include "code\datums\diseases\parasitic_infection.dm"
-#include "code\datums\diseases\gastrolisis.dm"
 #include "code\datums\diseases\decloning.dm"
 #include "code\datums\diseases\death_sandwich_poisoning.dm"
 #include "code\datums\diseases\chronic_illness.dm"
