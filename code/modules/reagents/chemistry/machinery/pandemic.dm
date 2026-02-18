@@ -199,11 +199,12 @@
 /obj/machinery/computer/pandemic/ui_static_data(mob/user)
 	var/list/data = list()
 	data["all_symptoms"] = list()
+	var/index = 1
 	for(var/symp_type in SSdisease.list_symptoms)
 		var/datum/symptom/S = new symp_type
 		if(S.name && !S.neutered)
 			data["all_symptoms"] += list(list(
-				"id" = S.id,
+				"id" = "[index]",
 				"name" = S.name,
 				"desc" = S.desc,
 				"level" = S.level,
@@ -212,6 +213,8 @@
 				"transmission" = S.transmittable,
 				"stealth" = S.stealth
 			))
+		qdel(S)
+		index++
 	return data
 
 /obj/machinery/computer/pandemic/ui_act(action, params)
@@ -238,16 +241,15 @@
 			D.symptoms = list()
 			
 			for(var/symp_id in symptom_ids)
-				var/found = FALSE
-				for(var/symp_type in SSdisease.list_symptoms)
-					var/datum/symptom/S = new symp_type
-					if(S.id == symp_id)
-						if(!D.HasSymptom(S))
-							D.symptoms += S
-							found = TRUE
-						break
-				if(!found)
+				var/index = text2num(symp_id)
+				if(index < 1 || index > SSdisease.list_symptoms.len)
 					continue
+				var/symp_type = SSdisease.list_symptoms[index]
+				var/datum/symptom/S = new symp_type
+				if(!D.HasSymptom(S))
+					D.symptoms += S
+				else
+					qdel(S)
 			if(D.symptoms.len)
 				D.AssignName("Custom Strain [rand(100, 999)]")
 				D.Refresh()
@@ -266,10 +268,6 @@
 			else
 				qdel(D)
 				to_chat(usr, "<span class='warning'>Failed to synthesize virus. No valid symptoms.</span>")
-
-	if(..())
-		return
-	switch(action)
 		if("eject_beaker")
 			eject_beaker()
 			. = TRUE
