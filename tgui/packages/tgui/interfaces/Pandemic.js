@@ -86,88 +86,88 @@ export const PandemicDiseaseDisplay = (props, context) => {
                   return (
                     <Grid.Column key={virus.name} size={4}>
                       <Section
-            title={virus.can_rename ? (
-            <Input
-              value={virus.name}
-              onChange={(e, value) => act('rename_disease', {
-                index: virus.index,
-                name: value,
-              })} />
-          ) : (
-            virus.name
-          )}
-          buttons={(
-            <Button
-              icon="flask"
-              content="Create culture bottle"
-              disabled={!is_ready}
-              onClick={() => act('create_culture_bottle', {
-                index: virus.index,
-              })} />
-          )}>
-          <Grid>
-            <Grid.Column>
-              {virus.description}
-            </Grid.Column>
-            <Grid.Column>
-              <LabeledList>
-                <LabeledList.Item label="Agent">
-                  {virus.agent}
-                </LabeledList.Item>
-                <LabeledList.Item label="Spread">
-                  {virus.spread}
-                </LabeledList.Item>
-                <LabeledList.Item label="Possible Cure">
-                  {virus.cure}
-                </LabeledList.Item>
-              </LabeledList>
-            </Grid.Column>
-          </Grid>
-          {!!virus.is_adv && (
-            <>
-              <Section
-                title="Statistics"
-                level={2}>
-                <Grid>
-                  <Grid.Column>
-                    <LabeledList>
-                      <LabeledList.Item label="Resistance">
-                        {virus.resistance}
-                      </LabeledList.Item>
-                      <LabeledList.Item label="Stealth">
-                        {virus.stealth}
-                      </LabeledList.Item>
-                    </LabeledList>
-                  </Grid.Column>
-                  <Grid.Column>
-                    <LabeledList>
-                      <LabeledList.Item label="Stage speed">
-                        {virus.stage_speed}
-                      </LabeledList.Item>
-                      <LabeledList.Item label="Transmissibility">
-                        {virus.transmission}
-                      </LabeledList.Item>
-                    </LabeledList>
-                  </Grid.Column>
-                </Grid>
-              </Section>
-              <Section
-                title="Symptoms"
-                level={2}>
-                {symptoms.map(symptom => (
-                  <Collapsible
-                    key={symptom.name}
-                    title={symptom.name}>
-                    <Section>
-                      <PandemicSymptomDisplay symptom={symptom} />
-                    </Section>
-                  </Collapsible>
-                ))}
-              </Section>
-            </>
-          )}
-          </Section>
-        </Grid.Column>
+                        title={virus.can_rename ? (
+                          <Input
+                            value={virus.name}
+                            onChange={(e, value) => act('rename_disease', {
+                              index: virus.index,
+                              name: value,
+                            })} />
+                        ) : (
+                          virus.name
+                        )}
+                        buttons={(
+                          <Button
+                            icon="flask"
+                            content="Create culture bottle"
+                            disabled={!is_ready}
+                            onClick={() => act('create_culture_bottle', {
+                              index: virus.index,
+                            })} />
+                        )}>
+                        <Grid>
+                          <Grid.Column>
+                            {virus.description}
+                          </Grid.Column>
+                          <Grid.Column>
+                            <LabeledList>
+                              <LabeledList.Item label="Agent">
+                                {virus.agent}
+                              </LabeledList.Item>
+                              <LabeledList.Item label="Spread">
+                                {virus.spread}
+                              </LabeledList.Item>
+                              <LabeledList.Item label="Possible Cure">
+                                {virus.cure}
+                              </LabeledList.Item>
+                            </LabeledList>
+                          </Grid.Column>
+                        </Grid>
+                        {!!virus.is_adv && (
+                          <>
+                            <Section
+                              title="Statistics"
+                              level={2}>
+                              <Grid>
+                                <Grid.Column>
+                                  <LabeledList>
+                                    <LabeledList.Item label="Resistance">
+                                      {virus.resistance}
+                                    </LabeledList.Item>
+                                    <LabeledList.Item label="Stealth">
+                                      {virus.stealth}
+                                    </LabeledList.Item>
+                                  </LabeledList>
+                                </Grid.Column>
+                                <Grid.Column>
+                                  <LabeledList>
+                                    <LabeledList.Item label="Stage speed">
+                                      {virus.stage_speed}
+                                    </LabeledList.Item>
+                                    <LabeledList.Item label="Transmissibility">
+                                      {virus.transmission}
+                                    </LabeledList.Item>
+                                  </LabeledList>
+                                </Grid.Column>
+                              </Grid>
+                            </Section>
+                            <Section
+                              title="Symptoms"
+                              level={2}>
+                              {symptoms.map(symptom => (
+                                <Collapsible
+                                  key={symptom.name}
+                                  title={symptom.name}>
+                                  <Section>
+                                    <PandemicSymptomDisplay symptom={symptom} />
+                                  </Section>
+                                </Collapsible>
+                              ))}
+                            </Section>
+                          </>
+                        )}
+                      </Section>
+                    </Grid.Column>
                   );
                 })}
               </Grid>
