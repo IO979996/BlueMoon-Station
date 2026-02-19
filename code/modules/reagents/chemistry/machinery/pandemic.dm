@@ -328,7 +328,7 @@
 /obj/machinery/computer/pandemic/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/pandemic_upgrade))
 		if(installed_upgrade)
-			to_chat(user, "<span class='warning'>[src] already has a replication module. Use a screwdriver to remove it first.</span>")
+			to_chat(user, "<span class='warning'>[src] already has a replication module. Use a crowbar to remove it first.</span>")
 			return
 		if(!user.transferItemToLoc(I, src))
 			return
@@ -336,7 +336,7 @@
 		update_tier()
 		to_chat(user, "<span class='notice'>You install [I] into [src]. Replication tier is now [tier].</span>")
 		return
-	if(I.tool_behaviour == TOOL_SCREWDRIVER && installed_upgrade)
+	if(I.tool_behaviour == TOOL_CROWBAR && installed_upgrade)
 		installed_upgrade.forceMove(drop_location())
 		if(user && Adjacent(user) && user.can_hold_items())
 			user.put_in_hands(installed_upgrade)
@@ -374,7 +374,7 @@
 // Upgrade module — insert into built Pandemic to increase tier (faster cooldowns, Tier 4+ unlocks custom virus synthesis).
 /obj/item/pandemic_upgrade
 	name = "Pandemic replication module (Tier 2)"
-	desc = "A module that speeds up culture and vaccine production when installed in a PanD.E.M.I.C. 2200. Use on the machine to install; screwdriver to remove."
+	desc = "A module that speeds up culture and vaccine production when installed in a PanD.E.M.I.C. 2200. Use on the machine to install; crowbar to remove."
 	icon = 'icons/obj/module.dmi'
 	icon_state = "card_mod"
 	w_class = WEIGHT_CLASS_SMALL
