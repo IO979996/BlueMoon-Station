@@ -10,12 +10,15 @@
 	var/strikes_left = 100
 
 /datum/status_effect/decloning/on_apply()
+	if(!..())
+		return FALSE
 	if(iscarbon(owner) && owner.reagents && owner.reagents.has_reagent(/datum/reagent/medicine/mutadone))
 		return FALSE
 	to_chat(owner, span_userdanger("You've noticed your body has begun deforming. This can't be good."))
 	return TRUE
 
 /datum/status_effect/decloning/on_remove()
+	..()
 	if(!QDELETED(owner))
 		owner.remove_movespeed_modifier(/datum/movespeed_modifier/decloning)
 
