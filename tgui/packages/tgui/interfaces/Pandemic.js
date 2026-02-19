@@ -1,7 +1,7 @@
 import { map } from 'common/collections';
 
 import { useBackend, useLocalState } from '../backend';
-import { Box, Button, Collapsible, Grid, Input, LabeledList, NoticeBox, Section, Stack } from '../components';
+import { Box, Button, Collapsible, Grid, Input, LabeledList, NoticeBox, Section, Stack, Table } from '../components';
 import { Window } from '../layouts';
 
 export const PandemicBeakerDisplay = (props, context) => {
@@ -73,12 +73,20 @@ export const PandemicDiseaseDisplay = (props, context) => {
   } = data;
   const viruses = data.viruses || [];
   return (
-    viruses.map(virus => {
-      const symptoms = virus.symptoms || [];
-      return (
-        <Section
-          key={virus.name}
-          title={virus.can_rename ? (
+    <Stack vertical fill>
+      {(() => {
+        const rows = [];
+        for (let i = 0; i < viruses.length; i += 3) {
+          const chunk = viruses.slice(i, i + 3);
+          rows.push(
+            <Stack.Item key={i}>
+              <Grid>
+                {chunk.map(virus => {
+                  const symptoms = virus.symptoms || [];
+                  return (
+                    <Grid.Column key={virus.name} size={4}>
+                      <Section
+            title={virus.can_rename ? (
             <Input
               value={virus.name}
               onChange={(e, value) => act('rename_disease', {
@@ -158,9 +166,17 @@ export const PandemicDiseaseDisplay = (props, context) => {
               </Section>
             </>
           )}
-        </Section>
-      );
-    })
+          </Section>
+        </Grid.Column>
+                  );
+                })}
+              </Grid>
+            </Stack.Item>
+          );
+        }
+        return rows;
+      })()}
+    </Stack>
   );
 };
 
@@ -339,21 +355,32 @@ export const PandemicCustomVirus = (props, context) => {
         )}
       </Section>
       <Section title="Available Symptoms" level={2}>
-        <Grid>
-          {filteredSymptoms.map(s => (
-            <Grid.Column key={s.id} size={4}>
-              <Button
-                fluid
-                content={`${s.name} (L${s.level})`}
-                icon={selectedSymptoms.includes(s.id) ? "check" : "plus"}
-                color={selectedSymptoms.includes(s.id) ? "good" : "default"}
-                onClick={() => toggleSymptom(s.id)}
-                tooltip={`R:${s.resistance} S:${s.stealth} T:${s.transmission}`}
-                disabled={!selectedSymptoms.includes(s.id) && selectedSymptoms.length >= 6}
-              />
-            </Grid.Column>
-          ))}
-        </Grid>
+        <Table>
+          {(() => {
+            const rows = [];
+            for (let i = 0; i < filteredSymptoms.length; i += 3) {
+              const chunk = filteredSymptoms.slice(i, i + 3);
+              rows.push(
+                <Table.Row key={i}>
+                  {chunk.map(s => (
+                    <Table.Cell key={s.id} style={{ width: '33.33%' }}>
+                      <Button
+                        fluid
+                        content={`${s.name} (L${s.level})`}
+                        icon={selectedSymptoms.includes(s.id) ? "check" : "plus"}
+                        color={selectedSymptoms.includes(s.id) ? "good" : "default"}
+                        onClick={() => toggleSymptom(s.id)}
+                        tooltip={`R:${s.resistance} S:${s.stealth} T:${s.transmission}`}
+                        disabled={!selectedSymptoms.includes(s.id) && selectedSymptoms.length >= 6}
+                      />
+                    </Table.Cell>
+                  ))}
+                </Table.Row>
+              );
+            }
+            return rows;
+          })()}
+        </Table>
       </Section>
     </Section>
   );
