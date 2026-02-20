@@ -370,7 +370,7 @@ export const PandemicCustomVirus = (props, context) => {
                         icon={selectedSymptoms.includes(s.id) ? "check" : "plus"}
                         color={selectedSymptoms.includes(s.id) ? "good" : "default"}
                         onClick={() => toggleSymptom(s.id)}
-                        tooltip={`R:${s.resistance} S:${s.stealth} T:${s.transmission}`}
+                        tooltip={`R:${s.resistance} S:${s.stealth} Sp:${s.stage_speed} T:${s.transmission}`}
                         disabled={!selectedSymptoms.includes(s.id) && selectedSymptoms.length >= 6}
                       />
                     </Table.Cell>
