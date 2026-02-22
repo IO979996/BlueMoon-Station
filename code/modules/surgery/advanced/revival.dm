@@ -30,13 +30,15 @@
 
 /datum/surgery_step/revive
 	name = "Провести Электрическую Стимуляцию Мозга"
-	implements = list(/obj/item/shockpaddles = 100, /obj/item/abductor/gizmo = 100, /obj/item/rod_of_asclepius = 100, /obj/item/melee/baton = 75, /obj/item/organ/cyberimp/arm/baton = 75, /obj/item/organ/cyberimp/arm/gun/taser = 60, /obj/item/gun/energy/e_gun/advtaser = 60, /obj/item/gun/energy/taser = 60)
+	implements = list(/obj/item/shockpaddles = 100, /obj/item/abductor/gizmo = 100, /obj/item/rod_of_asclepius = 100, /obj/item/melee/baton = 75, /obj/item/organ/cyberimp/arm/baton = 75, /obj/item/organ/cyberimp/arm/gun/taser = 60, /obj/item/gun/energy/e_gun/advtaser = 60, /obj/item/gun/energy/taser = 60, TOOL_CAUTERY = 100)
 	time = 120
 	success_sound = 'sound/magic/lightningbolt.ogg'
 	failure_sound = 'sound/magic/lightningbolt.ogg'
 
 /datum/surgery_step/revive/tool_check(mob/user, obj/item/tool)
 	. = TRUE
+	if(tool?.tool_behaviour == TOOL_CAUTERY)
+		return TRUE
 	if(istype(tool, /obj/item/shockpaddles))
 		var/obj/item/shockpaddles/S = tool
 		if((S.req_defib && !S.defib.powered) || !S.wielded || S.cooldown || S.busy)
@@ -56,18 +58,38 @@
 			return FALSE
 
 /datum/surgery_step/revive/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(tool?.tool_behaviour == TOOL_CAUTERY)
+		time = 10 // закрытие каутером быстрее, чем полная стимуляция дефибом
+		display_results(user, target, "<span class='notice'>You prepare to close the opening with [tool], abandoning the revival attempt.</span>",
+			"[user] prepares to close [target]'s skull with [tool], abandoning the revival.",
+			"[user] prepares to close the opening with [tool].")
+		return
 	display_results(user, target, "<span class='notice'>You prepare to give [target]'s brain the spark of life with [tool].</span>",
 		"[user] prepares to shock [target]'s brain with [tool].",
 		"[user] prepares to shock [target]'s brain with [tool].")
 	target.notify_ghost_cloning("Someone is trying to zap your brain. Re-enter your corpse if you want to be revived!", source = target)
 
 /datum/surgery_step/revive/play_preop_sound(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(tool?.tool_behaviour == TOOL_CAUTERY)
+		playsound(get_turf(target), 'sound/surgery/cautery1.ogg', 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+		return
 	if(istype(tool, /obj/item/shockpaddles))
 		playsound(tool, 'sound/machines/defib_charge.ogg', 75, 0)
 	else
 		..()
 
+/datum/surgery_step/revive/play_success_sound(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(tool?.tool_behaviour == TOOL_CAUTERY)
+		playsound(get_turf(target), 'sound/surgery/cautery2.ogg', 75, TRUE, falloff_exponent = 12, falloff_distance = 1)
+		return
+	..()
+
 /datum/surgery_step/revive/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
+	if(tool?.tool_behaviour == TOOL_CAUTERY)
+		display_results(user, target, "<span class='notice'>You close the opening with [tool], ending the revival attempt. [target] remains dead.</span>",
+			"[user] closes [target]'s skull with [tool], abandoning the revival.",
+			"[user] closes the opening with [tool].")
+		return TRUE
 	display_results(user, target, "<span class='notice'>You successfully shock [target]'s brain with [tool]...</span>",
 		"[user] send a powerful shock to [target]'s brain with [tool]...",
 		"[user] send a powerful shock to [target]'s brain with [tool]...")
