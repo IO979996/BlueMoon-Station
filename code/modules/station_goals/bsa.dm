@@ -149,7 +149,7 @@
 	var/capacitor_power = 0
 	var/power_suck_cap = 1000000
 	var/target_power = 1000000
-	var/max_charge = 1000000000 // 1 GW
+	var/max_charge = 300000000 // 300 MW
 	var/system_state = BSA_SYSTEM_READY
 	var/obj/machinery/computer/bsa_control/control_computer
 
