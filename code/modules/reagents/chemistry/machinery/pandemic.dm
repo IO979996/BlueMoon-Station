@@ -134,11 +134,9 @@
 	var/list/resistances = B.data["resistances"]
 	for(var/id in resistances)
 		var/list/this = list()
+		this["id"] = id
 		var/datum/disease/D = SSdisease.archive_diseases[id]
-		if(D)
-			this["id"] = id
-			this["name"] = D.name
-
+		this["name"] = D ? D.name : "Unknown"
 		. += list(this)
 
 /obj/machinery/computer/pandemic/proc/reset_replicator_cooldown()
@@ -315,9 +313,12 @@
 			if (wait)
 				return
 			var/id = params["index"]
+			if(!id)
+				return
 			var/datum/disease/D = SSdisease.archive_diseases[id]
 			var/obj/item/reagent_containers/glass/bottle/B = new(drop_location())
-			B.name = "[D.name] vaccine bottle"
+			var/display_name = D ? D.name : "Unknown"
+			B.name = "[display_name] vaccine bottle"
 			B.reagents.add_reagent(/datum/reagent/vaccine, 15, list(id))
 			wait = TRUE
 			update_icon()
