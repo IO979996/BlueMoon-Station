@@ -3,7 +3,7 @@ import { Box, Button, LabeledList, NoticeBox, NumberInput, ProgressBar, Section 
 import { Window } from '../layouts';
 
 const formatPower = (x) => {
-  if (x == null) return '—';
+  if (x === null || x === undefined) return '—';
   if (x >= 1e9) return (x / 1e9).toFixed(1) + ' GW';
   if (x >= 1e6) return (x / 1e6).toFixed(1) + ' MW';
   if (x >= 1e3) return (x / 1e3).toFixed(1) + ' kW';
