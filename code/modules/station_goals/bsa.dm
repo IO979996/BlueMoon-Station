@@ -255,6 +255,7 @@
 		return
 	system_state = BSA_SYSTEM_PREFIRE
 	priority_announce("ПАРАМЕТРЫ НАЦЕЛЕНИВАНИЯ BSA УСТАНОВЛЕНЫ, ПРОВОДИТСЯ ПОДГОТОВКА К ВЫСТРЕЛУ... ЗАРЯД КОНДЕНСАТОРА НА [round(capacitor_power / 1000000, 0.1)] МВт, ВЫСТРЕЛ ЧЕРЕЗ 20 СЕКУНД!", "ВНИМАНИЕ: БЛЮСПЕЙС-АРТИЛЛЕРИЯ")
+	sound_to_playing_players('sound/effects/bsa/superlaser_prefire.ogg', 80)
 	message_admins("[user] has started the fire cycle of [src]! Firing at: [ADMIN_VERBOSEJMP(bullseye)]")
 	set_light(5, 5, "#6A97B0")
 	addtimer(CALLBACK(src, PROC_REF(fire), user, bullseye), 20 SECONDS, TIMER_CLIENT_TIME)
@@ -289,6 +290,7 @@
 		message_admins("[ADMIN_LOOKUPFLW(user)] has launched an artillery strike targeting [ADMIN_VERBOSEJMP(bullseye)].")
 		log_game("[key_name(user)] has launched an artillery strike targeting [AREACOORD(bullseye)].")
 		minor_announce("ВЫСТРЕЛ ИЗ БЛЮСПЕЙС-АРТИЛЛЕРИИ УСПЕШЕН! ПРЯМОЕ ПОПАДАНИЕ!", "ВНИМАНИЕ: Блюспейс-Артиллерия", TRUE)
+		sound_to_playing_players('sound/effects/bsa/superlaser_firing.ogg', 80)
 		create_calculated_explosion(bullseye)
 		capacitor_power = 0
 		if(is_station_level(z) || is_mining_level(z))
