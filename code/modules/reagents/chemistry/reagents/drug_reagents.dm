@@ -264,6 +264,10 @@
 	..()
 	ADD_TRAIT(L, TRAIT_STUNIMMUNE, type)
 	ADD_TRAIT(L, TRAIT_SLEEPIMMUNE, type)
+	// Засветка экрана, сильная тряска и музыка при употреблении (радуга в on_mob_life)
+	if(L.client)
+		shake_camera(L, 18, 5)
+		SEND_SOUND(L, sound('sound/misc/Don-Toliver-After-Party.ogg', repeat = 1, wait = 0, channel = 990, volume = 50))
 	if(iscarbon(L))
 		var/mob/living/carbon/C = L
 		rage = new()
@@ -272,6 +276,8 @@
 /datum/reagent/drug/bath_salts/on_mob_end_metabolize(mob/living/L)
 	REMOVE_TRAIT(L, TRAIT_STUNIMMUNE, type)
 	REMOVE_TRAIT(L, TRAIT_SLEEPIMMUNE, type)
+	if(L.client)
+		SEND_SOUND(L, sound(null, repeat = 0, wait = 0, channel = 990))
 	if(rage)
 		QDEL_NULL(rage)
 	..()
@@ -286,6 +292,12 @@
 	if(CHECK_MOBILITY(M, MOBILITY_MOVE) && !ismovable(M.loc))
 		step(M, pick(GLOB.cardinals))
 		step(M, pick(GLOB.cardinals))
+	// Переливание экрана цветами радуги и постоянная тряска
+	if(M.client)
+		var/static/list/rainbow_colors = list("#FF0000", "#FF8800", "#FFFF00", "#00FF00", "#0088FF", "#4400FF", "#FF00FF")
+		var/rainbow_color = rainbow_colors[(current_cycle % length(rainbow_colors)) + 1]
+		M.flash_lighting_fx(5, 5, rainbow_color)
+		shake_camera(M, 12, 1)
 	..()
 	. = 1
 
