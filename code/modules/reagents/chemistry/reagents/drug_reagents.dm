@@ -269,10 +269,12 @@
 	saved_lighting_alpha = L.lighting_alpha
 	L.lighting_alpha = 90
 	L.sync_lighting_plane_alpha()
-	// Засветка экрана, сильная тряска и музыка при употреблении (радуга в on_mob_life)
+	// Засветка экрана, сильная тряска и случайный трек из джукбокса при употреблении (радуга в on_mob_life)
 	if(L.client)
 		shake_camera(L, 18, 5)
-		SEND_SOUND(L, sound('sound/misc/Don-Toliver-After-Party.ogg', repeat = 1, wait = 0, channel = 990, volume = 50))
+		if(SSjukeboxes.songs.len)
+			var/datum/track/picked = pick(SSjukeboxes.songs)
+			SEND_SOUND(L, sound(picked.song_path, repeat = 1, wait = 0, channel = 990, volume = 50))
 	if(iscarbon(L))
 		var/mob/living/carbon/C = L
 		rage = new()
