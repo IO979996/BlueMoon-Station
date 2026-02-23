@@ -1,5 +1,4 @@
-#define KS23_HEAD_GIB_CLOSE_RANGE 2
-#define KS23_HEAD_GIB_CHANCE 30
+#define KS23_RUBBER_HEAD_GIB_CHANCE 25
 
 /obj/item/projectile/bullet/slug23
 	name = "23 shotgun slug"
@@ -9,16 +8,6 @@
 	sharpness = SHARP_POINTY
 	wound_bonus = 5
 
-/obj/item/projectile/bullet/slug23/on_hit(atom/target, blocked = FALSE, pierce_hit)
-	. = ..()
-	if(blocked >= 100)
-		return .
-	if(iscarbon(target))
-		var/mob/living/carbon/C = target
-		if(def_zone == BODY_ZONE_HEAD && starting && get_dist(starting, get_turf(C)) <= KS23_HEAD_GIB_CLOSE_RANGE && prob(KS23_HEAD_GIB_CHANCE))
-			C.gib_head()
-	return .
-
 /obj/item/projectile/bullet/slug_rubber23
 	name = "23 rubber slug"
 	damage = 20
@@ -27,6 +16,15 @@
 	sharpness = SHARP_NONE
 	embedding = null
 
+/obj/item/projectile/bullet/slug_rubber23/on_hit(atom/target, blocked = FALSE, pierce_hit)
+	. = ..()
+	if(blocked >= 100)
+		return .
+	if(iscarbon(target) && def_zone == BODY_ZONE_HEAD && prob(KS23_RUBBER_HEAD_GIB_CHANCE))
+		var/mob/living/carbon/C = target
+		C.gib_head()
+	return .
+
 /obj/item/projectile/bullet/pellet/buckshot23
 	name = "23 buckshot pellet"
 	damage = 12
@@ -34,16 +32,6 @@
 	wound_bonus = 5
 	bare_wound_bonus = 5
 	wound_falloff_tile = -2.5
-
-/obj/item/projectile/bullet/pellet/buckshot23/on_hit(atom/target, blocked = FALSE, pierce_hit)
-	. = ..()
-	if(blocked >= 100)
-		return .
-	if(iscarbon(target))
-		var/mob/living/carbon/C = target
-		if(def_zone == BODY_ZONE_HEAD && starting && get_dist(starting, get_turf(C)) <= KS23_HEAD_GIB_CLOSE_RANGE && prob(KS23_HEAD_GIB_CHANCE))
-			C.gib_head()
-	return .
 
 /obj/item/projectile/bullet/pellet/rubbershot23
 	name = "23 rubbershot pellet"
