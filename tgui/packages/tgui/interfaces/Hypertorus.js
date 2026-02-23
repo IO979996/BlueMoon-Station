@@ -97,7 +97,7 @@ export const Hypertorus = (props, context) => {
                   disabled={data.power_level > 0}
                   key={recipe.id ?? 'nothing'}
                   selected={(recipe.id === selected)
-                    || (selected === null && recipe.id == null)}
+                    || (selected === null && recipe.id === null)}
                   content={recipe.name}
                   onClick={() => act('fuel', {
                     mode: recipe.id,
