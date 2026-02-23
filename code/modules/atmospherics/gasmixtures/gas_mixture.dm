@@ -186,6 +186,17 @@ we use a hook instead
 
 	return removed
 
+/// Removes a specific amount of one gas. Returns a new gas_mixture with that gas, or null if amount <= 0.
+/datum/gas_mixture/proc/remove_specific(gas_id, amount)
+	var/current = get_moles(gas_id)
+	amount = min(amount, current)
+	if(amount <= 0)
+		return null
+	var/datum/gas_mixture/removed = new type(return_volume())
+	removed.set_moles(gas_id, amount)
+	adjust_moles(gas_id, -amount)
+	return removed
+
 /datum/gas_mixture/copy()
 	var/datum/gas_mixture/copy = new type
 	copy.copy_from(src)

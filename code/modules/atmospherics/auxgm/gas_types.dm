@@ -76,6 +76,7 @@
 	gas_overlay = "nitrous_oxide"
 	moles_visible = MOLES_GAS_VISIBLE * 2
 	flags = GAS_FLAG_DANGEROUS
+	fusion_power = 10
 	fire_products = list(GAS_N2 = 1)
 	oxidation_rate = 0.5
 	oxidation_temperature = FIRE_MINIMUM_TEMPERATURE_TO_EXIST + 100
@@ -162,6 +163,7 @@
 	name = "Hyper-noblium"
 	gas_overlay = "freon"
 	moles_visible = MOLES_GAS_VISIBLE
+	fusion_power = 10
 	price = 17
 
 /datum/gas/hydrogen
@@ -298,3 +300,77 @@
 	transmit_modifier = -10
 	heat_penalty = -10
 	price = 5 // IT'S NOT ACTUALLY THAT HARD TO GET INTO A CANISTER LOL
+
+// HFR / fusion gases (from WhiteMoon HFR port)
+/datum/gas/helium
+	id = GAS_HELIUM
+	specific_heat = 15
+	name = "Helium"
+	fusion_power = 7
+	price = 3
+
+/datum/gas/freon
+	id = GAS_FREON
+	specific_heat = 600
+	name = "Freon"
+	gas_overlay = "freon"
+	moles_visible = MOLES_GAS_VISIBLE * 30
+	fusion_power = -5
+	flags = GAS_FLAG_DANGEROUS
+	price = 5
+
+/datum/gas/halon
+	id = GAS_HALON
+	specific_heat = 175
+	name = "Halon"
+	gas_overlay = "halon"
+	moles_visible = MOLES_GAS_VISIBLE
+	flags = GAS_FLAG_DANGEROUS
+	price = 4
+
+/datum/gas/antinoblium
+	id = GAS_ANTINOBLIUM
+	specific_heat = 1
+	name = "Antinoblium"
+	gas_overlay = "antinoblium"
+	moles_visible = MOLES_GAS_VISIBLE
+	fusion_power = 20
+	flags = GAS_FLAG_DANGEROUS
+	price = 10
+
+/datum/gas/proto_nitrate
+	id = GAS_PROTO_NITRATE
+	specific_heat = 30
+	name = "Proto Nitrate"
+	gas_overlay = "proto_nitrate"
+	moles_visible = MOLES_GAS_VISIBLE
+	flags = GAS_FLAG_DANGEROUS
+	price = 2
+
+/datum/gas/zauker
+	id = GAS_ZAUKER
+	specific_heat = 350
+	name = "Zauker"
+	gas_overlay = "zauker"
+	moles_visible = MOLES_GAS_VISIBLE
+	flags = GAS_FLAG_DANGEROUS
+	price = 7
+
+/datum/gas/healium
+	id = GAS_HEALIUM
+	specific_heat = 10
+	name = "Healium"
+	gas_overlay = "healium"
+	moles_visible = MOLES_GAS_VISIBLE
+	flags = GAS_FLAG_DANGEROUS
+	price = 5
+
+/datum/gas/nitrium
+	id = GAS_NITRIUM
+	specific_heat = 10
+	name = "Nitrium"
+	gas_overlay = "nitrium"
+	moles_visible = MOLES_GAS_VISIBLE
+	fusion_power = 7
+	flags = GAS_FLAG_DANGEROUS
+	price = 6

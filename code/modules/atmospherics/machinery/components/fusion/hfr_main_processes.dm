@@ -1,0 +1,484 @@
+// Stub: no hallucination pulse in BlueMoon
+/proc/visible_hallucination_pulse(atom/source, range, duration)
+	return
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/process_atmos(seconds_per_tick)
+	/*
+	 *Pre-checks
+	 */
+	if(!active)
+		return
+
+	if(!check_part_connectivity())
+		deactivate()
+		return
+
+	assert_gases()
+
+	if (start_power || power_level)
+		play_ambience(seconds_per_tick)
+		fusion_process(seconds_per_tick)
+		process_moderator_overflow(seconds_per_tick)
+		process_damageheal(seconds_per_tick)
+		check_alert()
+	if (start_power)
+		remove_waste(seconds_per_tick)
+	update_pipenets()
+
+	check_deconstructable()
+
+	if(linked_interface)
+		SStgui.update_uis(linked_interface)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/fusion_process(seconds_per_tick)
+	if (check_power_use())
+		if (start_cooling)
+			inject_from_side_components(seconds_per_tick)
+			process_internal_cooling(seconds_per_tick)
+	else
+		magnetic_constrictor = 100
+		heating_conductor = 500
+		current_damper = 0
+		fuel_injection_rate = 20
+		moderator_injection_rate = 50
+		waste_remove = FALSE
+		iron_content += 0.02 * power_level * seconds_per_tick
+
+	update_temperature_status(seconds_per_tick)
+
+	var/archived_heat = internal_fusion.return_temperature()
+	var/volume = internal_fusion.return_volume() * (magnetic_constrictor * 0.01)
+
+	var/energy_concentration_multiplier = 1
+	var/positive_temperature_multiplier = 1
+	var/negative_temperature_multiplier = 1
+
+	var/scale_factor = volume * 0.5
+
+	var/list/fuel_list = list()
+	var/list/scaled_fuel_list = list()
+
+	if (selected_fuel)
+		energy_concentration_multiplier = selected_fuel.energy_concentration_multiplier
+		positive_temperature_multiplier = selected_fuel.positive_temperature_multiplier
+		negative_temperature_multiplier = selected_fuel.negative_temperature_multiplier
+
+		for(var/gas_id in selected_fuel.requirements | selected_fuel.primary_products)
+			var/amount = internal_fusion.get_moles(gas_id)
+			fuel_list[gas_id] = amount
+			scaled_fuel_list[gas_id] = max((amount - FUSION_MOLE_THRESHOLD) / scale_factor, 0)
+
+	var/list/moderator_list = list()
+	var/list/scaled_moderator_list = list()
+	for(var/gas_id in moderator_internal.get_gases())
+		var/amount = moderator_internal.get_moles(gas_id)
+		moderator_list[gas_id] = amount
+		scaled_moderator_list[gas_id] = max((amount - FUSION_MOLE_THRESHOLD) / scale_factor, 0)
+
+	// Instability calculation
+	var/toroidal_size = (2 * PI) + TORADIANS(arctan((volume - TOROID_VOLUME_BREAKEVEN) / TOROID_VOLUME_BREAKEVEN))
+	var/list/fusion_powers = GLOB.gas_data.fusion_powers
+	var/gas_power = 0
+	for (var/gas_id in internal_fusion.get_gases())
+		gas_power += (fusion_powers[gas_id] * internal_fusion.get_moles(gas_id))
+	for (var/gas_id in moderator_internal.get_gases())
+		gas_power += (fusion_powers[gas_id] * moderator_internal.get_moles(gas_id) * 0.75)
+
+	instability = MODULUS((gas_power * INSTABILITY_GAS_POWER_FACTOR)**2, toroidal_size) + (current_damper * 0.01) - iron_content * 0.05
+	var/internal_instability = 0
+	if(instability * 0.5 < FUSION_INSTABILITY_ENDOTHERMALITY)
+		internal_instability = 1
+	else
+		internal_instability = -1
+
+	// Modifiers - BlueMoon: scaled_moderator_list[GAS_*]
+	var/energy_modifiers = scaled_moderator_list[GAS_N2] * 0.35 + \
+								scaled_moderator_list[GAS_CO2] * 0.55 + \
+								scaled_moderator_list[GAS_NITROUS] * 0.95 + \
+								scaled_moderator_list[GAS_ZAUKER] * 1.55 + \
+								scaled_moderator_list[GAS_ANTINOBLIUM] * 20
+	energy_modifiers -= scaled_moderator_list[GAS_HYPERNOB] * 10 + \
+								scaled_moderator_list[GAS_H2O] * 0.75 + \
+								scaled_moderator_list[GAS_NITRIUM] * 0.15 + \
+								scaled_moderator_list[GAS_HEALIUM] * 0.45 + \
+								scaled_moderator_list[GAS_FREON] * 1.15
+	var/power_modifier = scaled_moderator_list[GAS_O2] * 0.55 + \
+								scaled_moderator_list[GAS_CO2] * 0.95 + \
+								scaled_moderator_list[GAS_NITRIUM] * 1.45 + \
+								scaled_moderator_list[GAS_ZAUKER] * 5.55 + \
+								scaled_moderator_list[GAS_PLASMA] * 0.05 - \
+								scaled_moderator_list[GAS_NITROUS] * 0.05 - \
+								scaled_moderator_list[GAS_FREON] * 0.75
+	var/heat_modifier = scaled_moderator_list[GAS_PLASMA] * 1.25 - \
+								scaled_moderator_list[GAS_N2] * 0.75 - \
+								scaled_moderator_list[GAS_NITROUS] * 1.45 - \
+								scaled_moderator_list[GAS_FREON] * 0.95
+	var/radiation_modifier = scaled_moderator_list[GAS_FREON] * 1.15 - \
+									scaled_moderator_list[GAS_N2] * 0.45 - \
+									scaled_moderator_list[GAS_PLASMA] * 0.95 + \
+									scaled_moderator_list[GAS_BZ] * 1.9 + \
+									scaled_moderator_list[GAS_PROTO_NITRATE] * 0.1 + \
+									scaled_moderator_list[GAS_ANTINOBLIUM] * 10
+
+	if (selected_fuel)
+		energy_modifiers += scaled_fuel_list[selected_fuel.requirements[1]] + \
+									scaled_fuel_list[selected_fuel.requirements[2]]
+		energy_modifiers -= scaled_fuel_list[selected_fuel.primary_products[1]]
+
+		power_modifier += scaled_fuel_list[selected_fuel.requirements[2]] * 1.05 - \
+									scaled_fuel_list[selected_fuel.primary_products[1]] * 0.55
+
+		heat_modifier += scaled_fuel_list[selected_fuel.requirements[1]] * 1.15 + \
+									scaled_fuel_list[selected_fuel.primary_products[1]] * 1.05
+
+		radiation_modifier += scaled_fuel_list[selected_fuel.primary_products[1]]
+
+	power_modifier = clamp(power_modifier, 0.25, 100)
+	heat_modifier = clamp(heat_modifier, 0.25, 100)
+	radiation_modifier = clamp(radiation_modifier, 0.005, 1000)
+
+	internal_power = 0
+	efficiency = VOID_CONDUCTION * 1
+
+	if (selected_fuel)
+		internal_power = (scaled_fuel_list[selected_fuel.requirements[1]] * power_modifier / 100) * (scaled_fuel_list[selected_fuel.requirements[2]] * power_modifier / 100) * (PI * (2 * (scaled_fuel_list[selected_fuel.requirements[1]] * CALCULATED_H2RADIUS) * (scaled_fuel_list[selected_fuel.requirements[2]] * CALCULATED_TRITRADIUS))**2) * energy
+
+		efficiency = VOID_CONDUCTION * clamp(scaled_fuel_list[selected_fuel.primary_products[1]], 1, 100)
+
+	energy = (energy_modifiers * LIGHT_SPEED ** 2) * max(internal_fusion.return_temperature() * heat_modifier / 100, 1)
+	energy = energy / energy_concentration_multiplier
+	energy = clamp(energy, 0, 1e35)
+	core_temperature = internal_power * power_modifier / 1000
+	core_temperature = max(TCMB, core_temperature)
+	delta_temperature = archived_heat - core_temperature
+	conduction = - delta_temperature * (magnetic_constrictor * 0.001)
+	radiation = max(-(PLANCK_LIGHT_CONSTANT / 5e-18) * radiation_modifier * delta_temperature, 0)
+	power_output = efficiency * (internal_power - conduction - radiation)
+	heat_limiter_modifier = 5 * (10 ** power_level) * (heating_conductor / 100)
+	heat_output_min = - heat_limiter_modifier * 0.01 * negative_temperature_multiplier
+	heat_output_max = heat_limiter_modifier * positive_temperature_multiplier
+	heat_output = clamp(internal_instability * power_output * heat_modifier / 200, heat_output_min, heat_output_max)
+
+	if (!check_fuel())
+		return
+
+	var/fuel_consumption_rate = clamp(fuel_injection_rate * 0.01 * 5 * power_level, 0.05, 30)
+	var/consumption_amount = fuel_consumption_rate * seconds_per_tick
+	var/production_amount
+	switch(power_level)
+		if(3,4)
+			production_amount = clamp(heat_output / 1000, 0, fuel_consumption_rate) * seconds_per_tick
+		else
+			production_amount = clamp(heat_output * 2 / 10 ** (power_level+1), 0, fuel_consumption_rate) * seconds_per_tick
+
+	var/dirty_production_rate = scaled_fuel_list[selected_fuel.primary_products[1]] / fuel_injection_rate
+
+	var/datum/gas_mixture/internal_output = new
+	moderator_fuel_process(seconds_per_tick, production_amount, consumption_amount, internal_output, moderator_list, selected_fuel, fuel_list)
+
+	var/common_production_amount = production_amount * selected_fuel.gas_production_multiplier
+	moderator_common_process(seconds_per_tick, common_production_amount, internal_output, moderator_list, dirty_production_rate, heat_output, radiation_modifier)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/moderator_fuel_process(seconds_per_tick, production_amount, consumption_amount, datum/gas_mixture/internal_output, moderator_list, datum/hfr_fuel/fuel, fuel_list)
+	var/fuel_consumption = consumption_amount * 0.85 * selected_fuel.fuel_consumption_multiplier
+	var/scaled_production = production_amount * selected_fuel.gas_production_multiplier
+
+	for(var/gas_id in fuel.requirements)
+		internal_fusion.adjust_moles(gas_id, -min(fuel_list[gas_id], fuel_consumption))
+	for(var/gas_id in fuel.primary_products)
+		internal_fusion.adjust_moles(gas_id, fuel_consumption * 0.5)
+
+	var/list/tier = fuel.secondary_products
+	switch(power_level)
+		if(1)
+			moderator_internal.adjust_moles(tier[1], scaled_production * 0.95)
+			moderator_internal.adjust_moles(tier[2], scaled_production * 0.75)
+		if(2)
+			moderator_internal.adjust_moles(tier[1], scaled_production * 1.65)
+			moderator_internal.adjust_moles(tier[2], scaled_production)
+			if(moderator_list[GAS_PLASMA] > 50)
+				moderator_internal.adjust_moles(tier[3], scaled_production * 1.15)
+		if(3)
+			moderator_internal.adjust_moles(tier[2], scaled_production * 0.5)
+			moderator_internal.adjust_moles(tier[3], scaled_production * 0.45)
+		if(4)
+			moderator_internal.adjust_moles(tier[3], scaled_production * 1.65)
+			moderator_internal.adjust_moles(tier[4], scaled_production * 1.25)
+		if(5)
+			moderator_internal.adjust_moles(tier[4], scaled_production * 0.65)
+			moderator_internal.adjust_moles(tier[5], scaled_production)
+			moderator_internal.adjust_moles(tier[6], scaled_production * 0.75)
+		if(6)
+			moderator_internal.adjust_moles(tier[5], scaled_production * 0.35)
+			moderator_internal.adjust_moles(tier[6], scaled_production)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/moderator_common_process(seconds_per_tick, scaled_production, datum/gas_mixture/internal_output, moderator_list, dirty_production_rate, heat_output, radiation_modifier)
+	switch(power_level)
+		if(1)
+			if(moderator_list[GAS_PLASMA] > 100)
+				internal_output.adjust_moles(GAS_NITROUS, scaled_production * 0.5)
+				moderator_internal.adjust_moles(GAS_PLASMA, -min(moderator_internal.get_moles(GAS_PLASMA), scaled_production * 0.85))
+			if(moderator_list[GAS_BZ] > 150)
+				internal_output.adjust_moles(GAS_HALON, scaled_production * 0.55)
+				moderator_internal.adjust_moles(GAS_BZ, -min(moderator_internal.get_moles(GAS_BZ), scaled_production * 0.95))
+		if(2)
+			if(moderator_list[GAS_PLASMA] > 50)
+				internal_output.adjust_moles(GAS_BZ, scaled_production * 1.8)
+				moderator_internal.adjust_moles(GAS_PLASMA, -min(moderator_internal.get_moles(GAS_PLASMA), scaled_production * 1.75))
+			if(moderator_list[GAS_PROTO_NITRATE] > 20)
+				radiation *= 1.55
+				heat_output *= 1.025
+				internal_output.adjust_moles(GAS_NITRIUM, scaled_production * 1.05)
+				moderator_internal.adjust_moles(GAS_PROTO_NITRATE, -min(moderator_internal.get_moles(GAS_PROTO_NITRATE), scaled_production * 1.35))
+		if(3, 4)
+			if(moderator_list[GAS_PLASMA] > 10)
+				internal_output.adjust_moles(GAS_FREON, scaled_production * 0.15)
+				internal_output.adjust_moles(GAS_NITRIUM, scaled_production * 1.05)
+				moderator_internal.adjust_moles(GAS_PLASMA, -min(moderator_internal.get_moles(GAS_PLASMA), scaled_production * 0.45))
+			if(moderator_list[GAS_FREON] > 50)
+				heat_output *= 0.9
+				radiation *= 0.8
+			if(moderator_list[GAS_PROTO_NITRATE] > 15)
+				internal_output.adjust_moles(GAS_NITRIUM, scaled_production * 1.25)
+				internal_output.adjust_moles(GAS_HALON, scaled_production * 1.15)
+				moderator_internal.adjust_moles(GAS_PROTO_NITRATE, -min(moderator_internal.get_moles(GAS_PROTO_NITRATE), scaled_production * 1.55))
+				radiation *= 1.95
+				heat_output *= 1.25
+			if(moderator_list[GAS_BZ] > 100)
+				internal_output.adjust_moles(GAS_HEALIUM, scaled_production * 1.5)
+				internal_output.adjust_moles(GAS_PROTO_NITRATE, scaled_production * 1.5)
+				visible_hallucination_pulse(src, HALLUCINATION_HFR(heat_output), 100 SECONDS * power_level * seconds_per_tick)
+
+		if(5)
+			if(moderator_list[GAS_PLASMA] > 15)
+				internal_output.adjust_moles(GAS_FREON, scaled_production * 0.25)
+				moderator_internal.adjust_moles(GAS_PLASMA, -min(moderator_internal.get_moles(GAS_PLASMA), scaled_production * 1.45))
+			if(moderator_list[GAS_FREON] > 500)
+				heat_output *= 0.5
+				radiation *= 0.2
+			if(moderator_list[GAS_PROTO_NITRATE] > 50)
+				internal_output.adjust_moles(GAS_NITRIUM, scaled_production * 1.95)
+				internal_output.adjust_moles(GAS_PLUOXIUM, scaled_production)
+				moderator_internal.adjust_moles(GAS_PROTO_NITRATE, -min(moderator_internal.get_moles(GAS_PROTO_NITRATE), scaled_production * 1.35))
+				radiation *= 1.95
+				heat_output *= 1.25
+			if(moderator_list[GAS_BZ] > 100)
+				internal_output.adjust_moles(GAS_HEALIUM, scaled_production)
+				visible_hallucination_pulse(src, HALLUCINATION_HFR(heat_output), 100 SECONDS * power_level * seconds_per_tick)
+				internal_output.adjust_moles(GAS_FREON, scaled_production * 1.15)
+			if(moderator_list[GAS_HEALIUM] > 100)
+				if(critical_threshold_proximity > 400)
+					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100 * seconds_per_tick ), 0)
+					moderator_internal.adjust_moles(GAS_HEALIUM, -min(moderator_internal.get_moles(GAS_HEALIUM), scaled_production * 20))
+			if(moderator_internal.return_temperature() < 1e7 || (moderator_list[GAS_PLASMA] > 100 && moderator_list[GAS_BZ] > 50))
+				internal_output.adjust_moles(GAS_ANTINOBLIUM, dirty_production_rate * 0.9 / 0.065 * seconds_per_tick)
+		if(6)
+			if(moderator_list[GAS_PLASMA] > 30)
+				internal_output.adjust_moles(GAS_BZ, scaled_production * 1.15)
+				moderator_internal.adjust_moles(GAS_PLASMA, -min(moderator_internal.get_moles(GAS_PLASMA), scaled_production * 1.45))
+			if(moderator_list[GAS_PROTO_NITRATE])
+				internal_output.adjust_moles(GAS_ZAUKER, scaled_production * 5.35)
+				internal_output.adjust_moles(GAS_NITRIUM, scaled_production * 2.15)
+				moderator_internal.adjust_moles(GAS_PROTO_NITRATE, -min(moderator_internal.get_moles(GAS_PROTO_NITRATE), scaled_production * 3.35))
+				radiation *= 2
+				heat_output *= 2.25
+			if(moderator_list[GAS_BZ])
+				visible_hallucination_pulse(src, HALLUCINATION_HFR(heat_output), 100 SECONDS * power_level * seconds_per_tick)
+				internal_output.adjust_moles(GAS_ANTINOBLIUM, clamp(dirty_production_rate / 0.045, 0, 10) * seconds_per_tick)
+			if(moderator_list[GAS_HEALIUM] > 100)
+				if(critical_threshold_proximity > 400)
+					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100 * seconds_per_tick ), 0)
+					moderator_internal.adjust_moles(GAS_HEALIUM, -min(moderator_internal.get_moles(GAS_HEALIUM), scaled_production * 20))
+			internal_fusion.adjust_moles(GAS_ANTINOBLIUM, dirty_production_rate * 0.01 / 0.095 * seconds_per_tick)
+
+	var/temperature_modifier = selected_fuel.temperature_change_multiplier
+	if(internal_fusion.return_temperature() <= FUSION_MAXIMUM_TEMPERATURE * temperature_modifier)
+		internal_fusion.set_temperature(clamp(
+			internal_fusion.return_temperature() + heat_output * seconds_per_tick,
+			TCMB,
+			FUSION_MAXIMUM_TEMPERATURE * temperature_modifier,
+		))
+	else
+		internal_fusion.set_temperature(internal_fusion.return_temperature() - heat_limiter_modifier * 0.01 * seconds_per_tick)
+
+	if(internal_output.total_moles() > 0)
+		if(moderator_internal.total_moles() > 0)
+			internal_output.set_temperature(moderator_internal.return_temperature() * HIGH_EFFICIENCY_CONDUCTIVITY)
+		else
+			internal_output.set_temperature(internal_fusion.return_temperature() * METALLIC_VOID_CONDUCTIVITY)
+		linked_output.airs[1].merge(internal_output)
+
+	evaporate_moderator(seconds_per_tick)
+
+	check_nuclear_particles(moderator_list)
+
+	check_lightning_arcs(moderator_list)
+
+	if(moderator_list[GAS_O2] > 150)
+		if(iron_content > 0)
+			var/max_iron_removable = IRON_OXYGEN_HEAL_PER_SECOND
+			var/iron_removed = min(max_iron_removable * seconds_per_tick, iron_content)
+			iron_content -= iron_removed
+			moderator_internal.adjust_moles(GAS_O2, -iron_removed * OXYGEN_MOLES_CONSUMED_PER_IRON_HEAL)
+
+	check_gravity_pulse(seconds_per_tick)
+
+	radiation_pulse(src, max_range = 6, threshold = 0.3)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/evaporate_moderator(seconds_per_tick)
+	if (!power_level)
+		return
+	if(moderator_internal.total_moles() > 0)
+		moderator_internal.remove(moderator_internal.total_moles() * (1 - (1 - 0.0005 * power_level) ** seconds_per_tick))
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_damageheal(seconds_per_tick)
+	critical_threshold_proximity_archived = critical_threshold_proximity
+
+	warning_damage_flags &= HYPERTORUS_FLAG_EMPED
+
+	if(power_level >= HYPERTORUS_OVERFULL_MIN_POWER_LEVEL)
+		var/overfull_damage_taken = HYPERTORUS_OVERFULL_MOLAR_SLOPE * internal_fusion.total_moles() + HYPERTORUS_OVERFULL_TEMPERATURE_SLOPE * coolant_temperature + HYPERTORUS_OVERFULL_CONSTANT
+		critical_threshold_proximity = max(critical_threshold_proximity + max(overfull_damage_taken * seconds_per_tick, 0), 0)
+		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_POWER_DAMAGE
+
+	if(internal_fusion.total_moles() < HYPERTORUS_SUBCRITICAL_MOLES && power_level <= 5)
+		var/subcritical_heal_restore = (internal_fusion.total_moles() - HYPERTORUS_SUBCRITICAL_MOLES) / HYPERTORUS_SUBCRITICAL_SCALE
+		critical_threshold_proximity = max(critical_threshold_proximity + min(subcritical_heal_restore * seconds_per_tick, 0), 0)
+
+	if(internal_fusion.total_moles() > 0 && (airs[1].total_moles() && coolant_temperature < HYPERTORUS_COLD_COOLANT_THRESHOLD) && power_level <= 4)
+		var/cold_coolant_heal_restore = log(10, max(coolant_temperature, 1) * HYPERTORUS_COLD_COOLANT_SCALE) - (HYPERTORUS_COLD_COOLANT_MAX_RESTORE * 2)
+		critical_threshold_proximity = max(critical_threshold_proximity + min(cold_coolant_heal_restore * seconds_per_tick, 0), 0)
+
+	critical_threshold_proximity += max(iron_content - HYPERTORUS_MAX_SAFE_IRON, 0) * seconds_per_tick
+	if(iron_content - HYPERTORUS_MAX_SAFE_IRON > 0)
+		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_DAMAGE
+
+	critical_threshold_proximity = min(critical_threshold_proximity_archived + (seconds_per_tick * DAMAGE_CAP_MULTIPLIER * melting_point), critical_threshold_proximity)
+
+	if(internal_fusion.total_moles() >= HYPERTORUS_HYPERCRITICAL_MOLES)
+		var/hypercritical_damage_taken = max((internal_fusion.total_moles() - HYPERTORUS_HYPERCRITICAL_MOLES) * HYPERTORUS_HYPERCRITICAL_SCALE, 0)
+		critical_threshold_proximity = max(critical_threshold_proximity + min(hypercritical_damage_taken, HYPERTORUS_HYPERCRITICAL_MAX_DAMAGE), 0) * seconds_per_tick
+		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_FUEL_MIX_MOLE
+
+	if(power_level > 4 && prob(IRON_CHANCE_PER_FUSION_LEVEL * power_level))
+		iron_content += IRON_ACCUMULATED_PER_SECOND * seconds_per_tick
+		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_INCREASE
+	if(iron_content > 0 && power_level <= 4 && prob(25 / (power_level + 1)))
+		iron_content = max(iron_content - 0.01 * seconds_per_tick, 0)
+	iron_content = clamp(iron_content, 0, 1)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_nuclear_particles(moderator_list)
+	if(power_level < 4)
+		return
+	if(moderator_list[GAS_BZ] < (150 / power_level))
+		return
+	var/obj/machinery/hypertorus/corner/picked_corner = pick(corners)
+	picked_corner.loc.fire_nuclear_particle(REVERSE_DIR(picked_corner.dir))
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_lightning_arcs(moderator_list)
+	if(power_level < 4)
+		return
+	if(moderator_list[GAS_ANTINOBLIUM] <= 50 && critical_threshold_proximity <= 500)
+		return
+	var/zap_number = power_level - 2
+
+	if(critical_threshold_proximity > 650 && prob(20))
+		zap_number += 1
+
+	var/flags = ZAP_SUPERMATTER_FLAGS
+	switch(power_level)
+		if(5)
+			flags |= (ZAP_MOB_DAMAGE)
+		if(6)
+			flags |= (ZAP_MOB_DAMAGE | ZAP_OBJ_DAMAGE)
+
+	playsound(loc, 'sound/weapons/emitter2.ogg', 100, TRUE, extrarange = 10)
+	for(var/i in 1 to zap_number)
+		tesla_zap(src, 5, power_level * 2.4e5, flags)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_gravity_pulse(seconds_per_tick)
+	if(SPT_PROB(100 - critical_threshold_proximity / 15, seconds_per_tick))
+		return
+	var/grav_range = round(log(2.5, critical_threshold_proximity))
+	for(var/mob/alive_mob in GLOB.alive_mob_list)
+		if(alive_mob.z != z || get_dist(alive_mob, src) > grav_range || alive_mob.mob_negates_gravity())
+			continue
+		step_towards(alive_mob, loc)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/remove_waste(seconds_per_tick)
+	if(!waste_remove)
+		return
+	var/filtering_amount = moderator_scrubbing.len
+	for(var/gas_id in moderator_internal.get_gases() & moderator_scrubbing)
+		var/datum/gas_mixture/removed = moderator_internal.remove_specific(gas_id, (moderator_filtering_rate / filtering_amount) * seconds_per_tick)
+		if(removed)
+			linked_output.airs[1].merge(removed)
+
+	if (selected_fuel)
+		for(var/gas_id in selected_fuel.primary_products)
+			if(internal_fusion.get_moles(gas_id) > 0)
+				var/datum/gas_mixture/removed = internal_fusion.remove_specific(gas_id, internal_fusion.get_moles(gas_id) * (1 - (1 - 0.25) ** seconds_per_tick))
+				if(removed)
+					linked_output.airs[1].merge(removed)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_internal_cooling(seconds_per_tick)
+	if(moderator_internal.total_moles() > 0 && internal_fusion.total_moles() > 0)
+		var/fusion_temperature_delta = internal_fusion.return_temperature() - moderator_internal.return_temperature()
+		var/fusion_heat_amount = (1 - (1 - METALLIC_VOID_CONDUCTIVITY) ** seconds_per_tick) * fusion_temperature_delta * (internal_fusion.heat_capacity() * moderator_internal.heat_capacity() / (internal_fusion.heat_capacity() + moderator_internal.heat_capacity()))
+		internal_fusion.set_temperature(max(internal_fusion.return_temperature() - fusion_heat_amount / internal_fusion.heat_capacity(), TCMB))
+		moderator_internal.set_temperature(max(moderator_internal.return_temperature() + fusion_heat_amount / moderator_internal.heat_capacity(), TCMB))
+
+	if(airs[1].total_moles() * 0.05 <= MINIMUM_MOLE_COUNT)
+		return
+	var/datum/gas_mixture/cooling_port = airs[1]
+	var/datum/gas_mixture/cooling_remove = cooling_port.remove(0.05 * cooling_port.total_moles())
+	if(moderator_internal.total_moles() > 0)
+		var/coolant_temperature_delta = cooling_remove.return_temperature() - moderator_internal.return_temperature()
+		var/cooling_heat_amount = (1 - (1 - HIGH_EFFICIENCY_CONDUCTIVITY) ** seconds_per_tick) * coolant_temperature_delta * (cooling_remove.heat_capacity() * moderator_internal.heat_capacity() / (cooling_remove.heat_capacity() + moderator_internal.heat_capacity()))
+		cooling_remove.set_temperature(max(cooling_remove.return_temperature() - cooling_heat_amount / cooling_remove.heat_capacity(), TCMB))
+		moderator_internal.set_temperature(max(moderator_internal.return_temperature() + cooling_heat_amount / moderator_internal.heat_capacity(), TCMB))
+
+	else if(internal_fusion.total_moles() > 0)
+		var/coolant_temperature_delta = cooling_remove.return_temperature() - internal_fusion.return_temperature()
+		var/cooling_heat_amount = (1 - (1 - METALLIC_VOID_CONDUCTIVITY) ** seconds_per_tick) * coolant_temperature_delta * (cooling_remove.heat_capacity() * internal_fusion.heat_capacity() / (cooling_remove.heat_capacity() + internal_fusion.heat_capacity()))
+		cooling_remove.set_temperature(max(cooling_remove.return_temperature() - cooling_heat_amount / cooling_remove.heat_capacity(), TCMB))
+		internal_fusion.set_temperature(max(internal_fusion.return_temperature() + cooling_heat_amount / internal_fusion.heat_capacity(), TCMB))
+	cooling_port.merge(cooling_remove)
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/inject_from_side_components(seconds_per_tick)
+	update_pipenets()
+
+	var/datum/gas_mixture/moderator_port = linked_moderator.airs[1]
+	if(start_moderator && moderator_port.total_moles())
+		moderator_internal.merge(moderator_port.remove(moderator_injection_rate * seconds_per_tick))
+		linked_moderator.update_parents()
+
+	if(!start_fuel || !selected_fuel || !check_gas_requirements())
+		return
+
+	var/datum/gas_mixture/fuel_port = linked_input.airs[1]
+	for(var/gas_type in selected_fuel.requirements)
+		var/datum/gas_mixture/removed = fuel_port.remove_specific(gas_type, fuel_injection_rate * seconds_per_tick / length(selected_fuel.requirements))
+		if(removed)
+			internal_fusion.merge(removed)
+		linked_input.update_parents()
+
+/obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_deconstructable()
+	if(!active)
+		return
+	if(power_level > 0)
+		fusion_started = TRUE
+		linked_input.fusion_started = TRUE
+		linked_output.fusion_started = TRUE
+		linked_moderator.fusion_started = TRUE
+		linked_interface.fusion_started = TRUE
+		for(var/obj/machinery/hypertorus/corner/corner in corners)
+			corner.fusion_started = TRUE
+	else
+		fusion_started = FALSE
+		linked_input.fusion_started = FALSE
+		linked_output.fusion_started = FALSE
+		linked_moderator.fusion_started = FALSE
+		linked_interface.fusion_started = FALSE
+		for(var/obj/machinery/hypertorus/corner/corner in corners)
+			corner.fusion_started = FALSE

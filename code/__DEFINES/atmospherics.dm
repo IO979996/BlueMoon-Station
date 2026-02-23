@@ -326,6 +326,15 @@ GLOBAL_LIST_INIT(atmos_adjacent_savings, list(0,0))
 #define GAS_ETHANOL				"ethanol"
 #define GAS_MOTOR_OIL			"motor_oil" // BLUEMOON ADD - Напитки для синтетиков
 #define GAS_QCD					"qcd"
+// HFR / fusion gases (from WhiteMoon HFR port)
+#define GAS_HELIUM				"helium"
+#define GAS_FREON				"freon"
+#define GAS_HALON				"halon"
+#define GAS_ANTINOBLIUM			"antinoblium"
+#define GAS_PROTO_NITRATE		"proto_nitrate"
+#define GAS_ZAUKER				"zauker"
+#define GAS_HEALIUM				"healium"
+#define GAS_NITRIUM				"nitrium"
 
 #define GAS_GROUP_CHEMICALS		"Chemicals"
 
