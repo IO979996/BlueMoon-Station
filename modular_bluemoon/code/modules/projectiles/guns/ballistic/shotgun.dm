@@ -1,4 +1,7 @@
-#define KS23_RUBBER_HEAD_GIB_CHANCE 25
+#define KS23_HEAD_GIB_CLOSE_RANGE 2
+#define KS23_HEAD_GIB_CHANCE 30
+#define KS23_RUBBER_HEAD_BRAIN_DAMAGE 150
+#define KS23_RUBBER_HEAD_EFFECT_CHANCE 25
 
 /obj/item/projectile/bullet/slug23
 	name = "23 shotgun slug"
@@ -7,6 +10,16 @@
 	armour_penetration = 50
 	sharpness = SHARP_POINTY
 	wound_bonus = 5
+
+/obj/item/projectile/bullet/slug23/on_hit(atom/target, blocked = FALSE, pierce_hit)
+	. = ..()
+	if(blocked >= 100)
+		return .
+	if(iscarbon(target))
+		var/mob/living/carbon/C = target
+		if(def_zone == BODY_ZONE_HEAD && starting && get_dist(starting, get_turf(C)) <= KS23_HEAD_GIB_CLOSE_RANGE && prob(KS23_HEAD_GIB_CHANCE))
+			C.gib_head()
+	return .
 
 /obj/item/projectile/bullet/slug_rubber23
 	name = "23 rubber slug"
@@ -20,9 +33,10 @@
 	. = ..()
 	if(blocked >= 100)
 		return .
-	if(iscarbon(target) && def_zone == BODY_ZONE_HEAD && prob(KS23_RUBBER_HEAD_GIB_CHANCE))
+	if(iscarbon(target) && def_zone == BODY_ZONE_HEAD && prob(KS23_RUBBER_HEAD_EFFECT_CHANCE))
 		var/mob/living/carbon/C = target
-		C.gib_head()
+		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, KS23_RUBBER_HEAD_BRAIN_DAMAGE)
+		playsound(C, 'sound/effects/headgibb.ogg', 50, 1)
 	return .
 
 /obj/item/projectile/bullet/pellet/buckshot23
