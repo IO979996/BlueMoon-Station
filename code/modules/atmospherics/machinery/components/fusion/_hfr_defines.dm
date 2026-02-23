@@ -135,22 +135,9 @@
 #define HYPERTORUS_NOMINAL 5
 #define HYPERTORUS_INACTIVE 6
 
-// BlueMoon compatibility: signals and power
-#ifndef COMSIG_QDELETING
-#define COMSIG_QDELETING COMSIG_PARENT_QDELETING
-#endif
+// BlueMoon compatibility (do not define zap/COMSIG here; supermatter.dm and modular define them)
 #ifndef BASE_MACHINE_IDLE_CONSUMPTION
 #define BASE_MACHINE_IDLE_CONSUMPTION 50
-#endif
-// Zap icon states (supermatter-style); stub if not defined
-#ifndef DEFAULT_ZAP_ICON_STATE
-#define DEFAULT_ZAP_ICON_STATE "default"
-#endif
-#ifndef SLIGHTLY_CHARGED_ZAP_ICON_STATE
-#define SLIGHTLY_CHARGED_ZAP_ICON_STATE "charged"
-#endif
-#ifndef OVER_9000_ZAP_ICON_STATE
-#define OVER_9000_ZAP_ICON_STATE "over_9000"
 #endif
 #ifndef ZAP_SUPERMATTER_FLAGS
 #define ZAP_SUPERMATTER_FLAGS 0
