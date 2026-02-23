@@ -8,14 +8,20 @@
 #define CALCULATED_TRITRADIUS 230e-3
 ///Power conduction in the void, used to calculate the efficiency of the reaction
 #define VOID_CONDUCTION 1e-2
-///Mole count required (tritium/hydrogen) to start a fusion reaction
-#define FUSION_MOLE_THRESHOLD 25
+///Mole count required (tritium/hydrogen) to start a fusion reaction in HFR (reactions.dm uses 250 for other fusion)
+#define HFR_FUSION_MOLE_THRESHOLD 25
 ///Used to reduce the gas_power to a more useful amount
+#ifndef INSTABILITY_GAS_POWER_FACTOR
 #define INSTABILITY_GAS_POWER_FACTOR 0.003
+#endif
 ///Used to calculate the toroidal_size for the instability
+#ifndef TOROID_VOLUME_BREAKEVEN
 #define TOROID_VOLUME_BREAKEVEN 1000
+#endif
 ///Constant used when calculating the chance of emitting a radioactive particle
+#ifndef PARTICLE_CHANCE_CONSTANT
 #define PARTICLE_CHANCE_CONSTANT (-20000000)
+#endif
 ///Conduction of heat inside the fusion reactor
 #define METALLIC_VOID_CONDUCTIVITY 0.38
 ///Conduction of heat near the external cooling loop

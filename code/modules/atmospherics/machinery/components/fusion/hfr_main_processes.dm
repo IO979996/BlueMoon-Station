@@ -66,14 +66,14 @@
 		for(var/gas_id in selected_fuel.requirements | selected_fuel.primary_products)
 			var/amount = internal_fusion.get_moles(gas_id)
 			fuel_list[gas_id] = amount
-			scaled_fuel_list[gas_id] = max((amount - FUSION_MOLE_THRESHOLD) / scale_factor, 0)
+			scaled_fuel_list[gas_id] = max((amount - HFR_FUSION_MOLE_THRESHOLD) / scale_factor, 0)
 
 	var/list/moderator_list = list()
 	var/list/scaled_moderator_list = list()
 	for(var/gas_id in moderator_internal.get_gases())
 		var/amount = moderator_internal.get_moles(gas_id)
 		moderator_list[gas_id] = amount
-		scaled_moderator_list[gas_id] = max((amount - FUSION_MOLE_THRESHOLD) / scale_factor, 0)
+		scaled_moderator_list[gas_id] = max((amount - HFR_FUSION_MOLE_THRESHOLD) / scale_factor, 0)
 
 	// Instability calculation
 	var/toroidal_size = (2 * PI) + TORADIANS(arctan((volume - TOROID_VOLUME_BREAKEVEN) / TOROID_VOLUME_BREAKEVEN))
@@ -323,7 +323,7 @@
 
 	check_gravity_pulse(seconds_per_tick)
 
-	radiation_pulse(src, max_range = 6, threshold = 0.3)
+	radiation_pulse(src, 500, 6)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/evaporate_moderator(seconds_per_tick)
 	if (!power_level)

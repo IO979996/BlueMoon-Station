@@ -193,7 +193,7 @@
 	if(!internal_fusion.total_moles())
 		return FALSE
 	for(var/gas_id in selected_fuel.requirements)
-		if(internal_fusion.get_moles(gas_id) < FUSION_MOLE_THRESHOLD)
+		if(internal_fusion.get_moles(gas_id) < HFR_FUSION_MOLE_THRESHOLD)
 			return FALSE
 	return TRUE
 
@@ -322,7 +322,7 @@
 				Отойдите как можно дальше от реактора или найдите способ его остановить от расщепления.", "ВНИМАНИЕ", 'sound/announcer/notice/notice3.ogg')
 	var/speaking = "[emergency_alert] The Hypertorus fusion reactor has reached critical integrity failure. Emergency magnetic dampeners online."
 	radio.talk_into(src, speaking, common_channel)
-	notify_ghosts("The [src] has begun melting down!", source = src, header = "Meltdown Incoming", ghost_sound = 'sound/machines/warning-buzzer.ogg', notify_volume = 75)
+	notify_ghosts("The [src] has begun melting down!", 'sound/machines/warning-buzzer.ogg', FALSE, src, header = "Meltdown Incoming")
 	for(var/i in HYPERTORUS_COUNTDOWN_TIME to 0 step -10)
 		if(critical_threshold_proximity < melting_point)
 			radio.talk_into(src, "[safe_alert] Failsafe has been disengaged.", common_channel)
@@ -421,11 +421,11 @@
 			var/turf/local = pick(around_turfs)
 			local.assume_air(remove)
 		loc.assume_air(moderator_internal)
-	explosion(origin = src, devastation_range = critical ? devastating_explosion * 2 : devastating_explosion, heavy_impact_range = critical ? heavy_impact_explosion * 2 : heavy_impact_explosion, light_impact_range = light_impact_explosion, flash_range = flash_explosion, adminlog = TRUE, ignorecap = TRUE)
+	explosion(loc, critical ? devastating_explosion * 2 : devastating_explosion, critical ? heavy_impact_explosion * 2 : heavy_impact_explosion, light_impact_explosion, flash_explosion, TRUE, TRUE)
 	if(rad_pulse)
-		radiation_pulse(source = loc, max_range = rad_pulse_size, threshold = 0.05)
+		radiation_pulse(src, 3000, rad_pulse_size, TRUE)
 	if(em_pulse)
-		empulse(epicenter = loc, heavy_range = critical ? emp_heavy_size * 2 : emp_heavy_size, light_range = critical ? emp_light_size * 2 : emp_heavy_size, emp_source = src)
+		empulse_using_range(loc, critical ? emp_heavy_size * 2 : emp_heavy_size, TRUE)
 	qdel(src)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_cracked_parts()
@@ -466,8 +466,8 @@
 	if(moderator_internal.return_pressure() < HYPERTORUS_MEDIUM_SPILL_PRESSURE)
 		return
 	if(moderator_internal.return_pressure() < HYPERTORUS_STRONG_SPILL_PRESSURE)
-		explosion(origin = cracked_part, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 1, flame_range = 3, flash_range = 3)
+		explosion(get_turf(cracked_part), 0, 0, 1, 3, TRUE, FALSE, 3)
 		spill_gases(cracked_part, moderator_internal, ratio = HYPERTORUS_MEDIUM_SPILL_INITIAL)
 		return
-	explosion(origin = cracked_part, devastation_range = 0, heavy_impact_range = 1, light_impact_range = 3, flame_range = 5, flash_range = 5)
+	explosion(get_turf(cracked_part), 0, 1, 3, 5, TRUE, FALSE, 5)
 	spill_gases(cracked_part, moderator_internal, ratio = HYPERTORUS_STRONG_SPILL_INITIAL)
