@@ -42,7 +42,7 @@
 	qdel(head)
 	new gib_type(T, 1, get_static_viruses())
 	add_splatter_floor(T)
-	playsound(src, 'sound/effects/headgibb.ogg', 50, 1)
+	playsound(src, 'sound/effects/splat.ogg', 50, 1)
 
 /mob/living/carbon/spill_organs(no_brain, no_organs, no_bodyparts, datum/explosion/was_explosion)
 	var/atom/Tsec = drop_location()
