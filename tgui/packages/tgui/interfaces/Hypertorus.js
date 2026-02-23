@@ -11,7 +11,7 @@ import { Window } from '../layouts';
 export const Hypertorus = (props, context) => {
   const { act, data } = useBackend(context);
   const filterTypes = data.filter_types || [];
-  const selectedFuels = data.selected_fuel || [];
+  const selectableFuels = data.selectable_fuel || [];
   const {
     energy_level,
     core_temperature,
@@ -89,14 +89,15 @@ export const Hypertorus = (props, context) => {
             </Stack.Item>
           </Stack>
         </Section>
-        <Section>
+        <Section title="Reaction">
           <LabeledList>
             <LabeledList.Item label="Fuel">
-              {selectedFuels.map(recipe => (
+              {selectableFuels.map(recipe => (
                 <Button
                   disabled={data.power_level > 0}
-                  key={recipe.id}
-                  selected={recipe.id === selected}
+                  key={recipe.id ?? 'nothing'}
+                  selected={(recipe.id === selected)
+                    || (selected === null && recipe.id == null)}
                   content={recipe.name}
                   onClick={() => act('fuel', {
                     mode: recipe.id,
@@ -107,7 +108,7 @@ export const Hypertorus = (props, context) => {
               <Box m={1} style={{
                 'white-space': 'pre-wrap',
               }}>
-                {product_gases}
+                {product_gases ?? 'None'}
               </Box>
             </LabeledList.Item>
           </LabeledList>
@@ -116,10 +117,10 @@ export const Hypertorus = (props, context) => {
           <LabeledList>
             {fusion_gases.map(gas => (
               <LabeledList.Item
-                key={gas.name}
-                label={getGasLabel(gas.name)}>
+                key={gas.id}
+                label={getGasLabel(gas.id)}>
                 <ProgressBar
-                  color={getGasColor(gas.name)}
+                  color={getGasColor(gas.id)}
                   value={gas.amount}
                   minValue={0}
                   maxValue={fusionMax}>
@@ -133,10 +134,10 @@ export const Hypertorus = (props, context) => {
           <LabeledList>
             {moderator_gases.map(gas => (
               <LabeledList.Item
-                key={gas.name}
-                label={getGasLabel(gas.name)}>
+                key={gas.id}
+                label={getGasLabel(gas.id)}>
                 <ProgressBar
-                  color={getGasColor(gas.name)}
+                  color={getGasColor(gas.id)}
                   value={gas.amount}
                   minValue={0}
                   maxValue={moderatorMax}>
@@ -321,11 +322,11 @@ export const Hypertorus = (props, context) => {
             <LabeledList.Item label="Filter from moderator mix">
               {filterTypes.map(filter => (
                 <Button
-                  key={filter.id}
-                  selected={filter.selected}
-                  content={getGasLabel(filter.id, filter.name)}
+                  key={filter.gas_id}
+                  selected={filter.enabled}
+                  content={getGasLabel(filter.gas_id, filter.gas_name)}
                   onClick={() => act('filter', {
-                    mode: filter.id,
+                    mode: filter.gas_id,
                   })} />
               ))}
             </LabeledList.Item>

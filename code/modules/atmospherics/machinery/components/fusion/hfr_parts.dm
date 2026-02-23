@@ -225,7 +225,14 @@
 	if(connected_core.selected_fuel)
 		data["selected"] = connected_core.selected_fuel.id
 	else
-		data["selected"] = ""
+		data["selected"] = null
+
+	// Product gases (moderator output) for selected reaction
+	var/list/product_names = list()
+	if(connected_core.selected_fuel)
+		for(var/gas_id in connected_core.selected_fuel.secondary_products)
+			product_names += GLOB.gas_data.names[gas_id]
+	data["product_gases"] = product_names.len ? product_names.Join(", ") : "None"
 
 	//Internal Fusion gases - BlueMoon: get_gases(), get_moles(gas_id)
 	var/list/fusion_gasdata = list()
