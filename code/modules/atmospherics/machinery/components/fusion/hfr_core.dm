@@ -28,7 +28,7 @@
 	var/datum/gas_mixture/internal_fusion
 	var/datum/gas_mixture/moderator_internal
 	var/list/moderator_scrubbing = list(GAS_HELIUM)
-	var/moderator_filtering_rate = 100
+	var/moderator_filtering_rate = 20
 	var/datum/hfr_fuel/selected_fuel
 
 	var/energy = 0
@@ -85,6 +85,8 @@
 	var/final_countdown = FALSE
 
 	var/warning_damage_flags = NONE
+	/// Last world.time when overmole (5000+) integrity damage was applied
+	var/last_overmole_damage = 0
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/Initialize(mapload)
 	. = ..()

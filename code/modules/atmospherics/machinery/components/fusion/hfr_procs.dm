@@ -348,7 +348,6 @@
 	var/devastating_explosion = 0
 	var/em_pulse = selected_fuel.meltdown_flags & HYPERTORUS_FLAG_EMP
 	var/rad_pulse = selected_fuel.meltdown_flags & HYPERTORUS_FLAG_RADIATION_PULSE
-	var/emp_light_size = 0
 	var/emp_heavy_size = 0
 	var/rad_pulse_size = 0
 	var/gas_spread = 0
@@ -368,7 +367,6 @@
 		devastating_explosion = power_level
 	if(selected_fuel.meltdown_flags & HYPERTORUS_FLAG_MINIMUM_SPREAD)
 		if(em_pulse)
-			emp_light_size = power_level * 3
 			emp_heavy_size = power_level * 1
 		if(rad_pulse)
 			rad_pulse_size = 2 * power_level + 8
@@ -376,7 +374,6 @@
 		gas_spread = power_level * 2
 	if(selected_fuel.meltdown_flags & HYPERTORUS_FLAG_MEDIUM_SPREAD)
 		if(em_pulse)
-			emp_light_size = power_level * 5
 			emp_heavy_size = power_level * 3
 		if(rad_pulse)
 			rad_pulse_size = power_level + 24
@@ -384,7 +381,6 @@
 		gas_spread = power_level * 4
 	if(selected_fuel.meltdown_flags & HYPERTORUS_FLAG_BIG_SPREAD)
 		if(em_pulse)
-			emp_light_size = power_level * 7
 			emp_heavy_size = power_level * 5
 		if(rad_pulse)
 			rad_pulse_size = power_level + 34
@@ -392,7 +388,6 @@
 		gas_spread = power_level * 6
 	if(selected_fuel.meltdown_flags & HYPERTORUS_FLAG_MASSIVE_SPREAD)
 		if(em_pulse)
-			emp_light_size = power_level * 9
 			emp_heavy_size = power_level * 7
 		if(rad_pulse)
 			rad_pulse_size = power_level + 44

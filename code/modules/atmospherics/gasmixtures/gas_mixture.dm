@@ -194,6 +194,7 @@ we use a hook instead
 		return null
 	var/datum/gas_mixture/removed = new type(return_volume())
 	removed.set_moles(gas_id, amount)
+	removed.set_temperature(return_temperature())
 	adjust_moles(gas_id, -amount)
 	return removed
 

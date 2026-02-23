@@ -39,10 +39,10 @@
 		magnetic_constrictor = 100
 		heating_conductor = 500
 		current_damper = 0
-		fuel_injection_rate = 20
-		moderator_injection_rate = 50
+		fuel_injection_rate = 200
+		moderator_injection_rate = 500
 		waste_remove = FALSE
-		iron_content += 0.02 * power_level * seconds_per_tick
+		iron_content += 0.10 * seconds_per_tick
 
 	update_temperature_status(seconds_per_tick)
 
@@ -268,7 +268,7 @@
 				internal_output.adjust_moles(GAS_FREON, scaled_production * 1.15)
 			if(moderator_list[GAS_HEALIUM] > 100)
 				if(critical_threshold_proximity > 400)
-					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100 * seconds_per_tick ), 0)
+					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100) * 0.0011 * melting_point * seconds_per_tick, 0)
 					moderator_internal.adjust_moles(GAS_HEALIUM, -min(moderator_internal.get_moles(GAS_HEALIUM), scaled_production * 20))
 			if(moderator_internal.return_temperature() < 1e7 || (moderator_list[GAS_PLASMA] > 100 && moderator_list[GAS_BZ] > 50))
 				internal_output.adjust_moles(GAS_ANTINOBLIUM, dirty_production_rate * 0.9 / 0.065 * seconds_per_tick)
@@ -287,16 +287,15 @@
 				internal_output.adjust_moles(GAS_ANTINOBLIUM, clamp(dirty_production_rate / 0.045, 0, 10) * seconds_per_tick)
 			if(moderator_list[GAS_HEALIUM] > 100)
 				if(critical_threshold_proximity > 400)
-					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100 * seconds_per_tick ), 0)
+					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100) * 0.0011 * melting_point * seconds_per_tick, 0)
 					moderator_internal.adjust_moles(GAS_HEALIUM, -min(moderator_internal.get_moles(GAS_HEALIUM), scaled_production * 20))
 			internal_fusion.adjust_moles(GAS_ANTINOBLIUM, dirty_production_rate * 0.01 / 0.095 * seconds_per_tick)
 
-	var/temperature_modifier = selected_fuel.temperature_change_multiplier
-	if(internal_fusion.return_temperature() <= FUSION_MAXIMUM_TEMPERATURE * temperature_modifier)
+	if(internal_fusion.return_temperature() <= FUSION_MAXIMUM_TEMPERATURE)
 		internal_fusion.set_temperature(clamp(
 			internal_fusion.return_temperature() + heat_output * seconds_per_tick,
 			TCMB,
-			FUSION_MAXIMUM_TEMPERATURE * temperature_modifier,
+			FUSION_MAXIMUM_TEMPERATURE,
 		))
 	else
 		internal_fusion.set_temperature(internal_fusion.return_temperature() - heat_limiter_modifier * 0.01 * seconds_per_tick)
@@ -349,8 +348,8 @@
 		var/cold_coolant_heal_restore = log(10, max(coolant_temperature, 1) * HYPERTORUS_COLD_COOLANT_SCALE) - (HYPERTORUS_COLD_COOLANT_MAX_RESTORE * 2)
 		critical_threshold_proximity = max(critical_threshold_proximity + min(cold_coolant_heal_restore * seconds_per_tick, 0), 0)
 
-	critical_threshold_proximity += max(iron_content - HYPERTORUS_MAX_SAFE_IRON, 0) * seconds_per_tick
-	if(iron_content - HYPERTORUS_MAX_SAFE_IRON > 0)
+	critical_threshold_proximity += max(round(iron_content) - 1, 0) * seconds_per_tick
+	if(round(iron_content) > 1)
 		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_DAMAGE
 
 	critical_threshold_proximity = min(critical_threshold_proximity_archived + (seconds_per_tick * DAMAGE_CAP_MULTIPLIER * melting_point), critical_threshold_proximity)
@@ -360,12 +359,17 @@
 		critical_threshold_proximity = max(critical_threshold_proximity + min(hypercritical_damage_taken, HYPERTORUS_HYPERCRITICAL_MAX_DAMAGE), 0) * seconds_per_tick
 		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_FUEL_MIX_MOLE
 
+	// Over 5000 moles in fusion mix: lose 1% integrity every 5 seconds
+	if(internal_fusion.total_moles() > 5000 && (world.time - last_overmole_damage) >= 50)
+		critical_threshold_proximity = min(critical_threshold_proximity + melting_point * 0.01, melting_point)
+		last_overmole_damage = world.time
+
 	if(power_level > 4 && prob(IRON_CHANCE_PER_FUSION_LEVEL * power_level))
 		iron_content += IRON_ACCUMULATED_PER_SECOND * seconds_per_tick
 		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_INCREASE
 	if(iron_content > 0 && power_level <= 4 && prob(25 / (power_level + 1)))
 		iron_content = max(iron_content - 0.01 * seconds_per_tick, 0)
-	iron_content = clamp(iron_content, 0, 1)
+	iron_content = clamp(iron_content, 0, 5)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_nuclear_particles(moderator_list)
 	if(power_level < 4)
@@ -408,18 +412,24 @@
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/remove_waste(seconds_per_tick)
 	if(!waste_remove)
 		return
+	// Forcibly disabled at fusion power level 6
+	if(power_level >= 6)
+		return
 	var/filtering_amount = moderator_scrubbing.len
 	for(var/gas_id in moderator_internal.get_gases() & moderator_scrubbing)
 		var/datum/gas_mixture/removed = moderator_internal.remove_specific(gas_id, (moderator_filtering_rate / filtering_amount) * seconds_per_tick)
 		if(removed)
 			linked_output.airs[1].merge(removed)
 
-	if (selected_fuel)
-		for(var/gas_id in selected_fuel.primary_products)
-			if(internal_fusion.get_moles(gas_id) > 0)
-				var/datum/gas_mixture/removed = internal_fusion.remove_specific(gas_id, internal_fusion.get_moles(gas_id) * (1 - (1 - 0.25) ** seconds_per_tick))
-				if(removed)
-					linked_output.airs[1].merge(removed)
+	// 50% of Fusion Mix Helium per second, 5% of Fusion Mix Anti-Noblium per second
+	if(internal_fusion.get_moles(GAS_HELIUM) > 0)
+		var/datum/gas_mixture/removed = internal_fusion.remove_specific(GAS_HELIUM, internal_fusion.get_moles(GAS_HELIUM) * (1 - (1 - 0.5) ** seconds_per_tick))
+		if(removed)
+			linked_output.airs[1].merge(removed)
+	if(internal_fusion.get_moles(GAS_ANTINOBLIUM) > 0)
+		var/datum/gas_mixture/removed = internal_fusion.remove_specific(GAS_ANTINOBLIUM, internal_fusion.get_moles(GAS_ANTINOBLIUM) * (1 - (1 - 0.05) ** seconds_per_tick))
+		if(removed)
+			linked_output.airs[1].merge(removed)
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_internal_cooling(seconds_per_tick)
 	if(moderator_internal.total_moles() > 0 && internal_fusion.total_moles() > 0)

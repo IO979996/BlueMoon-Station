@@ -24,8 +24,8 @@
 #endif
 ///Conduction of heat inside the fusion reactor
 #define METALLIC_VOID_CONDUCTIVITY 0.38
-///Conduction of heat near the external cooling loop
-#define HIGH_EFFICIENCY_CONDUCTIVITY 0.975
+///Conduction of heat near the external cooling loop (output gases at 95% of moderator temp)
+#define HIGH_EFFICIENCY_CONDUCTIVITY 0.95
 ///Sets the minimum amount of power the machine uses
 #define MIN_POWER_USAGE (50 KILO WATTS)
 ///Sets the multiplier for the damage
@@ -57,7 +57,7 @@
 // Damage source: Too much mass in the fusion mix at high fusion levels
 //
 
-#define HYPERTORUS_OVERFULL_MIN_POWER_LEVEL 6
+#define HYPERTORUS_OVERFULL_MIN_POWER_LEVEL 5
 #define HYPERTORUS_OVERFULL_MAX_SAFE_COLD_FUSION_MOLES 2700
 #define HYPERTORUS_OVERFULL_MAX_SAFE_HOT_FUSION_MOLES 1800
 #define HYPERTORUS_OVERFULL_MOLAR_SLOPE (1/200)
@@ -68,8 +68,8 @@
 // Heal source: Small enough mass in the fusion mix
 //
 
-#define HYPERTORUS_SUBCRITICAL_MOLES 1200
-#define HYPERTORUS_SUBCRITICAL_SCALE 400
+#define HYPERTORUS_SUBCRITICAL_MOLES 800
+#define HYPERTORUS_SUBCRITICAL_SCALE 150
 
 //
 // Heal source: Cold enough coolant
