@@ -19,16 +19,18 @@
 	desc = "A crystal made from Healium gas, cold to the touch."
 	icon_state = "healium_crystal"
 	var/fix_range = 7
+	/// Healium moles released per turf (scaled by distance)
+	var/healium_per_turf = 50
 
 /obj/item/grenade/gas_crystal/healium_crystal/prime(mob/living/lanced_by)
 	..()
 	playsound(src, 'sound/effects/spray2.ogg', 100, TRUE)
 	for(var/turf/open/T in range(fix_range, src))
-		var/datum/gas_mixture/new_air = new
-		new_air.set_moles(GAS_O2, MOLES_O2STANDARD)
-		new_air.set_moles(GAS_N2, MOLES_N2STANDARD)
-		new_air.set_temperature(T20C)
-		T.air.merge(new_air)
+		var/dist = max(get_dist(T, src), 1)
+		T.air.adjust_moles(GAS_HEALIUM, healium_per_turf / dist)
+		T.air.adjust_moles(GAS_O2, MOLES_O2STANDARD * 0.5 / dist)
+		T.air.adjust_moles(GAS_N2, MOLES_N2STANDARD * 0.5 / dist)
+		T.air.set_temperature(T20C)
 	qdel(src)
 
 /obj/item/grenade/gas_crystal/proto_nitrate_crystal
@@ -38,12 +40,15 @@
 	var/refill_range = 5
 	var/n2_gas_amount = 80
 	var/o2_gas_amount = 30
+	/// Proto nitrate moles released per turf (scaled by distance)
+	var/proto_nitrate_amount = 40
 
 /obj/item/grenade/gas_crystal/proto_nitrate_crystal/prime(mob/living/lanced_by)
 	..()
 	playsound(src, 'sound/effects/spray2.ogg', 100, TRUE)
 	for(var/turf/open/T in view(refill_range, src))
 		var/dist = max(get_dist(T, src), 1)
+		T.air.adjust_moles(GAS_PROTO_NITRATE, proto_nitrate_amount / dist)
 		T.air.adjust_moles(GAS_N2, n2_gas_amount / dist)
 		T.air.adjust_moles(GAS_O2, o2_gas_amount / dist)
 	qdel(src)
@@ -52,13 +57,13 @@
 	name = "N2O crystal"
 	desc = "A crystal made from N2O gas."
 	icon_state = "n2o_crystal"
-	var/fill_range = 1
-	var/n2o_gas_amount = 10
+	var/fill_range = 3
+	var/n2o_gas_amount = 50
 
 /obj/item/grenade/gas_crystal/nitrous_oxide_crystal/prime(mob/living/lanced_by)
 	..()
 	playsound(src, 'sound/effects/spray2.ogg', 100, TRUE)
-	for(var/turf/open/T in view(fill_range, src))
+	for(var/turf/open/T in range(fill_range, src))
 		var/dist = max(get_dist(T, src), 1)
 		T.air.adjust_moles(GAS_NITROUS, n2o_gas_amount / dist)
 	qdel(src)
@@ -114,14 +119,14 @@
 	name = "metallic hydrogen"
 	singular_name = "metallic hydrogen sheet"
 	icon = 'icons/obj/stack_objects.dmi'
-	icon_state = "sheet-metal_hydrogen"
+	icon_state = "sheet-metalhydrogen"
 	merge_type = /obj/item/stack/sheet/mineral/metal_hydrogen
 
 /obj/item/stack/sheet/mineral/zaukerite
 	name = "zaukerite"
 	singular_name = "zaukerite crystal"
 	icon = 'icons/obj/stack_objects.dmi'
-	icon_state = "sheet-zaukerite"
+	icon_state = "zaukerite"
 	merge_type = /obj/item/stack/sheet/mineral/zaukerite
 
 /obj/item/stack/sheet/hot_ice
