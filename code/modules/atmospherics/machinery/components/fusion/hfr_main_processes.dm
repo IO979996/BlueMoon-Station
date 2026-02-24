@@ -336,11 +336,15 @@
 	warning_damage_flags &= HYPERTORUS_FLAG_EMPED
 
 	if(power_level >= HYPERTORUS_OVERFULL_MIN_POWER_LEVEL)
-		var/overfull_damage_taken = HYPERTORUS_OVERFULL_MOLAR_SLOPE * internal_fusion.total_moles() + HYPERTORUS_OVERFULL_TEMPERATURE_SLOPE * coolant_temperature + HYPERTORUS_OVERFULL_CONSTANT
+		var/fusion_temp = internal_fusion.return_temperature()
+		var/overfull_damage_taken = HYPERTORUS_OVERFULL_MOLAR_SLOPE * internal_fusion.total_moles() + HYPERTORUS_OVERFULL_TEMPERATURE_SLOPE * fusion_temp + HYPERTORUS_OVERFULL_CONSTANT
 		critical_threshold_proximity = max(critical_threshold_proximity + max(overfull_damage_taken * seconds_per_tick, 0), 0)
 		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_POWER_DAMAGE
+		// High fusion temperature damage: log10(fusion_temp) - 5 per tick (doc: 2 at 5e7K, 1 at 1e6K)
+		var/high_temp_damage = log(10, max(fusion_temp, 1)) - 5
+		critical_threshold_proximity = max(critical_threshold_proximity + max(high_temp_damage * seconds_per_tick, 0), 0)
 
-	if(internal_fusion.total_moles() < HYPERTORUS_SUBCRITICAL_MOLES && power_level <= 5)
+	if(internal_fusion.total_moles() < HYPERTORUS_SUBCRITICAL_MOLES && power_level <= 4)
 		var/subcritical_heal_restore = (internal_fusion.total_moles() - HYPERTORUS_SUBCRITICAL_MOLES) / HYPERTORUS_SUBCRITICAL_SCALE
 		critical_threshold_proximity = max(critical_threshold_proximity + min(subcritical_heal_restore * seconds_per_tick, 0), 0)
 
