@@ -39,6 +39,14 @@
 			to_chat(user, "<span class='notice'>You start adding [material] to [src]...</span>")
 			if(do_after(user, 20, target = src) && material.use(1))
 				make_new_table(material.tableVariant)
+		else if(istype(material, /obj/item/stack/sheet/mineral/abductor))
+			// Alien alloy on any frame → alien table (correct desc and sprite). Deconstruct returns this frame + sheet.
+			if(material.get_amount() < 1)
+				to_chat(user, "<span class='warning'>You need one alien alloy sheet to do this!</span>")
+				return
+			to_chat(user, "<span class='notice'>You start adding [material] to [src]...</span>")
+			if(do_after(user, 20, target = src) && material.use(1))
+				make_new_table(/obj/structure/table/abductor)
 		else
 			if(material.get_amount() < 1)
 				to_chat(user, "<span class='warning'>You need one sheet to do this!</span>")
