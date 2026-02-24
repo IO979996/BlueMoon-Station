@@ -280,7 +280,7 @@
 		else
 			radio.talk_into(src, "[safe_alert] Integrity: [get_integrity_percent()]%", engineering_channel)
 			lastwarning = REALTIMEOFDAY
-	if(critical_threshold_proximity > melting_point)
+	if(critical_threshold_proximity >= melting_point)
 		countdown()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/emp_act(severity)

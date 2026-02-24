@@ -363,9 +363,9 @@
 		critical_threshold_proximity = max(critical_threshold_proximity + min(hypercritical_damage_taken, HYPERTORUS_HYPERCRITICAL_MAX_DAMAGE), 0) * seconds_per_tick
 		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_FUEL_MIX_MOLE
 
-	// Over 5000 moles in fusion mix: lose 2% integrity every 5 seconds
+	// Over 5000 moles in fusion mix: lose 2% integrity every 5 seconds (no cap so countdown can trigger)
 	if(internal_fusion.total_moles() > 5000 && (world.time - last_overmole_damage) >= 50)
-		critical_threshold_proximity = min(critical_threshold_proximity + melting_point * 0.02, melting_point)
+		critical_threshold_proximity += melting_point * 0.02
 		last_overmole_damage = world.time
 
 	if(power_level > 4 && prob(IRON_CHANCE_PER_FUSION_LEVEL * power_level))
