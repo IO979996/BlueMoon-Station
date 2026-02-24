@@ -352,7 +352,7 @@
 		var/cold_coolant_heal_restore = log(10, max(coolant_temperature, 1) * HYPERTORUS_COLD_COOLANT_SCALE) - (HYPERTORUS_COLD_COOLANT_MAX_RESTORE * 2)
 		critical_threshold_proximity = max(critical_threshold_proximity + min(cold_coolant_heal_restore * seconds_per_tick, 0), 0)
 
-	critical_threshold_proximity += max(round(iron_content) - 1, 0) * seconds_per_tick
+	critical_threshold_proximity += max(round(iron_content) - 1, 0) * 2.5 * seconds_per_tick
 	if(round(iron_content) > 1)
 		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_DAMAGE
 
@@ -363,9 +363,9 @@
 		critical_threshold_proximity = max(critical_threshold_proximity + min(hypercritical_damage_taken, HYPERTORUS_HYPERCRITICAL_MAX_DAMAGE), 0) * seconds_per_tick
 		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_FUEL_MIX_MOLE
 
-	// Over 5000 moles in fusion mix: lose 1% integrity every 5 seconds
+	// Over 5000 moles in fusion mix: lose 2% integrity every 5 seconds
 	if(internal_fusion.total_moles() > 5000 && (world.time - last_overmole_damage) >= 50)
-		critical_threshold_proximity = min(critical_threshold_proximity + melting_point * 0.01, melting_point)
+		critical_threshold_proximity = min(critical_threshold_proximity + melting_point * 0.02, melting_point)
 		last_overmole_damage = world.time
 
 	if(power_level > 4 && prob(IRON_CHANCE_PER_FUSION_LEVEL * power_level))
