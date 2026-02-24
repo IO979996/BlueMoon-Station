@@ -2192,6 +2192,8 @@
 #include "code\modules\atmospherics\machinery\components\gas_recipe_machines\crystallizer.dm"
 #include "code\modules\atmospherics\machinery\components\gas_recipe_machines\crystallizer_items.dm"
 #include "code\modules\atmospherics\machinery\components\gas_recipe_machines\crystallizer_extra_items.dm"
+#include "code\modules\atmospherics\machinery\components\electrolyzer\electrolyzer_reactions.dm"
+#include "code\modules\atmospherics\machinery\components\electrolyzer\electrolyzer.dm"
 #include "code\modules\atmospherics\machinery\components\trinary_devices\filter.dm"
 #include "code\modules\atmospherics\machinery\components\trinary_devices\mixer.dm"
 #include "code\modules\atmospherics\machinery\components\trinary_devices\trinary_devices.dm"

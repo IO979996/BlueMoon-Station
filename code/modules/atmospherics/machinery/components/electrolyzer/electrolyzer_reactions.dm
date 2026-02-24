@@ -1,0 +1,82 @@
+// Electrolyzer reactions (from WhiteMoon). Uses string gas IDs (GAS_*).
+#define HALON_FORMATION_ENERGY 91232.1
+
+GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
+
+/proc/electrolyzer_reactions_list()
+	var/list/built = list()
+	for(var/reaction_path in subtypesof(/datum/electrolyzer_reaction))
+		var/datum/electrolyzer_reaction/R = new reaction_path()
+		built[R.id] = R
+	return built
+
+/datum/electrolyzer_reaction
+	var/list/requirements
+	var/name = "reaction"
+	var/id = "r"
+	var/desc = ""
+	var/list/factor
+
+/datum/electrolyzer_reaction/proc/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	return
+
+/datum/electrolyzer_reaction/proc/reaction_check(datum/gas_mixture/air_mixture, list/electrolyzer_args = list())
+	var/temp = air_mixture.return_temperature()
+	if(requirements["MIN_TEMP"] && temp < requirements["MIN_TEMP"])
+		return FALSE
+	if(requirements["MAX_TEMP"] && temp > requirements["MAX_TEMP"])
+		return FALSE
+	for(var/gas_id in requirements)
+		if(gas_id == "MIN_TEMP" || gas_id == "MAX_TEMP")
+			continue
+		if(air_mixture.get_moles(gas_id) < requirements[gas_id])
+			return FALSE
+	return TRUE
+
+// H2O -> O2 + 2 H2
+/datum/electrolyzer_reaction/h2o_conversion
+	name = "H2O Conversion"
+	id = "h2o_conversion"
+	desc = "Conversion of H2O into O2 and H2"
+	requirements = list(GAS_H2O = MINIMUM_MOLE_COUNT)
+	factor = list()
+
+/datum/electrolyzer_reaction/h2o_conversion/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	var/old_heat = air_mixture.heat_capacity()
+	var/h2o_moles = air_mixture.get_moles(GAS_H2O)
+	var/proportion = min(h2o_moles * INVERSE(2), (2.5 * (working_power ** 2)))
+	air_mixture.adjust_moles(GAS_H2O, -proportion * 2)
+	air_mixture.adjust_moles(GAS_O2, proportion)
+	air_mixture.adjust_moles(GAS_HYDROGEN, proportion * 2)
+	var/new_heat = air_mixture.heat_capacity()
+	if(new_heat > MINIMUM_HEAT_CAPACITY)
+		air_mixture.set_temperature(max(air_mixture.return_temperature() * old_heat / new_heat, TCMB))
+
+// BZ -> O2 + Halon (temperature‑dependent efficiency)
+/datum/electrolyzer_reaction/halon_generation
+	name = "Halon generation"
+	id = "halon_generation"
+	desc = "Production of halon from the electrolysis of BZ."
+	requirements = list(GAS_BZ = MINIMUM_MOLE_COUNT)
+	factor = list()
+
+/datum/electrolyzer_reaction/halon_generation/react(datum/gas_mixture/air_mixture, working_power, list/electrolyzer_args = list())
+	var/old_heat = air_mixture.heat_capacity()
+	var/bz_moles = air_mixture.get_moles(GAS_BZ)
+	var/reaction_efficency = min(bz_moles * (1 - NUM_E ** (-0.5 * air_mixture.return_temperature() * working_power / FIRE_MINIMUM_TEMPERATURE_TO_EXIST)), bz_moles)
+	air_mixture.adjust_moles(GAS_BZ, -reaction_efficency)
+	air_mixture.adjust_moles(GAS_O2, reaction_efficency * 0.2)
+	air_mixture.adjust_moles(GAS_HALON, reaction_efficency * 2)
+	var/energy_used = reaction_efficency * HALON_FORMATION_ENERGY
+	var/new_heat = air_mixture.heat_capacity()
+	if(new_heat > MINIMUM_HEAT_CAPACITY)
+		air_mixture.set_temperature(max(((air_mixture.return_temperature() * old_heat + energy_used) / new_heat), TCMB))
+
+/datum/gas_mixture/proc/electrolyze(working_power = 0, list/electrolyzer_args = list())
+	for(var/reaction_id in GLOB.electrolyzer_reactions)
+		var/datum/electrolyzer_reaction/R = GLOB.electrolyzer_reactions[reaction_id]
+		if(!R.reaction_check(src, electrolyzer_args))
+			continue
+		R.react(src, working_power, electrolyzer_args)
+
+#undef HALON_FORMATION_ENERGY
