@@ -19,7 +19,6 @@ export const Hypertorus = (props, context) => {
     power_output,
     heat_limiter_modifier,
     heat_output,
-    heat_output_bool,
     heating_conductor,
     magnetic_constrictor,
     fuel_injection_rate,
@@ -200,7 +199,7 @@ export const Hypertorus = (props, context) => {
                 value={heat_output}
                 minValue={-1e40}
                 maxValue={1e30}>
-                {heat_output_bool + formatSiBaseTenUnit(heat_output * 1000, 1, 'K')}
+                {(heat_output >= 0 ? '+' : '') + formatSiBaseTenUnit(heat_output * 1000, 1, 'K')}
               </ProgressBar>
             </LabeledList.Item>
           </LabeledList>
