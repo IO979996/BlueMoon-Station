@@ -14,7 +14,7 @@
 	sharpness = SHARP_NONE
 	wound_bonus = 80
 
-#define BEANBAG_HEAD_BRAIN_DAMAGE 25
+#define BEANBAG_HEAD_BRAIN_DAMAGE 50
 #define BEANBAG_HEAD_EFFECT_CHANCE 25
 
 /obj/item/projectile/bullet/shotgun_beanbag
