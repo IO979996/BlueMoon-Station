@@ -21,11 +21,15 @@ if (Test-Path $src) {
     Write-Warning "Missing in WhiteMoon: $hfrIcon (HFR will have no sprites)."
 }
 
-# Crystallizer: machine icon, crystal items, pipe underlays for overlay
+# Crystallizer: machine icon, crystal items, pipe underlays for overlay; gas crystal grenades; fuel pellets; stacks; crystal cell
 $crystallizerFiles = @(
     "icons\obj\machines\atmospherics\machines.dmi",
     "icons\obj\pipes_n_cables\atmos.dmi",
-    "icons\obj\pipes_n_cables\pipe_underlays.dmi"
+    "icons\obj\pipes_n_cables\pipe_underlays.dmi",
+    "icons\obj\weapons\grenade.dmi",
+    "icons\obj\exploration.dmi",
+    "icons\obj\stack_objects.dmi",
+    "icons\obj\power.dmi"
 )
 foreach ($rel in $crystallizerFiles) {
     $src = Join-Path $WhiteMoonRoot $rel
