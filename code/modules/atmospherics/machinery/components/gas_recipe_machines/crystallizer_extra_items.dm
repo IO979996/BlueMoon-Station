@@ -132,8 +132,8 @@
 /obj/item/stack/sheet/hot_ice
 	name = "hot ice"
 	singular_name = "hot ice sheet"
-	icon = 'icons/obj/stack_objects.dmi'
-	icon_state = "sheet-hot_ice"
+	icon = 'icons/obj/hot_ice.dmi' // sprite from Whitemoon-station
+	icon_state = "hot-ice"
 	merge_type = /obj/item/stack/sheet/hot_ice
 	grind_results = list(/datum/reagent/hot_ice_slush = 25)
 
