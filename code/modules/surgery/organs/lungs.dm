@@ -316,9 +316,9 @@
 			H.reagents.add_reagent(/datum/reagent/stimulum, max(0, 5 - existing))
 		breath.adjust_moles(GAS_STIMULUM, -gas_breathed)
 
-	// Healium — лечит брутал и берн при дыхании
+	// Healium — лечит брутал и берн при дыхании (порог по молям мал: объём вдоха ~0.02 mol, не 0.1)
 		gas_breathed = breath.get_moles(GAS_HEALIUM)
-		if (gas_breathed > MINIMUM_MOLES_DELTA_TO_MOVE)
+		if (gas_breathed > 0.0001)
 			var/healium_pp = PP(breath, GAS_HEALIUM)
 			var/heal_amount = clamp(round(healium_pp * 3), 1, 10)
 			H.adjustBruteLoss(-heal_amount)

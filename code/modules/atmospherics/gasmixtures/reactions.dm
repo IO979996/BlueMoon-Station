@@ -195,7 +195,7 @@
 
 //plasma combustion: combustion of oxygen and plasma (treated as hydrocarbons). creates hotspots. exothermic
 /datum/gas_reaction/plasmafire
-	priority = -2 //fire should ALWAYS be last, but plasma fires happen after tritium fires
+	priority = -2
 	name = "Plasma Combustion"
 	exclude = TRUE // generic fire now takes care of this
 	id = "plasmafire"
@@ -808,7 +808,7 @@
 // === Fusion/exotic gas reactions — синтез вручную, полная картина атмоса ===
 
 /datum/gas_reaction/freonfire
-	priority = -2
+	priority = -12
 	name = "Freon Combustion"
 	id = "freonfire"
 
@@ -854,7 +854,7 @@
 	return REACTING
 
 /datum/gas_reaction/freonformation
-	priority = 3
+	priority = 33
 	name = "Freon Formation"
 	id = "freonformation"
 
@@ -883,7 +883,7 @@
 	return REACTING
 
 /datum/gas_reaction/halon_o2removal
-	priority = 2
+	priority = 22
 	name = "Halon Oxygen Absorption"
 	id = "halon_o2removal"
 
@@ -912,7 +912,7 @@
 	return REACTING
 
 /datum/gas_reaction/healium_formation
-	priority = 3
+	priority = 34
 	name = "Healium Formation"
 	id = "healium_formation"
 
@@ -943,7 +943,7 @@
 	return REACTING
 
 /datum/gas_reaction/zauker_formation
-	priority = 3
+	priority = 35
 	name = "Zauker Formation"
 	id = "zauker_formation"
 
@@ -974,7 +974,7 @@
 	return REACTING
 
 /datum/gas_reaction/zauker_decomp
-	priority = 2
+	priority = 23
 	name = "Zauker Decomposition"
 	id = "zauker_decomp"
 
@@ -1002,7 +1002,7 @@
 	return REACTING
 
 /datum/gas_reaction/nitrium_formation
-	priority = 3
+	priority = 36
 	name = "Nitrium Formation"
 	id = "nitrium_formation"
 
@@ -1034,7 +1034,7 @@
 	return REACTING
 
 /datum/gas_reaction/nitrium_decomposition
-	priority = 2
+	priority = 24
 	name = "Nitrium Decomposition"
 	id = "nitrium_decomp"
 
@@ -1063,7 +1063,7 @@
 	return REACTING
 
 /datum/gas_reaction/pluox_formation
-	priority = 3
+	priority = 37
 	name = "Pluoxium Formation"
 	id = "pluox_formation"
 
@@ -1097,7 +1097,7 @@
 	return REACTING
 
 /datum/gas_reaction/proto_nitrate_formation
-	priority = 3
+	priority = 38
 	name = "Proto Nitrate Formation"
 	id = "proto_nitrate_formation"
 
@@ -1128,7 +1128,7 @@
 	return REACTING
 
 /datum/gas_reaction/proto_nitrate_hydrogen_response
-	priority = 2
+	priority = 25
 	name = "Proto Nitrate Hydrogen Response"
 	id = "proto_nitrate_hydrogen_response"
 
@@ -1155,7 +1155,7 @@
 	return REACTING
 
 /datum/gas_reaction/proto_nitrate_tritium_response
-	priority = 2
+	priority = 26
 	name = "Proto Nitrate Tritium Response"
 	id = "proto_nitrate_tritium_response"
 
@@ -1186,7 +1186,7 @@
 	return REACTING
 
 /datum/gas_reaction/proto_nitrate_bz_response
-	priority = 2
+	priority = 27
 	name = "Proto Nitrate BZ Response"
 	id = "proto_nitrate_bz_response"
 
@@ -1219,7 +1219,7 @@
 	return REACTING
 
 /datum/gas_reaction/antinoblium_replication
-	priority = 4
+	priority = 40
 	name = "Antinoblium Replication"
 	id = "antinoblium_replication"
 
