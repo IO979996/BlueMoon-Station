@@ -101,6 +101,8 @@
 	id = GAS_PLUOXIUM
 	specific_heat = 80
 	name = "Pluoxium"
+	gas_overlay = "pluoxium"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	fusion_power = 10
 	oxidation_temperature = FIRE_MINIMUM_TEMPERATURE_TO_EXIST * 25 // it is VERY stable
 	oxidation_rate = 8 // when it can oxidize, it can oxidize a LOT
@@ -109,7 +111,7 @@
 	heat_penalty = -1
 	transmit_modifier = -5
 	heat_resistance = 3
-	price = 4
+	price = 2.5
 
 /datum/gas/pluoxium/generate_TLV()
 	return new/datum/tlv(-1, -1, 5, 6)
@@ -148,8 +150,9 @@
 	id = GAS_NITRYL
 	specific_heat = 20
 	name = "Nitrogen dioxide"
+	gas_overlay = "nitryl"
 	color = "#963"
-	moles_visible = MOLES_GAS_VISIBLE
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	flags = GAS_FLAG_DANGEROUS
 	fusion_power = 15
 	fire_products = list(GAS_N2 = 0.5)
@@ -162,9 +165,10 @@
 	specific_heat = 2000
 	name = "Hyper-noblium"
 	gas_overlay = "freon"
-	moles_visible = MOLES_GAS_VISIBLE
+	color = "#4488ff"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	fusion_power = 10
-	price = 17
+	price = 2.5
 
 /datum/gas/hydrogen
 	id = GAS_HYDROGEN
@@ -180,6 +184,7 @@
 	fire_products = list(GAS_H2O = 1)
 	fire_burn_rate = 2
 	fire_temperature = FIRE_MINIMUM_TEMPERATURE_TO_EXIST - 50
+	price = 1
 
 /datum/gas/bz
 	id = GAS_BZ
@@ -192,7 +197,7 @@
 	enthalpy = FIRE_CARBON_ENERGY_RELEASED // it is a mystery
 	transmit_modifier = -2
 	radioactivity_modifier = 5
-	price = 2
+	price = 1.5
 
 /datum/gas/stimulum
 	id = GAS_STIMULUM
@@ -213,7 +218,7 @@
 	gas_overlay = "miasma"
 	color = "#963"
 	moles_visible = MOLES_GAS_VISIBLE * 60
-//	price = 2 BLUEMOON DELETE кому впринципе нужны миазмы?
+	price = 1
 
 /datum/gas/methane
 	id = GAS_METHANE
@@ -306,16 +311,18 @@
 	specific_heat = 15
 	name = "Helium"
 	fusion_power = 7
-	price = 3
+	price = 3.5
 
 /datum/gas/freon
 	id = GAS_FREON
 	specific_heat = 600
 	name = "Freon"
 	gas_overlay = "freon"
-	moles_visible = MOLES_GAS_VISIBLE * 30
+	color = "#66ccff"
+	moles_visible = MOLES_GAS_VISIBLE * 15
 	fusion_power = -5
 	flags = GAS_FLAG_DANGEROUS
+	breath_reagent = /datum/reagent/freon
 	price = 5
 
 /datum/gas/halon
@@ -323,8 +330,10 @@
 	specific_heat = 175
 	name = "Halon"
 	gas_overlay = "halon"
-	moles_visible = MOLES_GAS_VISIBLE
+	color = "#44cc44"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	flags = GAS_FLAG_DANGEROUS
+	breath_reagent = /datum/reagent/halon
 	price = 4
 
 /datum/gas/antinoblium
@@ -332,7 +341,8 @@
 	specific_heat = 1
 	name = "Antinoblium"
 	gas_overlay = "antinoblium"
-	moles_visible = MOLES_GAS_VISIBLE
+	color = "#9966ff"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	fusion_power = 20
 	flags = GAS_FLAG_DANGEROUS
 	price = 10
@@ -342,16 +352,18 @@
 	specific_heat = 30
 	name = "Proto Nitrate"
 	gas_overlay = "proto_nitrate"
-	moles_visible = MOLES_GAS_VISIBLE
+	color = "#44dd66"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	flags = GAS_FLAG_DANGEROUS
-	price = 2
+	price = 2.5
 
 /datum/gas/zauker
 	id = GAS_ZAUKER
 	specific_heat = 350
 	name = "Zauker"
 	gas_overlay = "zauker"
-	moles_visible = MOLES_GAS_VISIBLE
+	color = "#6644aa"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	flags = GAS_FLAG_DANGEROUS
 	price = 7
 
@@ -359,17 +371,19 @@
 	id = GAS_HEALIUM
 	specific_heat = 10
 	name = "Healium"
-	gas_overlay = "healium"
-	moles_visible = MOLES_GAS_VISIBLE
+	gas_overlay = "generic"
+	color = "#ff4444"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	flags = GAS_FLAG_DANGEROUS
-	price = 5
+	price = 5.5
 
 /datum/gas/nitrium
 	id = GAS_NITRIUM
 	specific_heat = 10
 	name = "Nitrium"
 	gas_overlay = "nitrium"
-	moles_visible = MOLES_GAS_VISIBLE
+	color = "#8b7355"
+	moles_visible = MOLES_GAS_VISIBLE * 0.5
 	fusion_power = 7
 	flags = GAS_FLAG_DANGEROUS
 	price = 6

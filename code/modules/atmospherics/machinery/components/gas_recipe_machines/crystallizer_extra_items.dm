@@ -135,3 +135,22 @@
 	icon = 'icons/obj/stack_objects.dmi'
 	icon_state = "sheet-hot_ice"
 	merge_type = /obj/item/stack/sheet/hot_ice
+	grind_results = list(/datum/reagent/hot_ice_slush = 25)
+
+/obj/item/stack/sheet/hot_ice/proc/melt_release()
+	var/turf/open/T = get_turf(src)
+	if(!istype(T) || !T.air)
+		return
+	var/plasma_moles = amount * 150
+	var/release_temp = 20 * amount + 300
+	T.atmos_spawn_air("plasma=[plasma_moles];TEMP=[release_temp]")
+	qdel(src)
+
+/obj/item/stack/sheet/hot_ice/fire_act(exposed_temperature, exposed_volume)
+	melt_release()
+
+/obj/item/stack/sheet/hot_ice/welder_act(mob/living/user, obj/item/I)
+	if(I.use_tool(src, user, 0, volume = 50))
+		melt_release()
+		return TRUE
+	return FALSE

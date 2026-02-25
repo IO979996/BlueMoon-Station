@@ -57,7 +57,7 @@
 	var/SA_para_min = 1 //nitrous values
 	var/SA_sleep_min = 5
 	var/BZ_trip_balls_min = 0.1 //BZ gas
-	var/BZ_brain_damage_min = 1
+	var/BZ_brain_damage_min = 10 // partial pressure over 10: 33% per tick for 3 brain damage, max 150
 	var/gas_stimulation_min = 0.002 //Nitryl and Stimulum
 
 	var/cold_message = "your face freezing and an icicle forming"
@@ -308,6 +308,17 @@
 			H.reagents.add_reagent(/datum/reagent/nitryl,1)
 
 		breath.adjust_moles(GAS_NITRYL, -gas_breathed)
+
+	// Freon — burn damage + slowdown (reagent from breath_reagent)
+		gas_breathed = breath.get_moles(GAS_FREON)
+		if (gas_breathed > 0.0001)
+			var/freon_pp = PP(breath, GAS_FREON)
+			H.adjustFireLoss(clamp(round(freon_pp * 0.5), 0, 5))
+
+	// Nitrium — at high concentrations causes lung damage
+		var/nitrium_pp = PP(breath, GAS_NITRIUM)
+		if (nitrium_pp > 20)
+			applyOrganDamage(min(round((nitrium_pp - 20) * 0.5), 15))
 
 	// Stimulum
 		gas_breathed = PP(breath,GAS_STIMULUM)

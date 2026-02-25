@@ -63,7 +63,7 @@ GLOBAL_LIST_INIT(gas_recipe_meta, gas_recipes_list())
 /datum/gas_recipe/crystallizer/metallic_hydrogen
 	id = "metal_h"
 	name = "Metallic hydrogen"
-	min_temp = 50000
+	min_temp = 10000 // H2 + BZ catalyst at high heat and pressure (around or above 10,000 K)
 	max_temp = 150000
 	energy_release = -2500000
 	requirements = list(GAS_HYDROGEN = 300, GAS_BZ = 50)

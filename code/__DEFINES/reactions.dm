@@ -21,8 +21,9 @@
 #define STIMULUM_FIRST_DROP					0.065
 #define STIMULUM_SECOND_RISE				0.0009
 #define STIMULUM_ABSOLUTE_DROP				0.00000335
-#define REACTION_OPPRESSION_THRESHOLD		10
-#define NOBLIUM_FORMATION_ENERGY			2e9 	//1 Mole of Noblium takes the planck energy to condense.
+#define REACTION_OPPRESSION_THRESHOLD		5 // stops reactions when >5 mol and temp > 20 K
+#define NOBLIUM_FORMATION_ENERGY			2e9 	// energy released per mole (exothermic); BZ reduces amount
+#define NOBLIUM_FORMATION_MAX_TEMP			15		// below 15 K only
 //Research point amounts
 #define NOBLIUM_RESEARCH_AMOUNT				25
 #define BZ_RESEARCH_SCALE					4
@@ -47,14 +48,18 @@
 // Snowflake fire product types
 #define FIRE_PRODUCT_PLASMA 				0
 
-// Freon 
-#define FREON_MAXIMUM_BURN_TEMPERATURE		283
+// Freon — below 0°C (273.15 K) endothermic with O2, down to ~50 K; Proto-Nitrate catalyst up to 310 K; hot ice 120–160 K
+#define FREON_MAXIMUM_BURN_TEMPERATURE		T0C
+#define FREON_CATALYST_MAX_TEMPERATURE		310
 #define FREON_LOWER_TEMPERATURE				60
-#define FREON_TERMINAL_TEMPERATURE			20
+#define FREON_TERMINAL_TEMPERATURE			50
+#define FREON_HOT_ICE_MIN_TEMP				120
+#define FREON_HOT_ICE_MAX_TEMP				160
 #define FREON_OXYGEN_FULLBURN				10
 #define FREON_BURN_RATE_DELTA				4
 #define FIRE_FREON_ENERGY_CONSUMED			3e5
 #define FREON_FORMATION_MIN_TEMPERATURE		(FIRE_MINIMUM_TEMPERATURE_TO_EXIST + 100)
+#define FREON_FORMATION_ENERGY_CONSUMED		2e5
 #define OXYGEN_BURN_RATIO_BASE				2
 
 // Halon

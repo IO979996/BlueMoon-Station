@@ -1697,6 +1697,51 @@
 	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/nitryl)
 	..()
 
+/datum/reagent/freon
+	name = "Freon"
+	description = "A coolant gas. Breathing it causes burn damage and heavy slowdown."
+	reagent_state = GAS
+	gas = GAS_FREON
+	metabolization_rate = REAGENTS_METABOLISM
+	color = "#66ccff"
+	taste_description = "cold burn"
+	value = REAGENT_VALUE_UNCOMMON
+
+/datum/reagent/freon/on_mob_metabolize(mob/living/L)
+	..()
+	L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/freon)
+
+/datum/reagent/freon/on_mob_end_metabolize(mob/living/L)
+	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/freon)
+	..()
+
+/datum/reagent/halon
+	name = "Halon"
+	description = "A fire suppressant gas. Heavy slowdown when inhaled, but makes you heat proof."
+	reagent_state = GAS
+	gas = GAS_HALON
+	metabolization_rate = REAGENTS_METABOLISM
+	color = "#44cc44"
+	taste_description = "chemical stagnation"
+	value = REAGENT_VALUE_UNCOMMON
+
+/datum/reagent/halon/on_mob_metabolize(mob/living/L)
+	..()
+	L.add_movespeed_modifier(/datum/movespeed_modifier/reagent/halon)
+	ADD_TRAIT(L, TRAIT_RESISTHEAT, type)
+
+/datum/reagent/halon/on_mob_end_metabolize(mob/living/L)
+	L.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/halon)
+	REMOVE_TRAIT(L, TRAIT_RESISTHEAT, type)
+	..()
+
+/datum/reagent/hot_ice_slush
+	name = "Hot Ice Slush"
+	description = "A slush of hot ice. Holds a great amount of power inside."
+	color = "#66ccff"
+	taste_description = "cold burn"
+	value = REAGENT_VALUE_VERY_RARE
+
 /////////////////////////Coloured Crayon Powder////////////////////////////
 //For colouring in /proc/mix_color_from_reagents
 
