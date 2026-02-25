@@ -101,6 +101,7 @@
 	id = GAS_PLUOXIUM
 	specific_heat = 80
 	name = "Pluoxium"
+	desc = "A gas that could supply even more oxygen to the bloodstream when inhaled, without being an oxidizer."
 	fusion_power = 10
 	oxidation_temperature = FIRE_MINIMUM_TEMPERATURE_TO_EXIST * 25 // it is VERY stable
 	oxidation_rate = 8 // when it can oxidize, it can oxidize a LOT
@@ -301,11 +302,11 @@
 	heat_penalty = -10
 	price = 5 // IT'S NOT ACTUALLY THAT HARD TO GET INTO A CANISTER LOL
 
-// HFR / fusion gases (from WhiteMoon HFR port)
 /datum/gas/helium
 	id = GAS_HELIUM
 	specific_heat = 15
 	name = "Helium"
+	desc = "A very inert gas produced by the fusion of hydrogen and its derivatives."
 	fusion_power = 7
 	price = 3
 
@@ -313,6 +314,7 @@
 	id = GAS_FREON
 	specific_heat = 600
 	name = "Freon"
+	desc = "A coolant gas. Mainly used for its endothermic reaction with oxygen."
 	gas_overlay = "freon"
 	moles_visible = MOLES_GAS_VISIBLE * 30
 	fusion_power = -5
@@ -323,6 +325,7 @@
 	id = GAS_HALON
 	specific_heat = 175
 	name = "Halon"
+	desc = "A potent fire suppressant. Removes oxygen from high temperature fires and cools down the area."
 	gas_overlay = "halon"
 	moles_visible = MOLES_GAS_VISIBLE
 	flags = GAS_FLAG_DANGEROUS
@@ -332,6 +335,7 @@
 	id = GAS_ANTINOBLIUM
 	specific_heat = 1
 	name = "Antinoblium"
+	desc = "We still don't know what it does, but it sells for a lot."
 	gas_overlay = "antinoblium"
 	moles_visible = MOLES_GAS_VISIBLE
 	fusion_power = 20
@@ -342,6 +346,7 @@
 	id = GAS_PROTO_NITRATE
 	specific_heat = 30
 	name = "Proto Nitrate"
+	desc = "A very volatile gas that reacts differently with various gases."
 	gas_overlay = "proto_nitrate"
 	moles_visible = MOLES_GAS_VISIBLE
 	flags = GAS_FLAG_DANGEROUS
@@ -351,6 +356,7 @@
 	id = GAS_ZAUKER
 	specific_heat = 350
 	name = "Zauker"
+	desc = "A highly toxic gas, its production is highly regulated on top of being difficult. It also breaks down when in contact with nitrogen."
 	gas_overlay = "zauker"
 	moles_visible = MOLES_GAS_VISIBLE
 	flags = GAS_FLAG_DANGEROUS
@@ -360,6 +366,7 @@
 	id = GAS_HEALIUM
 	specific_heat = 10
 	name = "Healium"
+	desc = "Causes deep, regenerative sleep. Breathing it heals brute and burn damage."
 	gas_overlay = "healium"
 	moles_visible = MOLES_GAS_VISIBLE
 	flags = GAS_FLAG_DANGEROUS
@@ -369,6 +376,7 @@
 	id = GAS_NITRIUM
 	specific_heat = 10
 	name = "Nitrium"
+	desc = "An experimental performance enhancing gas. Nitrium can have amplified effects as more of it gets into your bloodstream."
 	gas_overlay = "nitrium"
 	moles_visible = MOLES_GAS_VISIBLE
 	fusion_power = 7

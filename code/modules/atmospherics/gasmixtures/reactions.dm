@@ -804,3 +804,448 @@
 		energy_remaining = initial_energy - air.thermal_energy()
 	air.set_temperature(initial_energy / air.heat_capacity())
 	return REACTING
+
+// === Fusion/exotic gas reactions — синтез вручную, полная картина атмоса ===
+
+/datum/gas_reaction/freonfire
+	priority = -2
+	name = "Freon Combustion"
+	id = "freonfire"
+
+/datum/gas_reaction/freonfire/init_reqs()
+	min_requirements = list(
+		GAS_O2 = MINIMUM_MOLE_COUNT,
+		GAS_FREON = MINIMUM_MOLE_COUNT,
+		"TEMP" = FREON_TERMINAL_TEMPERATURE
+	)
+
+/datum/gas_reaction/freonfire/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > FREON_MAXIMUM_BURN_TEMPERATURE)
+		return NO_REACTION
+	var/temperature_scale
+	if(temperature < FREON_TERMINAL_TEMPERATURE)
+		temperature_scale = 0
+	else if(temperature < FREON_LOWER_TEMPERATURE)
+		temperature_scale = 0.5
+	else
+		temperature_scale = (FREON_MAXIMUM_BURN_TEMPERATURE - temperature) / (FREON_MAXIMUM_BURN_TEMPERATURE - FREON_TERMINAL_TEMPERATURE)
+	if(temperature_scale <= 0)
+		return NO_REACTION
+	var/oxygen_burn_ratio = OXYGEN_BURN_RATIO_BASE - temperature_scale
+	var/freon_moles = air.get_moles(GAS_FREON)
+	var/oxygen_moles = air.get_moles(GAS_O2)
+	var/freon_burn_rate
+	if(oxygen_moles < freon_moles * FREON_OXYGEN_FULLBURN)
+		freon_burn_rate = ((oxygen_moles / FREON_OXYGEN_FULLBURN) / FREON_BURN_RATE_DELTA) * temperature_scale
+	else
+		freon_burn_rate = (freon_moles / FREON_BURN_RATE_DELTA) * temperature_scale
+	if(freon_burn_rate < MINIMUM_HEAT_CAPACITY)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	freon_burn_rate = min(freon_burn_rate, freon_moles, oxygen_moles * INVERSE(oxygen_burn_ratio))
+	air.adjust_moles(GAS_FREON, -freon_burn_rate)
+	air.adjust_moles(GAS_O2, -(freon_burn_rate * oxygen_burn_ratio))
+	air.adjust_moles(GAS_CO2, freon_burn_rate)
+	var/energy_consumed = FIRE_FREON_ENERGY_CONSUMED * freon_burn_rate
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity - energy_consumed) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/freonformation
+	priority = 3
+	name = "Freon Formation"
+	id = "freonformation"
+
+/datum/gas_reaction/freonformation/init_reqs()
+	min_requirements = list(
+		GAS_PLASMA = MINIMUM_MOLE_COUNT,
+		GAS_CO2 = MINIMUM_MOLE_COUNT,
+		GAS_BZ = MINIMUM_MOLE_COUNT,
+		"TEMP" = FREON_FORMATION_MIN_TEMPERATURE
+	)
+
+/datum/gas_reaction/freonformation/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	var/plasma_moles = air.get_moles(GAS_PLASMA)
+	var/co2_moles = air.get_moles(GAS_CO2)
+	var/bz_moles = air.get_moles(GAS_BZ)
+	var/heat_factor = (temperature - FREON_FORMATION_MIN_TEMPERATURE) / 100
+	var/minimal_mole_factor = min(plasma_moles / 0.6, co2_moles / 0.3, bz_moles / 0.1)
+	var/freon_formed = min(heat_factor * minimal_mole_factor * 0.05, plasma_moles * INVERSE(0.6), co2_moles * INVERSE(0.3), bz_moles * INVERSE(0.1))
+	if(freon_formed <= 0)
+		return NO_REACTION
+	air.adjust_moles(GAS_PLASMA, -freon_formed * 0.6)
+	air.adjust_moles(GAS_CO2, -freon_formed * 0.3)
+	air.adjust_moles(GAS_BZ, -freon_formed * 0.1)
+	air.adjust_moles(GAS_FREON, freon_formed)
+	return REACTING
+
+/datum/gas_reaction/halon_o2removal
+	priority = 2
+	name = "Halon Oxygen Absorption"
+	id = "halon_o2removal"
+
+/datum/gas_reaction/halon_o2removal/init_reqs()
+	min_requirements = list(
+		GAS_HALON = MINIMUM_MOLE_COUNT,
+		GAS_O2 = MINIMUM_MOLE_COUNT,
+		"TEMP" = HALON_COMBUSTION_MIN_TEMPERATURE
+	)
+
+/datum/gas_reaction/halon_o2removal/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	var/halon_moles = air.get_moles(GAS_HALON)
+	var/oxygen_moles = air.get_moles(GAS_O2)
+	var/heat_efficiency = min(temperature / HALON_COMBUSTION_TEMPERATURE_SCALE, halon_moles, oxygen_moles * INVERSE(20))
+	if(heat_efficiency <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_HALON, -heat_efficiency)
+	air.adjust_moles(GAS_O2, -(heat_efficiency * 20))
+	air.adjust_moles(GAS_PLUOXIUM, heat_efficiency * 2.5)
+	var/energy_used = heat_efficiency * HALON_COMBUSTION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity - energy_used) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/healium_formation
+	priority = 3
+	name = "Healium Formation"
+	id = "healium_formation"
+
+/datum/gas_reaction/healium_formation/init_reqs()
+	min_requirements = list(
+		GAS_BZ = MINIMUM_MOLE_COUNT,
+		GAS_FREON = MINIMUM_MOLE_COUNT,
+		"TEMP" = HEALIUM_FORMATION_MIN_TEMP
+	)
+
+/datum/gas_reaction/healium_formation/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > HEALIUM_FORMATION_MAX_TEMP)
+		return NO_REACTION
+	var/freon_moles = air.get_moles(GAS_FREON)
+	var/bz_moles = air.get_moles(GAS_BZ)
+	var/heat_efficiency = min(temperature * 0.3, freon_moles * INVERSE(2.75), bz_moles * INVERSE(0.25))
+	if(heat_efficiency <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_FREON, -heat_efficiency * 2.75)
+	air.adjust_moles(GAS_BZ, -heat_efficiency * 0.25)
+	air.adjust_moles(GAS_HEALIUM, heat_efficiency * 3)
+	var/energy_released = heat_efficiency * HEALIUM_FORMATION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/zauker_formation
+	priority = 3
+	name = "Zauker Formation"
+	id = "zauker_formation"
+
+/datum/gas_reaction/zauker_formation/init_reqs()
+	min_requirements = list(
+		GAS_HYPERNOB = MINIMUM_MOLE_COUNT,
+		GAS_NITRIUM = MINIMUM_MOLE_COUNT,
+		"TEMP" = ZAUKER_FORMATION_MIN_TEMPERATURE
+	)
+
+/datum/gas_reaction/zauker_formation/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > ZAUKER_FORMATION_MAX_TEMPERATURE)
+		return NO_REACTION
+	var/hypernob_moles = air.get_moles(GAS_HYPERNOB)
+	var/nitrium_moles = air.get_moles(GAS_NITRIUM)
+	var/heat_efficiency = min(temperature * ZAUKER_FORMATION_TEMPERATURE_SCALE, hypernob_moles * INVERSE(0.01), nitrium_moles * INVERSE(0.5))
+	if(heat_efficiency <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_HYPERNOB, -heat_efficiency * 0.01)
+	air.adjust_moles(GAS_NITRIUM, -heat_efficiency * 0.5)
+	air.adjust_moles(GAS_ZAUKER, heat_efficiency * 0.5)
+	var/energy_used = heat_efficiency * ZAUKER_FORMATION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity - energy_used) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/zauker_decomp
+	priority = 2
+	name = "Zauker Decomposition"
+	id = "zauker_decomp"
+
+/datum/gas_reaction/zauker_decomp/init_reqs()
+	min_requirements = list(
+		GAS_ZAUKER = MINIMUM_MOLE_COUNT,
+		GAS_N2 = MINIMUM_MOLE_COUNT
+	)
+
+/datum/gas_reaction/zauker_decomp/react(datum/gas_mixture/air, datum/holder)
+	var/n2_moles = air.get_moles(GAS_N2)
+	var/zauker_moles = air.get_moles(GAS_ZAUKER)
+	var/burned_fuel = min(ZAUKER_DECOMPOSITION_MAX_RATE, n2_moles, zauker_moles)
+	if(burned_fuel <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	var/temperature = air.return_temperature()
+	air.adjust_moles(GAS_ZAUKER, -burned_fuel)
+	air.adjust_moles(GAS_O2, burned_fuel * 0.3)
+	air.adjust_moles(GAS_N2, burned_fuel * 0.7)
+	var/energy_released = ZAUKER_DECOMPOSITION_ENERGY * burned_fuel
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/nitrium_formation
+	priority = 3
+	name = "Nitrium Formation"
+	id = "nitrium_formation"
+
+/datum/gas_reaction/nitrium_formation/init_reqs()
+	min_requirements = list(
+		GAS_TRITIUM = MINIMUM_MOLE_COUNT,
+		GAS_N2 = MINIMUM_MOLE_COUNT,
+		GAS_BZ = MINIMUM_MOLE_COUNT,
+		"TEMP" = NITRIUM_FORMATION_MIN_TEMP
+	)
+
+/datum/gas_reaction/nitrium_formation/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	var/tritium_moles = air.get_moles(GAS_TRITIUM)
+	var/n2_moles = air.get_moles(GAS_N2)
+	var/bz_moles = air.get_moles(GAS_BZ)
+	var/heat_efficiency = min(temperature / NITRIUM_FORMATION_TEMP_DIVISOR, tritium_moles, n2_moles, bz_moles * INVERSE(0.05))
+	if(heat_efficiency <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_TRITIUM, -heat_efficiency)
+	air.adjust_moles(GAS_N2, -heat_efficiency)
+	air.adjust_moles(GAS_BZ, -heat_efficiency * 0.05)
+	air.adjust_moles(GAS_NITRIUM, heat_efficiency)
+	var/energy_used = heat_efficiency * NITRIUM_FORMATION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity - energy_used) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/nitrium_decomposition
+	priority = 2
+	name = "Nitrium Decomposition"
+	id = "nitrium_decomp"
+
+/datum/gas_reaction/nitrium_decomposition/init_reqs()
+	min_requirements = list(
+		GAS_NITRIUM = MINIMUM_MOLE_COUNT,
+		"TEMP" = 1
+	)
+
+/datum/gas_reaction/nitrium_decomposition/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > NITRIUM_DECOMPOSITION_MAX_TEMP)
+		return NO_REACTION
+	var/nitrium_moles = air.get_moles(GAS_NITRIUM)
+	var/heat_efficiency = min(temperature / NITRIUM_DECOMPOSITION_TEMP_DIVISOR, nitrium_moles)
+	if(heat_efficiency <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_NITRIUM, -heat_efficiency)
+	air.adjust_moles(GAS_N2, heat_efficiency)
+	air.adjust_moles(GAS_HYDROGEN, heat_efficiency)
+	var/energy_released = heat_efficiency * NITRIUM_DECOMPOSITION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/pluox_formation
+	priority = 3
+	name = "Pluoxium Formation"
+	id = "pluox_formation"
+
+/datum/gas_reaction/pluox_formation/init_reqs()
+	min_requirements = list(
+		GAS_CO2 = MINIMUM_MOLE_COUNT,
+		GAS_O2 = MINIMUM_MOLE_COUNT,
+		GAS_TRITIUM = MINIMUM_MOLE_COUNT,
+		"TEMP" = PLUOXIUM_FORMATION_MIN_TEMP
+	)
+
+/datum/gas_reaction/pluox_formation/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > PLUOXIUM_FORMATION_MAX_TEMP)
+		return NO_REACTION
+	var/co2_moles = air.get_moles(GAS_CO2)
+	var/o2_moles = air.get_moles(GAS_O2)
+	var/tritium_moles = air.get_moles(GAS_TRITIUM)
+	var/produced_amount = min(PLUOXIUM_FORMATION_MAX_RATE, co2_moles, o2_moles * INVERSE(0.5), tritium_moles * INVERSE(0.01))
+	if(produced_amount <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_CO2, -produced_amount)
+	air.adjust_moles(GAS_O2, -produced_amount * 0.5)
+	air.adjust_moles(GAS_TRITIUM, -produced_amount * 0.01)
+	air.adjust_moles(GAS_PLUOXIUM, produced_amount)
+	var/energy_released = produced_amount * PLUOXIUM_FORMATION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/proto_nitrate_formation
+	priority = 3
+	name = "Proto Nitrate Formation"
+	id = "proto_nitrate_formation"
+
+/datum/gas_reaction/proto_nitrate_formation/init_reqs()
+	min_requirements = list(
+		GAS_PLUOXIUM = MINIMUM_MOLE_COUNT,
+		GAS_HYDROGEN = MINIMUM_MOLE_COUNT,
+		"TEMP" = PN_FORMATION_MIN_TEMPERATURE
+	)
+
+/datum/gas_reaction/proto_nitrate_formation/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > PN_FORMATION_MAX_TEMPERATURE)
+		return NO_REACTION
+	var/pluox_moles = air.get_moles(GAS_PLUOXIUM)
+	var/h2_moles = air.get_moles(GAS_HYDROGEN)
+	var/heat_efficiency = min(temperature * 0.005, pluox_moles * INVERSE(0.2), h2_moles * INVERSE(2))
+	if(heat_efficiency <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_HYDROGEN, -heat_efficiency * 2)
+	air.adjust_moles(GAS_PLUOXIUM, -heat_efficiency * 0.2)
+	air.adjust_moles(GAS_PROTO_NITRATE, heat_efficiency * 2.2)
+	var/energy_released = heat_efficiency * PN_FORMATION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/proto_nitrate_hydrogen_response
+	priority = 2
+	name = "Proto Nitrate Hydrogen Response"
+	id = "proto_nitrate_hydrogen_response"
+
+/datum/gas_reaction/proto_nitrate_hydrogen_response/init_reqs()
+	min_requirements = list(
+		GAS_PROTO_NITRATE = MINIMUM_MOLE_COUNT,
+		GAS_HYDROGEN = PN_HYDROGEN_CONVERSION_THRESHOLD
+	)
+
+/datum/gas_reaction/proto_nitrate_hydrogen_response/react(datum/gas_mixture/air, datum/holder)
+	var/proto_moles = air.get_moles(GAS_PROTO_NITRATE)
+	var/h2_moles = air.get_moles(GAS_HYDROGEN)
+	var/produced_amount = min(PN_HYDROGEN_CONVERSION_MAX_RATE, h2_moles, proto_moles)
+	if(produced_amount <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	var/temperature = air.return_temperature()
+	air.adjust_moles(GAS_HYDROGEN, -produced_amount)
+	air.adjust_moles(GAS_PROTO_NITRATE, produced_amount * 0.5)
+	var/energy_used = produced_amount * PN_HYDROGEN_CONVERSION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity - energy_used) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/proto_nitrate_tritium_response
+	priority = 2
+	name = "Proto Nitrate Tritium Response"
+	id = "proto_nitrate_tritium_response"
+
+/datum/gas_reaction/proto_nitrate_tritium_response/init_reqs()
+	min_requirements = list(
+		GAS_PROTO_NITRATE = MINIMUM_MOLE_COUNT,
+		GAS_TRITIUM = MINIMUM_MOLE_COUNT,
+		"TEMP" = PN_TRITIUM_CONVERSION_MIN_TEMP
+	)
+
+/datum/gas_reaction/proto_nitrate_tritium_response/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > PN_TRITIUM_CONVERSION_MAX_TEMP)
+		return NO_REACTION
+	var/proto_moles = air.get_moles(GAS_PROTO_NITRATE)
+	var/tritium_moles = air.get_moles(GAS_TRITIUM)
+	var/produced_amount = min(temperature / 34 * (tritium_moles * proto_moles) / (tritium_moles + 10 * proto_moles), tritium_moles, proto_moles * INVERSE(0.01))
+	if(produced_amount <= 0)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	air.adjust_moles(GAS_PROTO_NITRATE, -produced_amount * 0.01)
+	air.adjust_moles(GAS_TRITIUM, -produced_amount)
+	air.adjust_moles(GAS_HYDROGEN, produced_amount)
+	var/energy_released = produced_amount * PN_TRITIUM_CONVERSION_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/proto_nitrate_bz_response
+	priority = 2
+	name = "Proto Nitrate BZ Response"
+	id = "proto_nitrate_bz_response"
+
+/datum/gas_reaction/proto_nitrate_bz_response/init_reqs()
+	min_requirements = list(
+		GAS_PROTO_NITRATE = MINIMUM_MOLE_COUNT,
+		GAS_BZ = MINIMUM_MOLE_COUNT,
+		"TEMP" = PN_BZASE_MIN_TEMP
+	)
+
+/datum/gas_reaction/proto_nitrate_bz_response/react(datum/gas_mixture/air, datum/holder)
+	var/temperature = air.return_temperature()
+	if(temperature > PN_BZASE_MAX_TEMP)
+		return NO_REACTION
+	var/old_heat_capacity = air.heat_capacity()
+	var/proto_moles = air.get_moles(GAS_PROTO_NITRATE)
+	var/bz_moles = air.get_moles(GAS_BZ)
+	var/consumed_amount = min(temperature / 2240 * bz_moles * proto_moles / (bz_moles + proto_moles), bz_moles, proto_moles)
+	if(consumed_amount <= 0)
+		return NO_REACTION
+	air.adjust_moles(GAS_BZ, -consumed_amount)
+	air.adjust_moles(GAS_PROTO_NITRATE, -consumed_amount)
+	air.adjust_moles(GAS_N2, consumed_amount * 0.4)
+	air.adjust_moles(GAS_HELIUM, consumed_amount * 1.6)
+	air.adjust_moles(GAS_PLASMA, consumed_amount * 0.8)
+	var/energy_released = consumed_amount * PN_BZASE_ENERGY
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
+	return REACTING
+
+/datum/gas_reaction/antinoblium_replication
+	priority = 4
+	name = "Antinoblium Replication"
+	id = "antinoblium_replication"
+
+/datum/gas_reaction/antinoblium_replication/init_reqs()
+	min_requirements = list(
+		GAS_ANTINOBLIUM = MOLES_GAS_VISIBLE,
+		"TEMP" = REACTION_OPPRESSION_MIN_TEMP
+	)
+
+/datum/gas_reaction/antinoblium_replication/react(datum/gas_mixture/air, datum/holder)
+	var/old_heat_capacity = air.heat_capacity()
+	var/total_moles = air.total_moles()
+	var/antinoblium_moles = air.get_moles(GAS_ANTINOBLIUM)
+	var/total_not_antinoblium_moles = total_moles - antinoblium_moles
+	if(total_not_antinoblium_moles < MINIMUM_MOLE_COUNT)
+		return NO_REACTION
+	var/reaction_rate = min(antinoblium_moles / ANTINOBLIUM_CONVERSION_DIVISOR, total_not_antinoblium_moles)
+	var/list/gases = air.get_gases()
+	for(var/g in gases)
+		if(g == GAS_ANTINOBLIUM)
+			continue
+		var/m = air.get_moles(g)
+		if(m > 0)
+			air.adjust_moles(g, -reaction_rate * (m / total_not_antinoblium_moles))
+	air.adjust_moles(GAS_ANTINOBLIUM, reaction_rate)
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max(air.return_temperature() * old_heat_capacity / new_heat_capacity, TCMB))
+	return REACTING
