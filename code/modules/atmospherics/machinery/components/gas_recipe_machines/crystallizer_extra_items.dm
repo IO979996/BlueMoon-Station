@@ -5,7 +5,7 @@
 /obj/item/grenade/gas_crystal
 	desc = "A crystal from the crystallizer."
 	name = "Gas Crystal"
-	icon = 'icons/obj/weapons/grenade.dmi'
+	icon = 'icons/obj/crystallizer_grenades.dmi' 
 	icon_state = "bluefrag"
 	item_state = "flashbang"
 	resistance_flags = FIRE_PROOF
@@ -90,7 +90,7 @@
 /obj/item/fuel_pellet
 	name = "standard fuel pellet"
 	desc = "A compressed fuel pellet."
-	icon = 'icons/obj/exploration.dmi'
+	icon = 'icons/obj/crystallizer_exploration.dmi' 
 	icon_state = "fuel_basic"
 	w_class = WEIGHT_CLASS_SMALL
 	var/uses = 5
@@ -107,7 +107,7 @@
 /obj/item/stack/ammonia_crystals
 	name = "ammonia crystals"
 	singular_name = "ammonia crystal"
-	icon = 'icons/obj/stack_objects.dmi'
+	icon = 'icons/obj/crystallizer_sheets.dmi' 
 	icon_state = "ammonia_crystal"
 	w_class = WEIGHT_CLASS_TINY
 	resistance_flags = FLAMMABLE
@@ -118,21 +118,21 @@
 /obj/item/stack/sheet/mineral/metal_hydrogen
 	name = "metallic hydrogen"
 	singular_name = "metallic hydrogen sheet"
-	icon = 'icons/obj/stack_objects.dmi'
+	icon = 'icons/obj/crystallizer_sheets.dmi' 
 	icon_state = "sheet-metalhydrogen"
 	merge_type = /obj/item/stack/sheet/mineral/metal_hydrogen
 
 /obj/item/stack/sheet/mineral/zaukerite
 	name = "zaukerite"
 	singular_name = "zaukerite crystal"
-	icon = 'icons/obj/stack_objects.dmi'
+	icon = 'icons/obj/crystallizer_sheets.dmi' 
 	icon_state = "zaukerite"
 	merge_type = /obj/item/stack/sheet/mineral/zaukerite
 
 /obj/item/stack/sheet/hot_ice
 	name = "hot ice"
 	singular_name = "hot ice sheet"
-	icon = 'icons/obj/hot_ice.dmi' // sprite from Whitemoon-station
+	icon = 'icons/obj/hot_ice.dmi'
 	icon_state = "hot-ice"
 	merge_type = /obj/item/stack/sheet/hot_ice
 	grind_results = list(/datum/reagent/hot_ice_slush = 25)
