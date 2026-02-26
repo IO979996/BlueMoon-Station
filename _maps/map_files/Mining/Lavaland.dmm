@@ -5327,6 +5327,7 @@
 /turf/open/floor/plasteel/dark,
 /area/ruin/lavaland/unpowered/deepspaceone/main)
 "eth" = (
+/obj/structure/closet/crate/ash_walker_supply,
 /turf/open/indestructible/necropolis,
 /area/ruin/lavaland/unpowered/ash_walkers)
 "etw" = (

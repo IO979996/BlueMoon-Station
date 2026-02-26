@@ -119,6 +119,45 @@
 		meat_counter -= ASH_WALKER_SPAWN_THRESHOLD
 		// ashies.eggs_created++
 
+// Порабощение: чужак тыкает рукой на тендрилл — превращается в эша и служит Некрополису
+/obj/structure/lavaland/ash_walker/attack_hand(mob/living/user, list/modifiers)
+	if(!ishuman(user))
+		return ..()
+
+	var/mob/living/carbon/human/human_user = user
+	if(is_species(human_user, /datum/species/lizard/ashwalker))
+		return ..()
+
+	// Чужак коснулся тендрилла — порабощение
+	balloon_alert_to_viewers("[src] протягивает щупальца к [human_user]...")
+	var/choice = tgui_alert(human_user, "Тендрилл Некрополиса предлагает принять тебя. Ты станешь пеплоходцем и будешь служить Некрополису. Принять?", "Выбор судьбы", list("Да", "Нет"))
+
+	if(choice != "Да")
+		balloon_alert_to_viewers("[src] отбрасывает [human_user]!")
+		playsound(src, 'sound/magic/demon_consume.ogg', 50, TRUE)
+		human_user.adjustBruteLoss(15)
+		return ..()
+
+	balloon_alert_to_viewers("[src] поглощает [human_user], и тот возрождается пеплоходцем!")
+	human_user.unequip_everything()
+	human_user.set_species(/datum/species/lizard/ashwalker)
+	human_user.underwear = "Nude"
+	human_user.undershirt = "Nude"
+	human_user.socks = "Nude"
+	human_user.update_body()
+
+	if(!human_user.mind.has_antag_datum(/datum/antagonist/ashwalker))
+		human_user.mind.add_antag_datum(/datum/antagonist/ashwalker, ashies)
+
+	if(SSmapping.level_trait(human_user.z, ZTRAIT_ICE_RUINS) || SSmapping.level_trait(human_user.z, ZTRAIT_ICE_RUINS_UNDERGROUND))
+		ADD_TRAIT(human_user, TRAIT_NOBREATH, ROUNDSTART_TRAIT)
+		ADD_TRAIT(human_user, TRAIT_RESISTCOLD, ROUNDSTART_TRAIT)
+	ADD_TRAIT(human_user, TRAIT_PRIMITIVE, ROUNDSTART_TRAIT)
+
+	playsound(src, 'sound/magic/demon_dies.ogg', 50, TRUE)
+	to_chat(human_user, span_boldwarning("Ты отныне слуга Некрополиса. Тащи трупы к гнезду, приноси жертвы. Слава Некрополису!"))
+	return ..()
+
 /obj/structure/lavaland/ash_walker/attackby(obj/item/attacking_item, mob/living/user, params)
 	if(!istype(attacking_item, /obj/item/organ/regenerative_core/legion))
 		return ..()
