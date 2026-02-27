@@ -136,6 +136,13 @@
 	icon_state = "brown"
 	gas_type = GAS_NITRYL
 
+// Убраны из label2types (не заказываются), но оставлены для совместимости с картами (Academy, ihategordon, undergroundoutpost45)
+/obj/machinery/portable_atmospherics/canister/stimulum
+	name = "stimulum canister"
+	desc = "Stimulum. High energy gas, high energy people."
+	icon_state = "darkpurple"
+	gas_type = GAS_STIMULUM
+
 /obj/machinery/portable_atmospherics/canister/pluoxium
 	name = "pluoxium canister"
 	desc = "Pluoxium. Like oxygen, but more bang for your buck."
@@ -161,6 +168,13 @@
 	desc = "Methane. The simplest of hydrocarbons. Non-toxic but highly flammable."
 	icon_state = "greyblackred"
 	gas_type = GAS_METHANE
+
+// Убраны из label2types (не заказываются), оставлены для совместимости с картами (undergroundoutpost45)
+/obj/machinery/portable_atmospherics/canister/methyl_bromide
+	name = "methyl bromide canister"
+	desc = "Methyl bromide. A potent toxin to most, essential for the Kharmaan to live."
+	icon_state = "purplecyan"
+	gas_type = GAS_METHYL_BROMIDE
 
 /obj/machinery/portable_atmospherics/canister/hydrogen
 	name = "hydrogen canister"
