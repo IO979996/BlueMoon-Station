@@ -154,3 +154,58 @@
 		melt_release()
 		return TRUE
 	return FALSE
+
+// === Hot ice cooling pack (craftable from crystallizer hot ice) ===
+/obj/item/hot_ice_pack
+	name = "hot ice cooling pack"
+	desc = "A pack of stabilized hot ice wrapped in cloth. Stays cold for a long time; use to cool down."
+	icon = 'icons/obj/hot_ice.dmi'
+	icon_state = "hot-ice"
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/hot_ice_pack/attack_self(mob/user)
+	. = ..()
+	if(.)
+		return
+	to_chat(user, "<span class='notice'>You press the pack to your skin; it feels pleasantly cool.</span>")
+	if(isliving(user))
+		var/mob/living/L = user
+		L.adjust_bodytemperature(-50, BODYTEMP_COOLING_MAX)
+
+// === Ammonia pack (craftable from ammonia crystals) ===
+/obj/item/ammonia_pack
+	name = "ammonia pack"
+	desc = "Crystals of ammonia wrapped in cloth. Can be broken to release a small cloud of ammonia."
+	icon = 'icons/obj/crystallizer_sheets.dmi'
+	icon_state = "ammonia_crystal"
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/ammonia_pack/attack_self(mob/user)
+	. = ..()
+	if(.)
+		return
+	var/turf/T = get_turf(src)
+	if(T)
+		var/datum/reagents/R = new(10)
+		R.add_reagent(/datum/reagent/ammonia, 10)
+		var/datum/effect_system/smoke_spread/chem/smoke = new
+		smoke.set_up(R, 1, T, TRUE)
+		smoke.start()
+	to_chat(user, "<span class='notice'>You crush the pack; a sharp smell of ammonia fills the air.</span>")
+	qdel(src)
+
+// === Zaukerite bolts (craftable from crystallizer sheets) ===
+/obj/item/zaukerite_bolt
+	name = "zaukerite bolt"
+	desc = "A rod tipped with crystallized Zauker. Deadly when thrown."
+	icon = 'icons/obj/crystallizer_exploration.dmi'
+	icon_state = "zaukerite_bolt"
+	item_state = "bolt"
+	force = 8
+	throwforce = 15
+	throw_speed = 4
+	embedding = list("embedded_pain_multiplier" = 2, "embed_chance" = 40, "embedded_fall_chance" = 10)
+	w_class = WEIGHT_CLASS_SMALL
+	sharpness = SHARP_POINTY
+	attack_verb = list("stabbed", "pierced", "stuck")
+	hitsound = 'sound/weapons/bladeslice.ogg'

@@ -105,6 +105,9 @@
 #define CAT_SPAGHETTI	"Spaghettis"
 #define CAT_ICE	"Frozen"
 #define CAT_EAST "East foods" //BLUEMOON ADD
+#define CAT_ATMOSPHERIC "Atmospheric" //BLUEMOON ADD - кристаллы и крафты из кристаллайзера
+#define CAT_CRYSTALS "Crystals"
+#define CAT_ATMOSPHERIC_EQUIPMENT "Atmos equipment" // трубы, поджигатели, сенсоры и т.д. (из WhiteMoon)
 
 #define RCD_FLOORWALL 1
 #define RCD_AIRLOCK 2

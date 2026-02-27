@@ -500,7 +500,6 @@
 		'sound/machines/sm/accent/normal/1.ogg',
 		'sound/machines/sm/accent/normal/2.ogg',
 		'sound/machines/sm/accent/normal/3.ogg',
-		'sound/machines/engine_alert1.ogg',
 	)
 
 /datum/sound_effect/hypertorus_melting
@@ -509,4 +508,5 @@
 		'sound/machines/sm/accent/delam/1.ogg',
 		'sound/machines/sm/accent/delam/2.ogg',
 		'sound/machines/warning-buzzer.ogg',
+		'sound/machines/engine_alert1.ogg',
 	)

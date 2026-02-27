@@ -778,6 +778,7 @@
 #include "code\datums\components\crafting\recipes\recipes_primal.dm"
 #include "code\datums\components\crafting\recipes\recipes_robot.dm"
 #include "code\datums\components\crafting\recipes\recipes_weapon_and_ammo.dm"
+#include "code\datums\components\crafting\recipes\recipes_atmospheric_crystals.dm"
 #include "code\datums\components\fantasy\_fantasy.dm"
 #include "code\datums\components\fantasy\affix.dm"
 #include "code\datums\components\fantasy\prefixes.dm"
