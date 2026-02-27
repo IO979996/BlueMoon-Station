@@ -129,6 +129,34 @@
 	icon_state = "zaukerite"
 	merge_type = /obj/item/stack/sheet/mineral/zaukerite
 
+// === Metallic hydrogen crafts ===
+/obj/item/metallic_hydrogen_rod
+	name = "metallic hydrogen rod"
+	desc = "A rod reinforced with metallic hydrogen. Extremely dense; useful as a tool or improvised weapon."
+	icon = 'icons/obj/crystallizer_sheets.dmi'
+	icon_state = "sheet-metalhydrogen"
+	item_state = "rods"
+	force = 10
+	throwforce = 12
+	w_class = WEIGHT_CLASS_NORMAL
+	attack_verb = list("bludgeoned", "hit", "struck")
+
+/obj/item/metallic_hydrogen_cooling_pack
+	name = "metallic hydrogen cooling pack"
+	desc = "Stabilized metallic hydrogen wrapped in cloth. Stays very cold; use to cool down."
+	icon = 'icons/obj/crystallizer_sheets.dmi'
+	icon_state = "sheet-metalhydrogen"
+	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/metallic_hydrogen_cooling_pack/attack_self(mob/user)
+	. = ..()
+	if(.)
+		return
+	to_chat(user, "<span class='notice'>You press the pack to your skin; it feels intensely cold.</span>")
+	if(isliving(user))
+		var/mob/living/L = user
+		L.adjust_bodytemperature(-80, BODYTEMP_COOLING_MAX)
+
 /obj/item/stack/sheet/hot_ice
 	name = "hot ice"
 	singular_name = "hot ice sheet"

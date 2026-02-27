@@ -23,7 +23,19 @@
 	category = CAT_ATMOSPHERIC
 	subcategory = CAT_CRYSTALS
 
-// --- Atmos equipment (из WhiteMoon atmospheric.dm) ---
+// --- Atmos equipment (из WhiteMoon tailoring.dm + atmospheric.dm) ---
+/datum/crafting_recipe/atmospherics_gas_mask
+	name = "Atmospherics gas mask"
+	result = /obj/item/clothing/mask/gas/atmos
+	tools = list(TOOL_WELDER)
+	time = 80
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 1,
+		/obj/item/stack/sheet/mineral/zaukerite = 1,
+	)
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+
 /datum/crafting_recipe/igniter
 	name = "Igniter"
 	result = /obj/machinery/igniter
@@ -43,6 +55,40 @@
 		/obj/item/stack/sheet/cloth = 2,
 	)
 	time = 25
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_CRYSTALS
+
+/datum/crafting_recipe/metallic_hydrogen_rod
+	name = "Metallic hydrogen rod"
+	result = /obj/item/metallic_hydrogen_rod
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 1,
+		/obj/item/stack/rods = 1,
+	)
+	time = 30
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_CRYSTALS
+
+/datum/crafting_recipe/metallic_hydrogen_cooling_pack
+	name = "Metallic hydrogen cooling pack"
+	result = /obj/item/metallic_hydrogen_cooling_pack
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 2,
+		/obj/item/stack/sheet/cloth = 2,
+	)
+	time = 35
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_CRYSTALS
+
+/datum/crafting_recipe/elder_atmosian_statue
+	name = "Elder Atmosian statue"
+	result = /obj/structure/statue/elder_atmosian
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 20,
+		/obj/item/stack/sheet/mineral/zaukerite = 15,
+		/obj/item/stack/sheet/metal = 30,
+	)
+	time = 60
 	category = CAT_ATMOSPHERIC
 	subcategory = CAT_CRYSTALS
 

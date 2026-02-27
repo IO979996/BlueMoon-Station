@@ -279,6 +279,16 @@
 	icon_state = "marx"
 	art_type = /datum/element/art/rev
 
+/////////// Elder Atmosian (craft: metal_hydrogen + zaukerite + metal) ///////////
+/obj/structure/statue/elder_atmosian
+	name = "Elder Atmosian"
+	desc = "A statue of an Elder Atmosian, capable of bending the laws of thermodynamics to their will."
+	icon = 'icons/obj/art/statue.dmi'
+	icon_state = "eng"
+	custom_materials = list(/datum/material/metalhydrogen = SHEET_MATERIAL_AMOUNT * 10)
+	max_integrity = 1000
+	impressiveness = 100
+
 /obj/item/chisel
 	name = "chisel"
 	desc = "Breaking and making art since 4000 BC. This one uses advanced technology to allow creation of lifelike moving statues."
