@@ -19,9 +19,6 @@
 	var/mob/living/carbon/human/human = allocate(/mob/living/carbon/human)
 	var/obj/structure/closet/closet = allocate(/obj/structure/closet, get_turf(human))
 
-	// BlueMoon: closet does not accept mobs with mob_weight > MOB_WEIGHT_NORMAL
-	human.mob_weight = MOB_WEIGHT_NORMAL
-
 	closet.open(human)
 	TEST_ASSERT(!(human in closet.contents), "Human was in the contents of an open closet")
 
