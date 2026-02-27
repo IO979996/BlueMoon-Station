@@ -283,7 +283,6 @@
 /obj/structure/statue/elder_atmosian
 	name = "Elder Atmosian"
 	desc = "A statue of an Elder Atmosian, capable of bending the laws of thermodynamics to their will."
-	icon = 'icons/obj/art/statue.dmi'
 	icon_state = "eng"
 	custom_materials = list(/datum/material/metalhydrogen = SHEET_MATERIAL_AMOUNT * 10)
 	max_integrity = 1000
