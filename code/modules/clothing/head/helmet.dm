@@ -685,4 +685,8 @@
 	armor = list(MELEE = 50, BULLET = 45, LASER = 55, ENERGY = 55, BOMB = 95, BIO = 100, RAD = 100, FIRE = 100, ACID = 90, WOUND = 30)
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
+	cold_protection = HEAD
+	heat_protection = HEAD
+	min_cold_protection_temperature = FIRE_HELM_MIN_TEMP_PROTECT
+	max_heat_protection_temperature = FIRE_HELM_MAX_TEMP_PROTECT
 	clothing_flags = STOPSPRESSUREDAMAGE
