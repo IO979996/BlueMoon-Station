@@ -494,6 +494,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	cold_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
+	clothing_flags = STOPSPRESSUREDAMAGE
 
 /obj/item/clothing/suit/armor/elder_atmosian/Initialize(mapload)
 	. = ..()
