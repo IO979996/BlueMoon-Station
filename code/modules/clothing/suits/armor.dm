@@ -479,7 +479,7 @@
 	item_state = "sov_offcoat"
 	//armor = list(MELEE = 25, BULLET = 20, LASER = 20, ENERGY = 10, BOMB = 20, BIO = 50, RAD = 50, FIRE = -10, ACID = 50,  WOUND = 10)
 
-// Elder Atmosian — риг легендарного атмос-теха (из WhiteMoon-station, спрайты из modular_zubbers)
+// Elder Atmosian — риг легендарного атмос-теха
 /obj/item/clothing/suit/armor/elder_atmosian
 	name = "\improper Elder Atmosian Armor"
 	desc = "Вершина атмос-экипировки: дорогая огнезащитная броня, усиленная металлическим водородом. Полная защита от огня и газов без тяжёлого замедления. В слот костюма можно повесить металл-водородный топор."
