@@ -687,6 +687,7 @@
 	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
 	cold_protection = HEAD
 	heat_protection = HEAD
-	min_cold_protection_temperature = FIRE_HELM_MIN_TEMP_PROTECT
-	max_heat_protection_temperature = FIRE_HELM_MAX_TEMP_PROTECT
-	clothing_flags = STOPSPRESSUREDAMAGE
+	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
+	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
+	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL | BLOCK_GAS_SMOKE_EFFECT
+	resistance_flags = FIRE_PROOF
