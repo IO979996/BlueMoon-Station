@@ -92,6 +92,38 @@
 	category = CAT_ATMOSPHERIC
 	subcategory = CAT_CRYSTALS
 
+/datum/crafting_recipe/elder_atmosian_armor
+	name = "Elder Atmosian armor"
+	result = /obj/item/clothing/suit/armor/elder_atmosian
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 5,
+		/obj/item/clothing/suit/fire/atmos = 1,
+	)
+	time = 40
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+
+/datum/crafting_recipe/elder_atmosian_helmet
+	name = "Elder Atmosian helmet"
+	result = /obj/item/clothing/head/helmet/elder_atmosian
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 3,
+		/obj/item/clothing/head/hardhat/atmos = 1,
+	)
+	time = 40
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+
+/datum/crafting_recipe/metal_h2_fireaxe
+	name = "Metal hydrogen fire axe"
+	result = /obj/item/fireaxe/metal_h2_axe
+	reqs = list(
+		/obj/item/stack/sheet/mineral/metal_hydrogen = 7,
+	)
+	time = 30
+	category = CAT_ATMOSPHERIC
+	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+
 /datum/crafting_recipe/crystal_cell_assembly
 	name = "Crystal cell assembly"
 	result = /obj/item/stock_parts/cell/crystal_cell

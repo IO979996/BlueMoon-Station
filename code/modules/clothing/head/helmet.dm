@@ -672,3 +672,16 @@
 	icon_state = "policehelm"
 	dynamic_hair_suffix = ""
 	flags_inv = HIDEEARS
+
+// Elder Atmosian — шлем легендарного атмос-теха (спрайты из WhiteMoon modular_zubbers)
+/obj/item/clothing/head/helmet/elder_atmosian
+	name = "\improper Elder Atmosian Helmet"
+	desc = "Вершина атмос-экипировки: огнезащитный шлем, усиленный металлическим водородом. Полная защита головы от огня и газов."
+	icon = 'modular_bluemoon/icons/obj/clothing/head/helmet.dmi'
+	mob_overlay_icon = 'modular_bluemoon/icons/mob/clothing/head/helmet.dmi'
+	anthro_mob_worn_overlay = 'modular_bluemoon/icons/mob/clothing/head/helmet_teshari.dmi'
+	icon_state = "h2helmet"
+	item_state = "h2_helmet"
+	armor = list(MELEE = 50, BULLET = 45, LASER = 55, ENERGY = 55, BOMB = 95, BIO = 100, RAD = 100, FIRE = 100, ACID = 90, WOUND = 30)
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT
+	flags_cover = HEADCOVERSEYES | HEADCOVERSMOUTH
