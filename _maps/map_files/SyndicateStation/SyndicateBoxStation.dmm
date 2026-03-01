@@ -45761,8 +45761,7 @@
 "dbE" = (
 /obj/structure/table/wood,
 /obj/effect/decal/cleanable/dirt/dust,
-/obj/item/paper{
-	icon_state = "paper_onfire";
+/obj/item/paper/always_on_fire{
 	name = "Burning Note";
 	default_raw_text = "I sign here with my last breath to sell my soul to curse you all..."
 	},
@@ -54240,6 +54239,11 @@
 	},
 /turf/open/floor/mineral/plastitanium,
 /area/service/bar)
+"joJ" = (
+/obj/machinery/suit_storage_unit/open,
+/obj/item/mod/control/pre_equipped/corporate,
+/turf/open/floor/mineral/plastitanium,
+/area/command/heads_quarters/ntr)
 "joX" = (
 /obj/structure/closet,
 /obj/effect/spawner/lootdrop/syndicate_present,
@@ -102215,7 +102219,7 @@ gkH
 sgT
 kaM
 cGM
-iTX
+joJ
 vrj
 rxP
 ayW
@@ -102986,7 +102990,7 @@ lXL
 sgT
 xpf
 lnB
-arW
+iTX
 fFv
 qjg
 xCk
