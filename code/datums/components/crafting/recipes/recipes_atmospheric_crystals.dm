@@ -1,5 +1,4 @@
-// Крафты из продуктов кристаллайзера (вкладка Atmospheric -> Crystals)
-// + рецепты атмос-оборудования из WhiteMoon-station (Atmospheric -> Atmos equipment)
+// Крафты из продуктов кристаллайзера и атмос-оборудования (вкладка Atmospherics)
 
 /datum/crafting_recipe/zaukerite_bolt
 	name = "Zaukerite bolt"
@@ -10,7 +9,7 @@
 	)
 	time = 25
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/hot_ice_pack
 	name = "Hot ice cooling pack"
@@ -21,7 +20,7 @@
 	)
 	time = 30
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS
 
 // --- Atmos equipment (из WhiteMoon tailoring.dm + atmospheric.dm) ---
 /datum/crafting_recipe/atmospherics_gas_mask
@@ -34,7 +33,7 @@
 		/obj/item/stack/sheet/mineral/zaukerite = 1,
 	)
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/igniter
 	name = "Igniter"
@@ -45,7 +44,7 @@
 	)
 	time = 20
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/ammonia_pack
 	name = "Ammonia pack"
@@ -56,7 +55,7 @@
 	)
 	time = 25
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/metallic_hydrogen_rod
 	name = "Metallic hydrogen rod"
@@ -67,7 +66,7 @@
 	)
 	time = 30
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/metallic_hydrogen_cooling_pack
 	name = "Metallic hydrogen cooling pack"
@@ -78,7 +77,7 @@
 	)
 	time = 35
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/elder_atmosian_statue
 	name = "Elder Atmosian statue"
@@ -90,7 +89,7 @@
 	)
 	time = 60
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/elder_atmosian_armor
 	name = "Elder Atmosian armor"
@@ -101,7 +100,7 @@
 	)
 	time = 40
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/elder_atmosian_helmet
 	name = "Elder Atmosian helmet"
@@ -112,7 +111,7 @@
 	)
 	time = 40
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/metal_h2_fireaxe
 	name = "Metal hydrogen fire axe"
@@ -122,7 +121,7 @@
 	)
 	time = 30
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_ATMOSPHERIC_EQUIPMENT
+	subcategory = CAT_ATMOSPHERICS
 
 /datum/crafting_recipe/crystal_cell_assembly
 	name = "Crystal cell assembly"
@@ -136,4 +135,4 @@
 	tools = list(TOOL_WELDER, TOOL_SCREWDRIVER)
 	time = 40
 	category = CAT_ATMOSPHERIC
-	subcategory = CAT_CRYSTALS
+	subcategory = CAT_ATMOSPHERICS

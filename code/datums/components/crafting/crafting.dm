@@ -26,8 +26,7 @@
 					CAT_FURNITURE,
 				),
 				CAT_ATMOSPHERIC = list(
-					CAT_CRYSTALS,
-					CAT_ATMOSPHERIC_EQUIPMENT,
+					CAT_ATMOSPHERICS,
 				),
 				CAT_PRIMAL = CAT_NONE,
 				CAT_FOOD = list(
