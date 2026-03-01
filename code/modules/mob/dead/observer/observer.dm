@@ -492,7 +492,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/list/L = list()
 	for(var/turf/T in get_area_turfs(thearea.type))
-		L+=T
+		L += T
 
 	if(!L || !L.len)
 		to_chat(usr, "No area available.")

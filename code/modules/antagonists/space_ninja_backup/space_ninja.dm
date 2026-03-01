@@ -67,12 +67,6 @@
 /datum/objective/terror_message
 	explanation_text = "Взломайте консоль капитана, используя перчатки, чтобы наслать на станцию ещё одну угрозу. ИИ получит уведомление в тот момент, когда вы начнёте!"
 
-/datum/objective/ninja_leave
-	explanation_text = "Уберитесь прочь со станции после выполнения остальных целей."
-
-/datum/objective/ninja_leave/check_completion()
-	return completed
-
 /**
   * Proc that adds all the ninja's objectives to the antag datum.
   *
@@ -115,10 +109,10 @@
 	var/datum/objective/communicationobjective = new /datum/objective/terror_message()
 	objectives += communicationobjective
 
-	// Убраться прочь со станции после выполнения всех 6 целей (способность в костюме)
-	var/datum/objective/ninja_leave/leaveobjective = new /datum/objective/ninja_leave()
-	leaveobjective.owner = owner
-	objectives += leaveobjective
+	//Survival until end
+	var/datum/objective/survival = new /datum/objective/survive()
+	survival.owner = owner
+	objectives += survival
 
 /datum/antagonist/ninja/greet()
 	SEND_SOUND(owner.current, sound('sound/ambience/antag/ninja_greeting.ogg'))

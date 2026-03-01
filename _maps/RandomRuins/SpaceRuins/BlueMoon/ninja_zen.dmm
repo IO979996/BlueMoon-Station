@@ -1,0 +1,4246 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+// Ninja dojo extracted from Paradise SS220 CentComm.dmm
+
+"mVX" = (
+/turf/space,
+/area/space)
+
+"mNj" = (
+/turf/simulated/wall/indestructible/rock,
+/area/space)
+
+"ykS" = (
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"emN" = (
+/obj/structure/flora/rock/icy,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"sQx" = (
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"tdj" = (
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"rns" = (
+/obj/structure/flora/tree/dead,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"kQk" = (
+/obj/structure/flora/grass/brown,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"ycO" = (
+/obj/structure/flora/tree/pine{
+	pixel_x = 1
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"adW" = (
+/obj/structure/energy_caltrops/noselfdestroy,
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"awu" = (
+/obj/structure/energy_caltrops/noselfdestroy,
+/obj/structure/flora/grass/both,
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"axc" = (
+/obj/structure/energy_caltrops/noselfdestroy,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"hGJ" = (
+/obj/structure/flora/grass/both,
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"aIz" = (
+/obj/structure/flora/grass/both,
+/obj/structure/flora/tree/pine{
+	pixel_x = 1
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"jSw" = (
+/turf/simulated/wall/indestructible/rock,
+/area/ruin/space/ninja_zen)
+
+"dMb" = (
+/turf/simulated/wall/indestructible/rock/dark,
+/area/ruin/space/ninja_zen)
+
+"aYy" = (
+/obj/structure/flora/tree/pine{
+	pixel_x = 1
+	},
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"bRM" = (
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"nhl" = (
+/obj/machinery/door/airlock/survival_pod{
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bhg" = (
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"bht" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"bhL" = (
+/obj/structure/showcase{
+	desc = "This one is empty";
+	icon = 'icons/obj/ninjaobjects.dmi';
+	icon_state = "ninjastasis-none";
+	name = "Suit energy supply";
+	pixel_x = 10
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bDR" = (
+/obj/structure/railing,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"bEB" = (
+/obj/structure/showcase{
+	desc = "This one has an old damaged suit in it. Not working...";
+	icon = 'icons/obj/ninjaobjects.dmi';
+	icon_state = "ninjastasis-m";
+	name = "Suit energy supply"
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bGZ" = (
+/obj/machinery/power/smes/magical{
+	color = "#444455";
+	desc = "Может показаться, что он сломан и не работает, но на самом деле он специально настроен для подзарядки костюма посредством использования на нём перчаток";
+	name = "SpiderClan power storage unit";
+	resistance_flags = 371
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bHo" = (
+/obj/effect/turf_decal/box,
+/obj/structure/ninjatele{
+	pixel_y = 25
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bHR" = (
+/obj/machinery/ninja_mindscan_machine,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bJL" = (
+/obj/structure/ninjatele{
+	pixel_y = 25
+	},
+/obj/effect/turf_decal/box,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"eFv" = (
+/obj/effect/turf_decal{
+	icon = 'icons/obj/ninjaobjects.dmi';
+	icon_state = "wallkatana";
+	name = "Katanas"
+	},
+/turf/simulated/wall/indestructible/reinforced/rusted,
+/area/ruin/space/ninja_zen)
+
+"ceS" = (
+/obj/machinery/light/small{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"bRx" = (
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"nWf" = (
+/turf/simulated/wall/indestructible/reinforced/rusted,
+/area/ruin/space/ninja_zen)
+
+"cfa" = (
+/obj/item/grown/log/tree{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grown/log/tree,
+/obj/item/grown/log/tree{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"buy" = (
+/obj/structure/chair/stool,
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 5
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"chj" = (
+/obj/structure/bookcase,
+/obj/item/book/manual,
+/obj/item/book/manual,
+/obj/item/book/manual,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cig" = (
+/obj/structure/railing/corner,
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"civ" = (
+/obj/structure/railing/corner{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"bBY" = (
+/obj/machinery/door/airlock/survival_pod{
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"cjy" = (
+/obj/structure/chair{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cjQ" = (
+/obj/machinery/door/window/brigdoor{
+	color = "#00f700";
+	dir = 8;
+;
+	icon_state = "rightsecure";
+	name = "Riot Control"
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"ckq" = (
+/obj/item/grown/log/tree{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/item/grown/log/tree,
+/obj/item/grown/log/tree{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/hatchet/wooden,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"ckC" = (
+/obj/structure/chair/stool,
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"hxT" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"cli" = (
+/obj/item/shard,
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"pqv" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 5
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"bYb" = (
+/obj/structure/chair/stool,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"byG" = (
+/obj/structure/flora/grass/both,
+/obj/item/storage/fancy/cigarettes/cigpack_robustgold,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"cBU" = (
+/obj/machinery/hydroponics/soil,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"cCT" = (
+/obj/structure/bookcase,
+/obj/item/book/manual,
+/obj/item/book/manual,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cDk" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cDU" = (
+/obj/item/flag/ninja,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cEg" = (
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"byZ" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bAh" = (
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/obj/structure/sign/poster/contraband/hacking_guide{
+	pixel_x = 32
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"gVw" = (
+/obj/item/radio/intercom/syndicate/directional/west,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"nEN" = (
+/obj/effect/baseturf_helper/asteroid/snow{
+	baseturf = /turf/simulated/floor/indestructible/snow;
+	name = "snow baseturf editor"
+	},
+/turf/simulated/wall/indestructible/reinforced/rusted,
+/area/ruin/space/ninja_zen)
+
+"cES" = (
+/obj/structure/window/plasmareinforced{
+	color = "#00f700";
+	dir = 8
+	},
+/obj/machinery/ninja_clonepod{
+	pixel_x = 3
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cHK" = (
+/obj/item/broken_bottle,
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"cHT" = (
+/obj/structure/bonfire/dense,
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"kQT" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"cQF" = (
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cQJ" = (
+/obj/structure/railing/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cRm" = (
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/structure/sign/poster/contraband/cc64k_ad{
+	pixel_y = 32
+	},
+/obj/machinery/ninja_bloodscan_machine,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"bGP" = (
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/item/toy/figure/ninja{
+	pixel_x = 8;
+	pixel_y = 14
+	},
+/obj/item/storage/box/syringes{
+	pixel_x = -1;
+	pixel_y = 12
+	},
+/obj/item/storage/fancy/vials,
+/turf/simulated/floor/indestructible{
+	icon_state = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"bNc" = (
+/obj/machinery/door/window/brigdoor{
+	color = "#00f700";
+	dir = 8;
+;
+	name = "Riot Control"
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cRn" = (
+/obj/item/lighter/zippo/ninja,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"ova" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"cUD" = (
+/obj/effect/turf_decal/weather/snow/corner,
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"cVb" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/obj/item/shard,
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"diG" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 9
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"diH" = (
+/obj/machinery/hydroponics/soil,
+/obj/item/seeds/wheat/rice,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"dmv" = (
+/obj/effect/turf_decal/sand{
+	alpha = 128
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cmJ" = (
+/obj/effect/turf_decal/sand{
+	alpha = 128
+	},
+/turf/simulated/floor/plating/asteroid{
+	icon_state = "asteroidfloor";
+	name = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"qDI" = (
+/obj/effect/turf_decal{
+	dir = 1;
+	icon = 'icons/obj/ninjaobjects.dmi';
+	icon_state = "wallkatana";
+	name = "Katanas"
+	},
+/turf/simulated/wall/indestructible/reinforced/rusted,
+/area/ruin/space/ninja_zen)
+
+"dnL" = (
+/obj/machinery/light/small{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"dov" = (
+/obj/structure/chair/stool,
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"drh" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 9
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"drz" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"dsX" = (
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"coI" = (
+/obj/machinery/door/airlock/survival_pod{
+	},
+/obj/effect/turf_decal/sand{
+	alpha = 128
+	},
+/turf/simulated/floor/plating/asteroid{
+	icon_state = "asteroidfloor";
+	name = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"dtK" = (
+/turf/simulated/floor/plating/asteroid{
+	icon_state = "asteroidfloor";
+	name = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"dtL" = (
+/obj/machinery/light/small{
+	dir = 4
+	},
+/turf/simulated/floor/plating/asteroid{
+	icon_state = "asteroidplating";
+	name = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"duf" = (
+/obj/item/tank/internals/oxygen/ninja{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/tank/internals/oxygen/ninja,
+/obj/item/tank/internals/oxygen/ninja{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/obj/structure/rack,
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cqi" = (
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/item/storage/box/manacles{
+	pixel_x = 1;
+	pixel_y = 5
+	},
+/obj/item/storage/box/manacles{
+	pixel_x = -3;
+	pixel_y = 2
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"duk" = (
+/obj/structure/sign/poster/official/air2{
+	pixel_y = -32
+	},
+/obj/machinery/portable_atmospherics/canister/oxygen{
+	maximum_pressure = 50000
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"dum" = (
+/obj/structure/rack,
+/obj/item/tank/internals/emergency_oxygen/double/ninja{
+	pixel_x = -3;
+	pixel_y = 3
+	},
+/obj/item/tank/internals/emergency_oxygen/double/ninja,
+/obj/item/tank/internals/emergency_oxygen/double/ninja{
+	pixel_x = 3;
+	pixel_y = -3
+	},
+/turf/simulated/floor/indestructible{
+	icon_state = "floorgrime"
+	},
+/area/ruin/space/ninja_zen)
+
+"cxG" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 9
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"kjK" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dvt" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 5
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dEs" = (
+/obj/structure/flora/straw_bail,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"cMD" = (
+/obj/machinery/door/airlock/survival_pod{
+	},
+/turf/simulated/floor/plating/asteroid{
+	icon_state = "asteroidwarning";
+	name = "floor"
+	},
+/area/ruin/space/ninja_zen)
+
+"gGY" = (
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dLF" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 9
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dRA" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 8
+	},
+/turf/simulated/floor/wood/cherry,
+/area/ruin/space/ninja_zen)
+
+"dYC" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 4
+	},
+/turf/simulated/floor/wood/cherry,
+/area/ruin/space/ninja_zen)
+
+"dMC" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dGF" = (
+/mob/living/simple_animal/hostile/carp/koi,
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dJG" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"lpu" = (
+/obj/effect/turf_decal/weather/snow/corner,
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dSA" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dTy" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dKH" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dVZ" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dTO" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dUz" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dXa" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"dYY" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"eaU" = (
+/obj/effect/turf_decal/weather/snow/corner,
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"eia" = (
+/obj/effect/turf_decal/weather/snow/corner,
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"ejI" = (
+/obj/structure/flora/grass/both,
+/mob/living/simple_animal/pet/penguin/emperor,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"ejV" = (
+/mob/living/simple_animal/pet/penguin/baby,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"ekh" = (
+/obj/structure/flora/tree/dead,
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"eph" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/obj/effect/turf_decal/weather/snow/corner,
+/turf/simulated/floor/indestructible/beach/water/deep/dense,
+/area/ruin/space/ninja_zen)
+
+"epx" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 4
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood/cherry,
+/area/ruin/space/ninja_zen)
+
+"eqJ" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"hFk" = (
+/turf/simulated/wall/mineral/wood,
+/area/ruin/space/ninja_zen)
+
+"hDU" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"ery" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"eLT" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eNb" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"esx" = (
+/obj/machinery/light{
+	dir = 1;
+	switchcount = 50
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"euF" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"nXT" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"eyD" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"nYn" = (
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"fCS" = (
+/turf/simulated/floor/carpet/blue,
+/area/ruin/space/ninja_zen)
+
+"eKi" = (
+/obj/machinery/light{
+	dir = 1;
+	switchcount = 50
+	},
+/turf/simulated/floor/carpet/blue,
+/area/ruin/space/ninja_zen)
+
+"eyZ" = (
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eAy" = (
+/obj/item/storage/firstaid/brute{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/storage/firstaid/regular,
+/obj/structure/table/wood/fancy/royalblue,
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eAK" = (
+/obj/structure/rack,
+/obj/item/toy/katana{
+	desc = "Not really usefull in a real fight";
+	name = "training katana"
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eBc" = (
+/obj/structure/rack,
+/obj/item/twohanded/bostaff,
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eCv" = (
+/obj/structure/rack,
+/obj/item/twohanded/bamboospear,
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eFk" = (
+/obj/structure/rack,
+/obj/item/oar{
+	desc = "Редко можно увидеть весло с именем. В чём его тайна? Почему его зовут так? Может это связано с некой древней легендой? Или лодочник, что владел им раньше просто оставил на нём свою подпись? Эта информация сокрыта за туманом времени...";
+	name = "Миямото Мусаси"
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eHj" = (
+/obj/item/storage/firstaid/ancient{
+	pixel_x = 3;
+	pixel_y = 5
+	},
+/obj/item/storage/firstaid/fire,
+/obj/structure/table/wood/fancy/royalblue,
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eIx" = (
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eIy" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fbH" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"gwP" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/flag/ninja,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"nIG" = (
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"eKa" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"hnm" = (
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fwi" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fCu" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/machinery/light/small{
+	brightness_range = 2;
+	light_range = 2;
+	nightshift_light_range = 2;
+	tag = "icon-bulb1 (WEST)";
+	throw_range = 2
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"fFD" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"glc" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"nct" = (
+/obj/structure/window/full/paperframe,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-cherry"
+	},
+/area/ruin/space/ninja_zen)
+
+"tcW" = (
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"nFg" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"nPr" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"ncR" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"eOx" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"eOI" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"ePJ" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"eQT" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"eRw" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"eTW" = (
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/carpet/blue,
+/area/ruin/space/ninja_zen)
+
+"ggg" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/light/small{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"feM" = (
+/obj/structure/flora/grass/both,
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"fhO" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/structure/flora/tree/pine{
+	pixel_x = 1
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"fiS" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fjA" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 9
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fjX" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fkF" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/machinery/light{
+	dir = 1;
+	switchcount = 50
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fnn" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/landmark/ninja_spawn,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fom" = (
+/obj/structure/bed,
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 5
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/item/bedsheet/black,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"nsA" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"nyJ" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"idL" = (
+/obj/structure/chair/sofa/corp/left{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"foD" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"foG" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eRk" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"fqF" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 9
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"fsX" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"fts" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 5
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"kfM" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"fvn" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"gyV" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"gEA" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fxA" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 10
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fxY" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fxZ" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/item/storage/box/lights/mixed,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"gFq" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"fCL" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 6
+	},
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/structure/dresser,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"gSH" = (
+/obj/structure/chair/sofa/corp/right{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"fCP" = (
+/obj/structure/table/wood,
+/obj/item/reagent_containers/food/drinks/drinkingglass/devilskiss{
+	pixel_x = -6
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"gLj" = (
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/structure/railing/corner,
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"hbV" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/structure/railing,
+/turf/simulated/floor/carpet/blue,
+/area/ruin/space/ninja_zen)
+
+"gQs" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/railing/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"pOr" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 8
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami_nolines";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"fnh" = (
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami_nolines";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"hSY" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami_nolines";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"gXC" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing/corner,
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"hlQ" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"fCQ" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fDl" = (
+/obj/structure/flora/grass/green,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"mUx" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"hfX" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 8
+	},
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"fDZ" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 4
+	},
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"mhh" = (
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"mhN" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"mGy" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 8
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"fzw" = (
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"mHR" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"fER" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"fFf" = (
+/obj/machinery/chem_dispenser/beer/upgraded,
+/obj/structure/table/wood/poker,
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"fGm" = (
+/obj/machinery/chem_dispenser/soda/upgraded,
+/obj/structure/table/wood/poker,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"fGE" = (
+/obj/machinery/vending/boozeomat,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"fJE" = (
+/obj/structure/fermenting_barrel,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"kuh" = (
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"hIm" = (
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"ggC" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 9
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"fLb" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 5
+	},
+/obj/structure/safe/floor,
+/obj/item/reagent_containers/food/snacks/chinese/rice,
+/obj/item/reagent_containers/food/snacks/chinese/rice,
+/obj/item/reagent_containers/food/snacks/chinese/rice,
+/obj/item/reagent_containers/food/snacks/grown/rice,
+/obj/item/reagent_containers/food/snacks/grown/rice,
+/obj/item/reagent_containers/food/snacks/grown/rice,
+/obj/item/seeds/wheat/rice,
+/obj/item/seeds/wheat/rice,
+/obj/item/seeds/wheat/rice,
+/obj/item/seeds/wheat/rice,
+/obj/item/clothing/head/rice_hat,
+/obj/item/reagent_containers/food/condiment/rice,
+/obj/item/reagent_containers/food/condiment/rice,
+/obj/item/reagent_containers/food/condiment/rice,
+/obj/item/reagent_containers/food/condiment/rice,
+/obj/item/reagent_containers/food/condiment/rice,
+/obj/item/reagent_containers/food/snacks/grown/rice,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"mEY" = (
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"fNY" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 4
+	},
+/obj/structure/flora/ausbushes/sparsegrass,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"fPl" = (
+/obj/structure/flora/junglebush,
+/obj/effect/turf_decal/siding/green{
+	dir = 8
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"hLh" = (
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"maD" = (
+/obj/item/flag/ninja,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"hVd" = (
+/obj/structure/chair{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"hXp" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"fQx" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"fRd" = (
+/obj/structure/chair/sofa/corp/right{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"fUp" = (
+/obj/structure/flora/grass/both,
+/obj/structure/flora/grass/green,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"nVI" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"qim" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"huE" = (
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"ico" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 10
+	},
+/obj/structure/toilet{
+	dir = 1;
+	layer = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"fVE" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 6
+	},
+/obj/structure/mirror{
+	pixel_y = -30
+	},
+/obj/structure/sink{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"igq" = (
+/obj/structure/flora/junglebush,
+/obj/structure/flora/rock/pile/largejungle{
+	icon_state = "rocks1"
+	},
+/obj/structure/flora/tree/jungle/small,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"iiB" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 4
+	},
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"uQK" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"fYV" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 8
+	},
+/obj/structure/flora/ausbushes/reedbush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"fGl" = (
+/obj/structure/flora/rock/pile/largejungle{
+	icon_state = "rocks2"
+	},
+/obj/structure/flora/tree/jungle/small,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"ipE" = (
+/obj/structure/flora/ausbushes/sparsegrass,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"fNy" = (
+/obj/structure/chair{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"fZi" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"hJH" = (
+/obj/structure/railing/corner,
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"fZo" = (
+/obj/structure/chair/sofa/corp/left{
+	dir = 8
+	},
+/obj/structure/railing,
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"iDq" = (
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"xKJ" = (
+/obj/effect/turf_decal/siding/green,
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"iEE" = (
+/obj/effect/turf_decal/siding/green,
+/obj/structure/flora/ausbushes/lavendergrass,
+/obj/structure/flora/ausbushes/fernybush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"iFV" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 6
+	},
+/obj/structure/flora/ausbushes/ppflowers,
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gaR" = (
+/obj/structure/flora/junglebush,
+/obj/effect/turf_decal/siding/green{
+	dir = 10
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gbQ" = (
+/obj/structure/flora/junglebush,
+/obj/effect/turf_decal/siding/green,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gcK" = (
+/obj/effect/turf_decal/siding/green,
+/obj/structure/flora/ausbushes/palebush,
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"tdM" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/light/small{
+	brightness_range = 2;
+	dir = 8;
+	light_range = 2;
+	nightshift_light_range = 2;
+	tag = "icon-bulb1 (WEST)";
+	throw_range = 2
+	},
+/obj/structure/railing/corner{
+	dir = 1
+	},
+/obj/item/radio/intercom/syndicate/directional/west,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"gdi" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"jOk" = (
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/item/stack/nanopaste{
+	pixel_x = -7
+	},
+/obj/item/storage/toolbox/surgery,
+/obj/machinery/light/small{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel/freezer,
+/area/ruin/space/ninja_zen)
+
+"lkT" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"gfR" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"ggV" = (
+/obj/effect/baseturf_helper/asteroid/snow{
+	baseturf = /turf/simulated/floor/indestructible/snow;
+	name = "snow baseturf editor"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"ghk" = (
+/obj/structure/table/wood/fancy/green,
+/obj/item/reagent_containers/food/snacks/chinese/chowmein{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/reagent_containers/food/snacks/chinese/tao,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"ghl" = (
+/obj/structure/table/wood/fancy/green,
+/obj/item/reagent_containers/food/snacks/ricepudding,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"glB" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gAs" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/item/radio/intercom/syndicate/directional/north,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gmb" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gnr" = (
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"goz" = (
+/obj/effect/baseturf_helper/asteroid/snow{
+	baseturf = /turf/simulated/floor/indestructible/snow;
+	name = "snow baseturf editor"
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"gpp" = (
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"lbe" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"gAV" = (
+/mob/living/carbon/human/lesser/wolpin,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"eWL" = (
+/obj/machinery/defibrillator_mount/loaded{
+	pixel_x = -30
+	},
+/obj/machinery/optable,
+/obj/machinery/shower{
+	pixel_y = 20
+	},
+/turf/simulated/floor/plasteel/freezer,
+/area/ruin/space/ninja_zen)
+
+"fqO" = (
+/turf/simulated/floor/plasteel/freezer,
+/area/ruin/space/ninja_zen)
+
+"gpK" = (
+/obj/structure/table/wood/fancy/green,
+/obj/item/reagent_containers/food/snacks/chimichanga,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"kag" = (
+/obj/structure/table/wood/fancy/green,
+/obj/item/reagent_containers/food/drinks/tea{
+	desc = "Don't drink it with sugar!";
+	name = "Green tea";
+	pixel_y = 7
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"ksB" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gtO" = (
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gud" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gvL" = (
+/obj/structure/railing,
+/turf/simulated/floor/plasteel{
+	dir = 4;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"eSC" = (
+/obj/structure/railing,
+/turf/simulated/floor/plasteel{
+	dir = 8;
+	icon_state = "rampbottom";
+	tag = "icon-stage_stairs"
+	},
+/area/ruin/space/ninja_zen)
+
+"foC" = (
+/obj/machinery/computer/operating,
+/turf/simulated/floor/plasteel/freezer,
+/area/ruin/space/ninja_zen)
+
+"gvQ" = (
+/obj/structure/closet/crate/medical,
+/obj/item/reagent_containers/glass/bottle/morphine,
+/obj/item/storage/box/beakers,
+/obj/item/robot_parts/l_arm,
+/obj/item/robot_parts/r_arm,
+/obj/item/clothing/mask/surgical,
+/obj/item/reagent_containers/iv_bag/bloodsynthetic/oxygenis,
+/obj/item/tank/internals/anesthetic,
+/obj/item/clothing/mask/breath/medical,
+/obj/item/robot_parts/l_leg,
+/obj/item/robot_parts/r_leg,
+/turf/simulated/floor/plasteel/freezer,
+/area/ruin/space/ninja_zen)
+
+"lIw" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/structure/flora/ausbushes/brflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"gxr" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"lKY" = (
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"gyg" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"gza" = (
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"dCF" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 1
+	},
+/obj/structure/flora/ausbushes/brflowers,
+/obj/structure/flora/bush,
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"dHT" = (
+/obj/structure/flora/junglebush,
+/obj/effect/turf_decal/siding/green{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gzb" = (
+/obj/structure/flora/junglebush,
+/obj/effect/turf_decal/siding/green{
+	dir = 5
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"lVo" = (
+/obj/structure/flora/rock/jungle,
+/obj/effect/turf_decal/siding/green{
+	dir = 9
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gzT" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 1
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"ebp" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 1
+	},
+/obj/structure/flora/ausbushes/sunnybush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"evL" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/machinery/light/small{
+	brightness_range = 2;
+	dir = 8;
+	light_range = 2;
+	nightshift_light_range = 2;
+	tag = "icon-bulb1 (WEST)";
+	throw_range = 2
+	},
+/obj/structure/railing/corner{
+	dir = 8
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"gLb" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing/corner,
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"gLh" = (
+/obj/machinery/bodyscanner{
+	dir = 4;
+	layer = 3.5
+	},
+/obj/machinery/light/small{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel/freezer,
+/area/ruin/space/ninja_zen)
+
+"gLX" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"gNB" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"gPe" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 9
+	},
+/obj/structure/toilet,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"mfb" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 5
+	},
+/obj/structure/mirror{
+	pixel_y = 30
+	},
+/obj/structure/sink{
+	pixel_y = 25
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"gQr" = (
+/obj/structure/flora/ausbushes/lavendergrass,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gQL" = (
+/obj/structure/flora/rock/pile/largejungle{
+	icon_state = "rocks3"
+	},
+/obj/structure/flora/tree/jungle/small,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"gAB" = (
+/obj/structure/flora/junglebush,
+/obj/effect/turf_decal/siding/green{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"rMi" = (
+/obj/effect/turf_decal/siding/green{
+	dir = 8
+	},
+/obj/structure/flora/ausbushes/ywflowers,
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"dFC" = (
+/obj/structure/chair{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"gUj" = (
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"mqz" = (
+/obj/structure/chair/sofa/corp/right{
+	dir = 8
+	},
+/obj/structure/railing{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"wFR" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 10
+	},
+/obj/machinery/vending/chinese,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"jen" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/machinery/vending/snack,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"nfS" = (
+/obj/machinery/light,
+/obj/effect/turf_decal/siding/wood,
+/obj/machinery/vending/cola,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"mzP" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner,
+/obj/structure/table/wood/poker,
+/obj/item/deck/cards/black,
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"mDX" = (
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"hdn" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 10
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"mEn" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 6
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"smo" = (
+/obj/structure/flora/ausbushes/brflowers,
+/obj/structure/flora/junglebush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"dQw" = (
+/obj/structure/flora/bush,
+/turf/simulated/floor/indestructible/grass,
+/area/ruin/space/ninja_zen)
+
+"mQp" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/carpet/cyan,
+/area/ruin/space/ninja_zen)
+
+"mRT" = (
+/obj/structure/chair/sofa/corp/left{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/black,
+/area/ruin/space/ninja_zen)
+
+"hdz" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "rampbottom"
+	},
+/area/ruin/space/ninja_zen)
+
+"heo" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "rampbottom"
+	},
+/area/ruin/space/ninja_zen)
+
+"hiM" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 9
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"njt" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"hlC" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/item/storage/box/lights/mixed,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"hnC" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 1
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"hqm" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 5
+	},
+/obj/structure/dresser,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"hqp" = (
+/obj/structure/table/wood,
+/obj/item/reagent_containers/food/drinks/drinkingglass/devilskiss{
+	pixel_x = -6;
+	pixel_y = 7
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"eeN" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"gmt" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/structure/railing{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/red,
+/area/ruin/space/ninja_zen)
+
+"rGt" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/structure/railing/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"hsS" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/structure/railing/corner{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"nlx" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"nly" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"htL" = (
+/obj/structure/flora/grass/brown,
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"lLo" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"hua" = (
+/obj/machinery/light,
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"nnl" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/obj/effect/landmark/ninja_spawn,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"euj" = (
+/obj/effect/turf_decal/tile{
+	alpha = 128;
+	color = "#363636";
+	icon_state = "diagonal_edge"
+	},
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 6
+	},
+/obj/structure/bed,
+/obj/item/bedsheet/black,
+/turf/simulated/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"huw" = (
+/obj/machinery/light/small{
+	brightness_range = 2;
+	light_range = 2;
+	nightshift_light_range = 2;
+	tag = "icon-bulb1 (WEST)";
+	throw_range = 2
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"nzn" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"okZ" = (
+/turf/simulated/floor/carpet/red,
+/area/ruin/space/ninja_zen)
+
+"huG" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 10
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami_nolines";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"jHk" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444"
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami_nolines";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"hvD" = (
+/obj/effect/turf_decal/siding{
+	color = "#444444";
+	dir = 6
+	},
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "tatami_nolines";
+	name = "Tatami"
+	},
+/area/ruin/space/ninja_zen)
+
+"hwh" = (
+/obj/structure/flora/tree/pine{
+	pixel_x = 1
+	},
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"hES" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"ePB" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/obj/structure/mineral_door/wood/paperframe,
+/turf/simulated/floor/plasteel{
+	dir = 1;
+	icon_state = "sepia"
+	},
+/area/ruin/space/ninja_zen)
+
+"hFV" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"hJr" = (
+/obj/machinery/light/small{
+	dir = 4;
+	tag = "icon-bulb1 (EAST)"
+	},
+/turf/simulated/floor/carpet/red,
+/area/ruin/space/ninja_zen)
+
+"hZr" = (
+/obj/structure/flora/grass/brown,
+/obj/structure/flora/grass/brown,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"hmH" = (
+/obj/structure/flora/ausbushes/ywflowers,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"ibG" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 4
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iCc" = (
+/obj/machinery/light,
+/obj/effect/turf_decal/siding/wood,
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"fwy" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood/corner,
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iFF" = (
+/obj/machinery/light,
+/turf/simulated/floor/carpet/red,
+/area/ruin/space/ninja_zen)
+
+"oaT" = (
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood{
+	dir = 9
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"obR" = (
+/obj/structure/table/wood/fancy/red,
+/obj/item/storage/firstaid/brute{
+	pixel_x = 4;
+	pixel_y = 4
+	},
+/obj/item/storage/firstaid/regular,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"oha" = (
+/obj/structure/rack,
+/obj/item/oar,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"oiF" = (
+/obj/structure/rack,
+/obj/item/twohanded/bamboospear,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iKK" = (
+/obj/structure/rack,
+/obj/item/twohanded/bostaff,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iLk" = (
+/obj/structure/rack,
+/obj/machinery/light,
+/obj/item/toy/katana{
+	desc = "Говорят тому, кто будет орудовать этой катаной в настоящей битве — не светит победы даже в бою с пьяницей вооружённым веслом";
+	name = "Сасаки Кадзиро"
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iMb" = (
+/obj/structure/table/wood/fancy/red,
+/obj/item/storage/firstaid/ancient{
+	pixel_x = 3;
+	pixel_y = 5
+	},
+/obj/item/storage/firstaid/fire,
+/obj/effect/turf_decal/siding/wood{
+	dir = 1
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iMF" = (
+/obj/item/flag/ninja,
+/obj/effect/turf_decal/siding/wood{
+	dir = 5
+	},
+/turf/simulated/floor/wood{
+	icon_state = "fancy-wood-oak"
+	},
+/area/ruin/space/ninja_zen)
+
+"iNj" = (
+/obj/effect/turf_decal/siding/wood,
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"ooz" = (
+/obj/effect/turf_decal/siding/wood/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 6
+	},
+/turf/simulated/floor/carpet/green,
+/area/ruin/space/ninja_zen)
+
+"knG" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"gmQ" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"kKo" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/flag/ninja,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"oQl" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/item/flag/ninja,
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"kSn" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 4
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"kSU" = (
+/obj/effect/turf_decal/siding/wood{
+	dir = 8
+	},
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-34";
+	tag = "icon-plant-34"
+	},
+/turf/simulated/floor/wood/fancy/light,
+/area/ruin/space/ninja_zen)
+
+"plK" = (
+/obj/item/twohanded/required/kirbyplants{
+	icon_state = "plant-22";
+	tag = "icon-plant-22"
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"meN" = (
+/obj/structure/flora/grass/both,
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"mfc" = (
+/obj/structure/marker_beacon{
+	icon_state = "markerjade-on"
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"mfn" = (
+/obj/structure/marker_beacon{
+	icon_state = "markerjade-on"
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"myy" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 6
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"eul" = (
+/turf/simulated/floor/shuttle/transparent_floor,
+/area/shuttle/ninja)
+
+"myE" = (
+/obj/effect/mapping_helpers/light{
+	light_power = 3
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 10
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"mBj" = (
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 8
+	},
+/obj/effect/turf_decal/weather/snow/corner{
+	dir = 4
+	},
+/turf/simulated/floor/indestructible/asteroid,
+/area/ruin/space/ninja_zen)
+
+"whe" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 9;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners"
+	},
+/area/shuttle/ninja)
+
+"tlW" = (
+/obj/structure/shuttle/engine/huge{
+	dir = 1;
+	opacity = 0
+	},
+/turf/simulated/floor/shuttle/transparent_floor,
+/area/shuttle/ninja)
+
+"rug" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 5;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners"
+	},
+/area/shuttle/ninja)
+
+"xDA" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 10;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners"
+	},
+/area/shuttle/ninja)
+
+"tbW" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 1;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_T_alt"
+	},
+/area/shuttle/ninja)
+
+"gLw" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 4;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_direction"
+	},
+/area/shuttle/ninja)
+
+"kgk" = (
+/obj/machinery/door/airlock/hatch{
+;
+	frequency = 1331;
+	id_tag = "ninja_outer";
+	name = "Ship External Access"
+	},
+/obj/structure/fans/tiny/invisible,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"uHf" = (
+/obj/machinery/access_button{
+	command = "cycle_exterior";
+	frequency = 1331;
+	master_tag = "ninja_airlock";
+	name = "interior access button";
+	pixel_x = -12
+	},
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 8;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_direction"
+	},
+/area/shuttle/ninja)
+
+"vNF" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 4;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_T_alt"
+	},
+/area/shuttle/ninja)
+
+"mCK" = (
+/obj/structure/shuttle/engine/platform{
+	layer = 2.9
+	},
+/turf/simulated/floor/shuttle/transparent_floor,
+/area/shuttle/ninja)
+
+"tIe" = (
+/obj/structure/shuttle/engine/platform{
+	layer = 2.9
+	},
+/obj/structure/shuttle/engine/large{
+	dir = 1;
+	opacity = 0
+	},
+/turf/simulated/floor/shuttle/transparent_floor,
+/area/shuttle/ninja)
+
+"bpJ" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 8;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_T_alt"
+	},
+/area/shuttle/ninja)
+
+"uNo" = (
+/obj/machinery/access_button{
+	command = "cycle_exterior";
+	frequency = 1331;
+	master_tag = "ninja_airlock";
+	name = "interior access button";
+	pixel_x = 10
+	},
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 4;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_direction"
+	},
+/area/shuttle/ninja)
+
+"xaJ" = (
+/obj/machinery/door/airlock/hatch{
+;
+	frequency = 1331;
+	id_tag = "ninja_outer";
+	name = "Ship External Access"
+	},
+/obj/docking_port/mobile{
+	dheight = 2;
+	dir = 2;
+	dwidth = 4;
+	height = 10;
+	id = "ombra";
+	name = "Spider Clan Ombra";
+	port_direction = 2;
+	preferred_direction = 2;
+	roundstart_move = "ombra_home";
+	width = 21
+	},
+/obj/structure/fans/tiny/invisible,
+/obj/docking_port/stationary{
+	area_type = /area/ruin/space/ninja_zen;
+	dheight = 2;
+	dir = 2;
+	dwidth = 4;
+	height = 10;
+	id = "ombra_home";
+	name = "Spider Clan Facility";
+	turf_type = /turf/simulated/floor/indestructible/snow;
+	width = 21
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"rAu" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 8;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_direction"
+	},
+/area/shuttle/ninja)
+
+"bQF" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 6;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners"
+	},
+/area/shuttle/ninja)
+
+"xfs" = (
+/turf/simulated/wall/shuttle/nosmooth/interior{
+	dir = 5;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners";
+	underlay_floor_icon = 'icons/turf/shuttle/floors.dmi';
+	underlay_floor_icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"xhP" = (
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"kMS" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/obj/machinery/airlock_sensor{
+	frequency = 1331;
+	id_tag = "ninja_sensor";
+	pixel_x = -12;
+	pixel_y = 25;
+	req_access = list(150)
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"hNg" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_direction"
+	},
+/area/shuttle/ninja)
+
+"xIi" = (
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater3x3_side_inv";
+	tag = "icon-heater (NORTH)"
+	},
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"aTQ" = (
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater3x3";
+	tag = "icon-heater (NORTH)"
+	},
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"uLd" = (
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater3x3_side";
+	tag = "icon-heater (NORTH)"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"rCS" = (
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater2x2";
+	tag = "icon-heater (NORTH)"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"mBi" = (
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater2x2_side";
+	tag = "icon-heater (NORTH)"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"sIh" = (
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater3x3_side_inv";
+	tag = "icon-heater (NORTH)"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"pyh" = (
+/obj/structure/shuttle/engine/platform{
+	dir = 1;
+	layer = 2.9
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700"
+	},
+/obj/structure/shuttle/engine/heater{
+	dir = 1;
+	icon_state = "heater3x3";
+	tag = "icon-heater (NORTH)"
+	},
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"oyc" = (
+/obj/machinery/light/small{
+	dir = 1
+	},
+/obj/machinery/airlock_sensor{
+	frequency = 1331;
+	id_tag = "ninja_sensor";
+	pixel_x = 12;
+	pixel_y = 25;
+	req_access = list(150)
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"bYi" = (
+/turf/simulated/wall/shuttle/nosmooth/interior{
+	dir = 9;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners";
+	underlay_floor_icon = 'icons/turf/shuttle/floors.dmi';
+	underlay_floor_icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"mFm" = (
+/obj/structure/marker_beacon{
+	icon_state = "markerjade-on"
+	},
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+"dUN" = (
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 4;
+	frequency = 1331;
+	id_tag = "ninja_pump"
+	},
+/obj/machinery/access_button{
+	command = "cycle_interior";
+	frequency = 1331;
+	master_tag = "ninja_airlock";
+	name = "interior access button";
+	pixel_x = 23;
+	pixel_y = 25
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"uFB" = (
+/obj/machinery/door/airlock/hatch{
+;
+	frequency = 1331;
+	id_tag = "ninja_inner";
+	locked = 1;
+	name = "Ship External Access"
+	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/obj/structure/fans/tiny/invisible,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"nzK" = (
+/obj/machinery/access_button{
+	command = "cycle_interior";
+	frequency = 1331;
+	master_tag = "ninja_airlock";
+	name = "interior access button";
+	pixel_x = -25;
+	pixel_y = 25
+	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"lrJ" = (
+/obj/machinery/atmospherics/pipe/manifold/visible{
+	dir = 1
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"ubF" = (
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/obj/machinery/suit_storage_unit/standard_unit{
+	req_access = null
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"uFn" = (
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/obj/machinery/embedded_controller/radio/airlock/airlock_controller{
+	frequency = 1331;
+	id_tag = "ninja_airlock";
+	pixel_y = 3;
+	tag_airpump = "ninja_pump";
+	tag_chamber_sensor = "ninja_sensor";
+	tag_exterior_door = "ninja_outer";
+	tag_interior_door = "ninja_inner"
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"bLb" = (
+/obj/structure/table/abductor{
+	color = "#99ff99";
+	name = "table"
+	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/obj/item/tank/internals/emergency_oxygen/double/ninja,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"wos" = (
+/obj/machinery/access_button{
+	command = "cycle_interior";
+	frequency = 1331;
+	master_tag = "ninja_airlock";
+	name = "interior access button";
+	pixel_x = 23;
+	pixel_y = 25
+	},
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 4
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"pUJ" = (
+/obj/machinery/atmospherics/unary/vent_pump/high_volume{
+	dir = 8;
+	frequency = 1331;
+	id_tag = "ninja_pump"
+	},
+/obj/machinery/access_button{
+	command = "cycle_interior";
+	frequency = 1331;
+	master_tag = "ninja_airlock";
+	name = "interior access button";
+	pixel_x = -25;
+	pixel_y = 25
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"wQF" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 1;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_direction"
+	},
+/area/shuttle/ninja)
+
+"wSF" = (
+/obj/structure/window/plasmareinforced{
+	color = "#00f700";
+	dir = 4
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700";
+	dir = 1
+	},
+/obj/structure/chair/comfy/shuttle/dark,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"iVW" = (
+/obj/machinery/atmospherics/pipe/simple/visible,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"byl" = (
+/obj/structure/window/plasmareinforced{
+	color = "#00f700";
+	dir = 1
+	},
+/obj/structure/window/plasmareinforced{
+	color = "#00f700";
+	dir = 8
+	},
+/obj/structure/chair/comfy/shuttle/dark,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"fAv" = (
+/obj/machinery/door/window/brigdoor{
+	color = "#00f700";
+;
+	name = "Riot Control"
+	},
+/obj/machinery/light/spot{
+	dir = 8;
+	tag = "icon-tube1 (WEST)"
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"lxP" = (
+/obj/machinery/door/window/brigdoor{
+	color = "#00f700";
+	dir = 8;
+;
+	name = "Riot Control"
+	},
+/obj/machinery/light/spot{
+	dir = 4;
+	tag = "icon-tube1 (EAST)"
+	},
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"odX" = (
+/obj/machinery/atmospherics/unary/tank/air/ninja{
+	dir = 1
+	},
+/turf/simulated/wall/shuttle/nosmooth/interior{
+	dir = 5;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners";
+	underlay_floor_icon = 'icons/turf/shuttle/floors.dmi';
+	underlay_floor_icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"pvn" = (
+/obj/structure/chair/comfy/shuttle/dark,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"acK" = (
+/obj/machinery/atmospherics/unary/tank/air/ninja{
+	dir = 1
+	},
+/turf/simulated/wall/shuttle/nosmooth/interior{
+	dir = 9;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners";
+	underlay_floor_icon = 'icons/turf/shuttle/floors.dmi';
+	underlay_floor_icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"gfP" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 4;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners"
+	},
+/area/shuttle/ninja)
+
+"cHW" = (
+/obj/machinery/computer/shuttle/ninja,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"psd" = (
+/obj/machinery/computer/camera_advanced/shuttle_docker/ninja,
+/turf/simulated/floor/shuttle{
+	icon_state = "floor13"
+	},
+/area/shuttle/ninja)
+
+"rgH" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_corners"
+	},
+/area/shuttle/ninja)
+
+"mll" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 6;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_T_alt"
+	},
+/area/shuttle/ninja)
+
+"pYK" = (
+/obj/structure/grille,
+/obj/structure/window/full/shuttle/ninja,
+/turf/simulated/floor/shuttle/plating,
+/area/shuttle/ninja)
+
+"htX" = (
+/turf/simulated/wall/shuttle/nosmooth{
+	dir = 10;
+	icon = 'icons/turf/walls/shuttle/ninja_shuttle_wall.dmi';
+	icon_state = "ninja_walls_T_alt"
+	},
+/area/shuttle/ninja)
+
+"nQm" = (
+/obj/structure/flora/tree/dead,
+/obj/structure/flora/grass/both,
+/turf/simulated/floor/indestructible/snow,
+/area/ruin/space/ninja_zen)
+
+(1,1,1) = {"
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSykSykSykSykSykSemNykSsQxykSykSykSykSykSykSykSykStdjtdjykSykSrnstdjkQkykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSykSykSycOykSadWawuaxcykSycOykSykSadWaxcykSykSrnssQxadWykSadWhGJykSadWykSykSkQkmNjmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjykSadWykSadWykSadWykSykSrnsykSadWadWadWykSycOykSadWykSykSykSaIzykStdjtdjykSadWykSykSykSemNmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjtdjykSykSykSykStdjykSykStdjykSjSwjSwjSwjSwjSwjSwjSwjSwjSwykStdjtdjykStdjsQxhGJaIzhGJawutdjykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjykStdjadWadWykSsQxrnstdjadWjSwjSwdMbdMbdMbdMbdMbdMbdMbjSwjSwjSwjSwjSwjSwjSwtdjykSadWkQkkQkaYyykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjemNykSycOykSykSadWykSadWjSwjSwdMbdMbbRMnhlbhgbhtbhLdMbdMbdMbdMbdMbdMbdMbjSwjSwykSadWykStdjykStdjtdjmNjmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjykSykSadWykStdjykSykSjSwjSwdMbdMbbRMbRMnhlbDRbRMbEBdMbbGZbHobHRbHRbJLdMbdMbjSwkQkycOykSykSadWtdjykSmNjmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjykSadWsQxadWykSadWykSjSwdMbdMbbRMbRMbRMdMbdMbnhldMbdMbeFvceSbRxbRMbRMnWfdMbjSwcfatdjtdjbuytdjrnsykSmNjmNjmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjtdjtdjtdjtdjawuykSadWjSwdMbchjbRMcigdMbdMbdMbcivbRMbBYbhgbRxcjycjybRMcjQdMbjSwckqckChxTclipqvbYbykSbyGmNjmNjmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjykSadWykStdjsQxcBUcBUjSwdMbcCTbRMcDkcDUdMbcEgbyZbAhnWfnWfgVwnWfnENbRxcESdMbjSwtdjykScHKcHTkQTbYbycOykStdjmNjmNjmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmNjykSrnsykSrnstdjtdjykSjSwdMbcCTbRMcQFdMbdMbdMbcQJbRMbBYbDRbRMcRmbGPbRMbNcdMbjSwcRnbYbovacUDcVbykSykStdjycOtdjmNjmNjmNjmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmNjmNjykSykSdiGadWykScBUdiHjSwdMbdMbdmvdmvcmJdMbdMbdMbdMbdMbqDIdnLbRMbRxbRMnWfdMbjSwtdjykSdovbYbykSrnstdjykSykStdjemNtdjmNjmNjmNjmVX
+mVXmVXmVXmVXmVXmVXmNjmNjykSykSdrhdrzykSykSykStdjjSwjSwdMbdMbcmJcmJdsXcoIdtKdtLdMbdMbdufcqidukdumdMbdMbjSwtdjykSykSykScxGkjKkjKkjKkjKdvttdjykSrnsemNmNjmVX
+mVXmVXmVXmVXmVXmNjmNjykSykSdrhkQTykSykSemNcBUcBUdEsjSwjSwdMbdMbdMbdMbdMbcMDcMDdMbdMbdMbdMbdMbdMbdMbjSwjSwykScxGkjKkjKgGYgGYgGYgGYgGYgGYkjKkjKkjKkjKmNjmVX
+mVXmVXmVXmVXmNjmNjykSykSdLFdRAdYCdMCkjKkjKkjKkjKkjKdvtjSwjSwjSwjSwjSwjSwdRAdYCjSwjSwjSwjSwjSwjSwjSwjSwcxGkjKgGYgGYdGFdJGgGYlpulpulpugGYdJGgGYgGYgGYmNjmVX
+mVXmVXmVXmNjmNjykSykScxGdSAdRAdYCdTygGYgGYdJGgGYdGFgGYdKHkjKkjKkjKdVZdTOdRAdYCdUzdVZkjKkjKkjKdVZkjKkjKgGYdJGdGFgGYgGYlpudXaykStdjykSdYYlpulpulpulpumNjmVX
+mVXmVXmNjmNjykScxGkjKgGYdSAdRAdYCeaUlpulpulpulpulpulpulpulpulpulpulpueiadRAdYCeaUlpulpulpulpulpulpulpulpulpulpulpudXaemNejIejVekhtdjtdjykSsQxycOtdjmNjmVX
+mVXmNjmNjcxGkjKgGYdJGgGYephdRAepxeqJhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhDUhDUhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkykSykSemNmNjmVX
+mNjmNjgGYgGYdGFgGYgGYdXaykSovaerytdjhFkeLTeNbeNbeNbeNbesxeNbeNbeuFnXTeyDnYnnYneyDnXTfCSfCSeKieyZeAyeAKeBceCveFkeHjeIxeKifCSfCSnXTeIyfbHhFkykStdjtdjmNjmNj
+mNjgGYdJGgGYgGYlpudXaykStdjovakQTykShFkgwPnIGeKahnmhnmhnmhnmhnmfwinXTfCunYnnYnfCunXTfCSfCSfCSfCSfCSfCSfCSfCSfCSfCSfCSfCSfCSfCSnXTfFDglcncttdjykSykStdjmNj
+lpulpulpulpudXaykSykSemNdrhtcWdrzykShFknFgnIGnPrhFkhFkhFkhFkhFkhFkhFkhFkncReOxhFkhFkhFkhFkfCSeOIePJePJePJePJePJeQTeRweTWhFkhFkhFkgggglcnctykSfeMykStdjykS
+emNtdjykStdjykSykSykStdjovadrzfhOykShFkgwPnIGfiSeuFnXTfjAfjXfkFfnnfomhFknsAnyJhFkidLfoDfoGfCSeRkfqFfsXfsXfsXfsXftskfMfCSncteLTeNbfvnglcncttdjykStdjykStdj
+tdjykSykStdjykSykSykSdrhkQTtdjykSykShFkgyVnIGnIGgEAnXTfxAfxYfxZgFqfCLhFknsAnyJhFkgSHfCPgLjhbVgQspOrfnhfnhfnhfnhhSYgXChbVncthlQnIGnIGfCQhFkykSykSsQxycOykS
+ykSrnstdjykSykSykSfDlovadrzhFkhFkhFkhFkhFkmUxmUxhFkhFkhDUhFkhFknctncthFkhfXfDZhFknctncthFkmhhmhNmGyfzwfzwfzwfzwmHRfERmhhhFkhFkeOxncRhFkhFkykSrnssQxykSemN
+ykStdjtdjemNycOfDldrhdrztdjhFkfFffGmfGEfJEkuhkuhhImhFkggCfLbnctmEYmEYfNYtcWtcWfPlhLhmEYnctmaDmhNpOrfnhfnhfnhfnhhSYfERmaDncthVdhXpfQxfRdhFkykShGJtdjykSmNj
+ykStdjykSfDlfUpdrhdrznVItdjhFkqimkuhkuhkuhkuhkuhhuEhFkicofVEnctmEYigqiiBtcWuQKfYVfGlipEnctmhhmhNmGyfzwfzwfzwfzwmHRfERmhhnctfNyfZihJHfZohFkykSykSykSmNjmNj
+ykSykSfDltdjdrhkQTtdjykSykSnctqimeOIePJePJeRwkuhiDqhFkhFkhFkhFkxKJiEEiFVtcWtcWgaRgbQgcKhFkhFktdMpOrfnhfnhfnhfnhhSYgdihFkhFkjOklkTgfRmaDncttdjsQxemNmNjmVX
+mNjykSykStdjovakQTrnsykSykSnctggVeRkghkghlkfMkuhglBgAsgmbnXTgnrtcWuQKtcWgoztcWtcWtcWtcWgpplbeeRkmGyfzwgAVfzwfzwmHRkfMhFkeWLfqOlkTgfRmhhncttdjnVImNjmNjmVX
+mNjmNjrnstdjovakQTykSykSykSnctqimeRkgpKkagkfMkuhksBgtOgudnXTgvLtcWtcWtcWtcWtcWtcWuQKtcWeSClbeeRkpOrfnhfnhfnhfnhhSYkfMhFkfoCgvQlkTgfRmhhncttdjlIwmNjmVXmVX
+mVXmNjmNjtdjovakQTtdjykSykSnctqimgxrlKYlKYgygkuhgzahFkhFkhFkhFkdCFdHTgzbtcWtcWlVogzTebphFkhFkevLmGyfzwfzwfzwfzwmHRgLbhFkhFkgLhlkTgfRmaDnctykStdjmNjmVXmVX
+mVXmVXmNjtdjgLXtcWpqvgNBykShFkqimkuhkuhkuhkuhkuhhuEhFkgPemfbnctgQrgQLgABuQKtcWrMigQLipEnctmhhmhNpOrfnhfnhfnhfnhhSYfERmhhnctdFChXpgUjmqzhFkykSykSmNjmNjmVX
+mVXmNjmNjkQkykSgLXtcWpqvykShFkwFRjennfSmzPkuhkuhmDXhFkhdnmEnnctmEYsmogABtcWtcWfPldQwmEYnctmaDmhNmGyfzwfzwfzwfzwmHRfERmaDncthVdfZimQpmRThFktdjykSykSmNjmVX
+mVXmNjykSykSkQkrnsovakQTykShFkhFkhFkhFkhFkmUxmUxhFkhFkmUxhFkhFknctncthFkhdzheohFknctncthFkmhhmhNpOrfnhfnhfnhfnhhSYfERmhhhFkhFkeOxncRhFkhFkykSycOykSmNjmNj
+mNjmNjykSykSykSkQkovakQTtdjykSykSykShFkeLTnIGnIGeIynXThiMnjthlChnChqmhFknsAnyJhFkidLhqpeeNgmtrGtmGyfzwfzwfzwfzwmHRhsSgmtnctnlxnIGnIGnlyhFksQxtdjtdjykSmNj
+mNjykSycOhtLtdjkQkovakQTykSykSnVIykShFkgwPnIGeKahnmnXTfxAlLohuannleujhFknsAnyJhFkgSHhuwnznokZeRkhuGjHkjHkjHkjHkhvDkfMokZnctgyVhnmfFDglcnctykStdjhGJykSmNj
+ykSykSykSykSykStdjovakQThwhykSykSykShFknFgnIGnPrhFkhFkhFkhFkhFkhFkhFkhFkhESePBhFkhFkhFkhFkokZgxrlKYlKYlKYlKYlKYhFVgyghJrhFkhFkhFkgggglcnctykSnVItdjykSmNj
+ykSykSykSfDlykShZrovakQTykSykShmHykShFkgwPnIGfiSeNbeNbeNbeNbeNbeuFnXTibGnYnnYnibGnXTokZokZokZokZokZokZokZokZokZokZokZokZokZokZnXTfvnglcnctykSykSykSykSemN
+ykSrnsykSykSkQkykSovakQTykSykSykSykShFkgyVhnmhnmhnmhnmiCchnmhnmfwinXTfwynYnnYnfwynXTokZokZiFFoaTobRohaoiFiKKiLkiMbiMFiFFokZokZnXTiNjoozhFkykStdjrnstdjykS
+fDlykSemNykSykSrnsovakQTykSykSykSykShFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhDUhDUhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFkhFktdjykStdjykSykS
+ykSfDlykSykSykStdjovakQTtdjrnssQxnVIykSykSykSykSykSykSykSykSykSykShFkhFknYnnYnhFkhFkykStdjykSykSykStdjykStdjykSykSykSykSycOykSykSykSykSykSykSykSykSykSmNj
+ykSykSykStdjykStdjgLXtcWpqvykSykSykSsQxhmHemNykSykSykSsQxykSykSykShFkknGnYnnYngmQhFkykStdjykStdjtdjykStdjtdjycOykSnVIykSykStdjhGJnVIykStdjykStdjsQxykSmNj
+ykSykSykSycOykSykSykSgLXtcWhxThxTpqvtdjykSykShmHykSykSnVIykSsQxykSnctkKonYnnYnoQlncttdjtdjykSnVIykStdjykStdjykStdjtdjtdjykSsQxykSykSsQxykSykStdjykSmNjmNj
+mNjykStdjykSykSfDlykSrnsgLXcUDcUDtcWhxTpqvtdjykSykSykShmHykSykSykShFkkSnnYnnYnkSUhFkykSykSykStdjykSykSsQxtdjykStdjycOykSykStdjtdjrnsykSykSykSsQxmNjmNjmVX
+mNjmNjykStdjykSfDlykSykSykStdjtdjgLXcUDtcWhxTpqvykSykSsQxemNykSykShFkhFknYnnYnhFkhFkykStdjykSykSycOykSykStdjykShGJykStdjykStdjtdjtdjemNykStdjmNjmNjmVXmVX
+mVXmNjmNjmNjykSemNykSfDlykSykSykStdjtdjgLXcUDtcWpqvtdjykSykSykSykSykShFkhDUhDUhFkykSykSykSykStdjykSykSykSykSykSsQxykStdjsQxykStdjykSykStdjmNjmNjmVXmVXmVX
+mVXmVXmVXmNjmNjykSykSykSfDlkQkykSykSykSykStdjgLXtcWpqvtdjykSrnsykSykSplKhfXfDZplKykSykSrnsykSsQxtdjykSykStdjykSycOykSykStdjykSykSykSmNjmNjmNjmVXmVXmVXmVX
+mVXmVXmVXmVXmNjmNjmNjykSykSykSykSykSykSkQkykSrnsgLXtcWpqvykSdrhhxThxThxTtcWtcWhxThxThxTpqvykSykSykStdjykSykSsQxsQxtdjykStdjtdjykSmNjmNjmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmNjmNjykSykSykSykSykSykSykSkQktdjgLXtcWhxTtcWcUDcUDcUDcUDcUDcUDcUDcUDtcWpqvykSykSykSykSrnsykSykSykSykSykSykSmNjmNjmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmNjmNjmNjycOykSmeNtdjykSykSkQktdjovatcWmfcykSykSykSykSykSykSykSykSmfntcWpqvykSykSykSykSykSykStdjykSmNjmNjmNjmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjykSykStdjykSykSykSykSykSovamyyykSeuleuleulykSykSeuleuleulykSmyEkQTykSykStdjtdjykSykSykSykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjtdjykSykSykSykSykSykSykSmBjykSwheeultlWeuleuleuleultlWeulrugykSmBjykSykSykSykStdjycOykStdjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjykSycOtdjykSnVIxDAtbWgLwkgkuHfvNFmCKmCKmCKtIemCKmCKmCKmCKbpJuNoxaJrAutbWbQFnVItdjykSykSykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjtdjtdjtdjykSykSykSxDAxfsxhPkMShNgxIiaTQuLdrCSmBisIhpyhuLdhNgoycxhPbYibQFykSykSmFmykStdjykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjtdjtdjykSmFmykSykSykSxDAxfsdUNuFBnzKlrJubFuFnbLbubFlrJwosuFBpUJbYibQFykSykSykSykSykSykSykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjykStdjtdjykSykSykSykSnVIxDAxfswQFwSFiVWxhPxhPxhPxhPiVWbylwQFbYibQFnVIykSykSykSykSykStdjtdjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjykStdjtdjykSykSykSmFmykSykSxDAvNFfAviVWxhPxhPxhPxhPiVWlxPbpJbQFykSykSmFmykSykSykStdjtdjykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjtdjtdjykSykSykSykSykSykSykSykSxDAtbWodXxhPpvnpvnxhPacKtbWbQFykSykSykSykSykSykStdjykSykSykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjtdjemNtdjykSykStdjtdjtdjykSykSnVIxDAgfPxfscHWpsdbYirgHbQFnVIykSykSykSykSykSykStdjykStdjemNmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjykSykStdjtdjrnsykSykSykSykSmFmykSykSxDAmllpYKpYKhtXbQFykSykSmFmykSykSykSykSrnsykStdjtdjykSmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSemNykSykStdjtdjykSrnsykSykSykSykSykStdjykSykSykSykSykSykSrnsykSykSykStdjykSykSykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSykSykSykSykSykSykStdjtdjykSrnsykSykSykSykSnQmykStdjykSykSykSykSykSykSykSykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSykStdjtdjykStdjykSykSykSykSykStdjykSykSykSykSykStdjykStdjykSykStdjykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSykSykSykSemNtdjtdjtdjykStdjykStdjemNtdjykSykStdjykSemNykSykSykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+mVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmNjmNjykSykSykSykSykSykSykSykSykSykSykSykSykSykSykStdjykSykSykSykSmNjmNjmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVXmVX
+"}

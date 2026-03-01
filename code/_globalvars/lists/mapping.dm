@@ -24,6 +24,7 @@ GLOBAL_LIST_EMPTY(generic_event_spawns)			//list of all spawns for events
 GLOBAL_LIST_EMPTY(jobspawn_overrides)					//These will take precedence over normal spawnpoints if created.
 
 GLOBAL_LIST_EMPTY(wizardstart)
+GLOBAL_LIST_EMPTY(ninjastart)
 GLOBAL_LIST_EMPTY(nukeop_start)
 GLOBAL_LIST_EMPTY(nukeop_leader_start)
 GLOBAL_LIST_EMPTY(syndiop_start)

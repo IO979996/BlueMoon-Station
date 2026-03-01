@@ -7,3 +7,6 @@
 #define ROUNDTYPE_EXTENDED "Extended"
 
 #define ROUNDTYPE_MAX_COMBO 2
+
+// Space Ninja (SS220 port)
+#define SPECIAL_ROLE_SPACE_NINJA "Space Ninja"

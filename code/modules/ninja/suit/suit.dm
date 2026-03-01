@@ -58,6 +58,8 @@
 	var/s_busy = FALSE
 	///Whether or not the adrenaline boost ability is available
 	var/a_boost = TRUE
+	/// Выдана ли способность «Убраться прочь» (появляется после выполнения всех целей, кроме одноимённой)
+	var/leave_ability_granted = FALSE
 /obj/item/clothing/suit/space/space_ninja/examine(mob/user)
 	. = ..()
 	if(!s_initialized)
@@ -113,6 +115,12 @@
 		else
 			cell.charge = 0
 			cancel_stealth()
+		// Способность «Убраться прочь» появляется после выполнения всех 6 целей (кроме цели «Убраться прочь»)
+		if(!leave_ability_granted && ninja_completed_objectives_count(affecting, 6))
+			leave_ability_granted = TRUE
+			var/datum/action/item_action/ninja_leave_round/A = new(target = src)
+			A.Grant(affecting)
+			to_chat(affecting, span_boldnotice("Все 6 целей выполнены. Доступна способность «Убраться прочь» — покиньте станцию и завершите миссию."))
 
 /obj/item/clothing/suit/space/space_ninja/ui_action_click(mob/user, action)
 	if(IS_NINJA_SUIT_INITIALIZATION(action))

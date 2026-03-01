@@ -1,0 +1,41 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+// Minimal Ninja Dojo - only types that exist in BlueMoon. Like Wizard's Den (space ruin, always placed).
+
+"a" = (
+/turf/open/space,
+/area/space)
+
+"b" = (
+/turf/closed/indestructible/rock,
+/area/ruin/space/ninja_zen)
+
+"c" = (
+/turf/open/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"d" = (
+/obj/effect/landmark/ninja_spawn,
+/turf/open/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"e" = (
+/obj/effect/landmark/ninja_spawn,
+/turf/open/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+"f" = (
+/obj/machinery/cryopod/ninja,
+/turf/open/floor/plasteel,
+/area/ruin/space/ninja_zen)
+
+(1,1,1) = {"aaaaaaaaaaa",
+"abbbbbbbbba",
+"abcccccccba",
+"abcccccccba",
+"abcdcecccba",
+"abcccccccba",
+"abcccccccba",
+"abccccfccba",
+"abcccccccba",
+"abbbbbbbbba",
+"aaaaaaaaaaa"}

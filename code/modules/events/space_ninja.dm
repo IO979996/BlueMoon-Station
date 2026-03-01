@@ -4,7 +4,7 @@
 	max_occurrences = 1
 	weight = 10
 	earliest_start = 45 MINUTES
-	min_players = 35
+	min_players = 0
 	dynamic_should_hijack = TRUE
 	category = EVENT_CATEGORY_INVASION
 	description = "A space ninja infiltrates the station."
@@ -14,17 +14,11 @@
 	role_name = "Space Ninja"
 
 /datum/round_event/ghost_role/space_ninja/spawn_role()
-	var/list/spawn_locs = list()
-	for(var/obj/effect/landmark/carpspawn/carp_spawn in GLOB.landmarks_list)
-		if(!isturf(carp_spawn.loc))
-			stack_trace("Carp spawn found not on a turf: [carp_spawn.type] on [isnull(carp_spawn.loc) ? "null" : carp_spawn.loc.type]")
-			continue
-		spawn_locs += carp_spawn.loc
-	if(!spawn_locs.len)
-		message_admins("No valid spawn locations found, aborting...")
+	// Додзё на уровне ЦК (CentCom.dmm), точки в GLOB.ninjastart заполняются при загрузке карты.
+	if(!length(GLOB.ninjastart))
+		message_admins("Ninja Dojo has no spawn points (CentCom may not have loaded).")
 		return MAP_ERROR
 
-	//selecting a candidate player
 	var/list/candidates = get_candidates(ROLE_NINJA, null, ROLE_NINJA)
 	if(!candidates.len)
 		return NOT_ENOUGH_PLAYERS
@@ -32,8 +26,7 @@
 	var/mob/dead/selected_candidate = pick(candidates)
 	var/key = selected_candidate.key
 
-	//spawn the ninja and assign the candidate
-	var/mob/living/carbon/human/ninja = create_space_ninja(pick(spawn_locs))
+	var/mob/living/carbon/human/ninja = create_space_ninja(pick(GLOB.ninjastart))
 	ninja.key = key
 	ninja.mind.add_antag_datum(/datum/antagonist/ninja)
 	spawned_mobs += ninja

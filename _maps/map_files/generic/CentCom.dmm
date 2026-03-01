@@ -12,6 +12,31 @@
 "aad" = (
 /turf/open/space,
 /area/space)
+"nJA" = (
+/turf/open/space,
+/area/space)
+"nJB" = (
+/turf/closed/indestructible/rock,
+/area/ninja/outpost)
+"nJC" = (
+/turf/open/floor/plasteel,
+/area/ninja/outpost)
+"nJD" = (
+/obj/effect/landmark/ninja_spawn,
+/turf/open/floor/plasteel,
+/area/ninja/outpost)
+"nJE" = (
+/obj/effect/landmark/ninja_spawn,
+/turf/open/floor/plasteel,
+/area/ninja/outpost)
+"nJF" = (
+/obj/machinery/cryopod/ninja,
+/turf/open/floor/plasteel,
+/area/ninja/outpost)
+"nJG" = (
+/obj/structure/ninjatele,
+/turf/open/floor/plasteel,
+/area/ninja/outpost)
 "aae" = (
 /obj/structure/window/reinforced{
 	dir = 4
@@ -41071,6 +41096,149 @@ alI
 aaa
 aaa
 aaa
+"}
+(45,195,1) = {"
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+"}
+(46,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(47,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(48,195,1) = {"
+nJB
+nJC
+nJD
+nJG
+nJC
+nJC
+nJC
+nJE
+nJC
+nJC
+nJB
+"}
+(49,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(50,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(51,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(52,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJF
+nJC
+nJC
+nJB
+"}
+(53,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(54,195,1) = {"
+nJB
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJC
+nJB
+"}
+(55,195,1) = {"
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
+nJB
 "}
 (36,1,1) = {"
 aaa

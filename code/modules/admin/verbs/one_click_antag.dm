@@ -26,6 +26,7 @@
 		<a href='?src=[REF(src)];[HrefToken()];makeAntag=centcom'>Make CentCom Response Team (Requires Ghosts)</a><br>
 		<a href='?src=[REF(src)];[HrefToken()];makeAntag=abductors'>Make Abductor Team (Requires Ghosts)</a><br>
 		<a href='?src=[REF(src)];[HrefToken()];makeAntag=revenant'>Make Revenant (Requires Ghost)</a><br>
+		<a href='?src=[REF(src)];[HrefToken()];makeAntag=ninja'>Make Ninja (Requires Ghost)</a><br>
 		"}
 	//<a href='?src=[REF(src)];[HrefToken()];makeAntag=qareen'>Make Qareen (Requires Ghost)</a><br> 	Temporary removed. - Gardelin0
 
@@ -353,7 +354,9 @@
 	return TRUE
 
 /datum/admins/proc/makeSpaceNinja()
-	new /datum/round_event/ghost_role/space_ninja()
+	var/datum/round_event_control/space_ninja/C = locate(/datum/round_event_control/space_ninja) in SSevents.control
+	if(C)
+		C.runEvent(random = FALSE, admin_forced = TRUE)
 	return TRUE
 
 // DEATH SQUADS
