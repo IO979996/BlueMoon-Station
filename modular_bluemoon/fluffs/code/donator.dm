@@ -114,7 +114,7 @@
 	name = "Kukri Kit"
 	slot = ITEM_SLOT_BACKPACK
 	path = /obj/item/modkit/kukri_kit
-	ckeywhitelist = list("hateredsoul", "ggishka", "arion1234", "swgitty", "sw00ty", "kingdeaths", "sierraiv", "ordinarylife", "milidead", "blatoff")
+	ckeywhitelist = list("hateredsoul", "ggishka", "arion1234", "swgitty", "sw00ty", "kingdeaths", "sierraiv", "ordinarylife", "milidead", "blatoff", "angelnedemon")
 
 /datum/gear/donator/bm/Advanced_Tracksuit
 	name = "Advanced Tracksuit"
@@ -1902,6 +1902,18 @@
 	path = /obj/item/toy/plush/bm/belfor
 	ckeywhitelist = list("belf0r")
 
+/datum/gear/donator/bm/nova_plush
+	name = "Nova plushie"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/toy/plush/bm/nova
+	ckeywhitelist = list("architect0r")
+
+/datum/gear/donator/bm/zetta_plush
+	name = "Zetta plushie"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/toy/plush/bm/zetta
+	ckeywhitelist = list("hellsinggc")
+
 ///////////////////////////////////////////////
 
 /datum/gear/donator/bm/dm_pzuniform
@@ -2098,7 +2110,7 @@
 	slot = ITEM_SLOT_OCLOTHING
 	path = /obj/item/clothing/suit/donator/bm/sf_coat
 	loadout_flags = LOADOUT_CAN_NAME | LOADOUT_CAN_DESCRIPTION
-	ckeywhitelist = list("hihitect")
+	ckeywhitelist = list("hihitect", "xaeshkavd")
 
 /datum/gear/donator/bm/freak_case
 	name = "Cool Case With Presents"
@@ -2110,10 +2122,34 @@
 	name = "Fire blossom"
 	slot = ITEM_SLOT_HEAD
 	path = /obj/item/clothing/head/donator/bm/fire_blossom
-	ckeywhitelist = list("sheya, dagran")
+	ckeywhitelist = list("sheya", "dagran")
 
 /datum/gear/donator/bm/desert_nanosuit
 	name = "Desert Nanosuit"
 	slot = ITEM_SLOT_UNDERWEAR
 	path = /obj/item/clothing/underwear/briefs/nano_suit
-	ckeywhitelist = list("lindaastereih", "kingdeaths", "heathkit1")
+	ckeywhitelist = list("lindaastereih", "kingdeaths", "heathkit1", "dimofon")
+
+/datum/gear/donator/bm/bear_patch
+	name = "BEAR Patch"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/clothing/accessory/bear_patch
+	ckeywhitelist = list("hihitect", "hateredsoul", "hellsinggc", "silyamg", "dimofon", "xaeshkavd")
+
+/datum/gear/donator/bm/usec_patch
+	name = "USEC Patch"
+	slot = ITEM_SLOT_BACKPACK
+	path = /obj/item/clothing/accessory/usec_patch
+	ckeywhitelist = list("hihitect", "hateredsoul", "hellsinggc", "silyamg", "dimofon", "xaeshkavd")
+
+/datum/gear/donator/bm/transparent_gloves
+	name = "Transparent Gloves"
+	path = /obj/item/clothing/gloves/color/black/transparent
+	slot = ITEM_SLOT_GLOVES
+	ckeywhitelist = list("lindaastereih")
+
+/datum/gear/donator/bm/winter_mask
+	name = "Ami's Winter Mask"
+	slot = ITEM_SLOT_MASK
+	path = /obj/item/clothing/mask/gas/syndicate/cool_version/winter_mask
+	ckeywhitelist = list("lindaastereih")
