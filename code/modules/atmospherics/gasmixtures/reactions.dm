@@ -705,12 +705,15 @@
 
 	// Replace miasma with oxygen (slightly exothermic)
 	var/cleaned_air = min(air.get_moles(GAS_MIASMA), 20 + (air.return_temperature() - (T0C + 170)) / 20)
+	if(cleaned_air <= 0)
+		return
 	air.adjust_moles(GAS_MIASMA, -cleaned_air)
 	air.adjust_moles(GAS_O2, cleaned_air)
 
 	// Slightly exothermic
 	air.set_temperature(air.return_temperature() + cleaned_air * 0.002)
 	SSresearch.science_tech.add_point_type(TECHWEB_POINT_TYPE_DEFAULT, cleaned_air*MIASMA_RESEARCH_AMOUNT)
+	return REACTING
 
 /datum/gas_reaction/miaster/test()
 	var/datum/gas_mixture/G = new

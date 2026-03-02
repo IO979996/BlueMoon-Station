@@ -96,6 +96,8 @@
 	result = /obj/item/clothing/suit/armor/elder_atmosian
 	reqs = list(
 		/obj/item/stack/sheet/mineral/metal_hydrogen = 5,
+		/obj/item/stack/sheet/mineral/zaukerite = 3,
+		/obj/item/stack/sheet/metal = 10,
 		/obj/item/clothing/suit/fire/atmos = 1,
 	)
 	time = 40
@@ -107,6 +109,8 @@
 	result = /obj/item/clothing/head/helmet/elder_atmosian
 	reqs = list(
 		/obj/item/stack/sheet/mineral/metal_hydrogen = 3,
+		/obj/item/stack/sheet/mineral/zaukerite = 2,
+		/obj/item/stack/sheet/metal = 5,
 		/obj/item/clothing/head/hardhat/atmos = 1,
 	)
 	time = 40

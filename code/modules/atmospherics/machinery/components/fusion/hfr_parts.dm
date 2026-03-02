@@ -192,7 +192,8 @@
 			ui.open()
 	else
 		to_chat(user, span_notice("Activate the machine first by using a multitool on the interface."))
-		ui.close()
+		if(ui)
+			ui.close()
 
 /// BlueMoon: requirements/primary_products/secondary_products are already gas id lists; return copy.
 /obj/machinery/hypertorus/interface/proc/gas_list_to_gasid_list(list/gas_list)
@@ -221,6 +222,8 @@
 
 /obj/machinery/hypertorus/interface/ui_data()
 	var/data = list()
+	if(!connected_core)
+		return data
 
 	if(connected_core.selected_fuel)
 		data["selected"] = connected_core.selected_fuel.id
@@ -313,6 +316,8 @@
 /obj/machinery/hypertorus/interface/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
 	if(.)
+		return
+	if(!connected_core)
 		return
 	switch(action)
 		if("start_power")
@@ -501,11 +506,17 @@
 /obj/item/hfr_box/core/proc/build_reactor(list/parts)
 	for(var/obj/item/hfr_box/box in parts)
 		if(box.box_type == "corner")
+			if(!box.part_path || !ispath(box.part_path, /obj/machinery/hypertorus/corner))
+				qdel(box)
+				continue
 			var/obj/machinery/hypertorus/corner/corner = new box.part_path(box.loc)
 			corner.dir = box.dir
 			qdel(box)
 			continue
 		if(box.box_type == "body")
+			if(!box.part_path)
+				qdel(box)
+				continue
 			var/location = get_turf(box)
 			if(box.part_path != /obj/machinery/hypertorus/interface)
 				var/obj/machinery/atmospherics/components/unary/hypertorus/part = new box.part_path(location, TRUE, box.dir)

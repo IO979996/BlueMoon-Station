@@ -67,7 +67,7 @@
 	if(active)
 		to_chat(user, span_notice("You already activated the machine."))
 		return
-	to_chat(user, span_notice("You link all parts toghether."))
+	to_chat(user, span_notice("You link all parts together."))
 	active = TRUE
 	update_appearance(UPDATE_ICON)
 	linked_interface.active = TRUE

@@ -45,6 +45,6 @@
 	var/datum/effect_system/smoke_spread/smoke = new
 	var/turf/location = get_turf(src)
 	smoke.set_up(cloud_size, location)
-	smoke.attach(src)
+	smoke.attach(location)
 	smoke.start()
 	qdel(src)

@@ -496,8 +496,8 @@
 	heat_protection = CHEST|GROIN|LEGS|FEET|ARMS|HANDS
 	min_cold_protection_temperature = SPACE_SUIT_MIN_TEMP_PROTECT
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
-	gas_transfer_coefficient = 0.9
-	permeability_coefficient = 0.5
+	gas_transfer_coefficient = 0.01
+	permeability_coefficient = 0.01
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAUR
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL
 	strip_delay = 60
@@ -506,6 +506,8 @@
 
 /obj/item/clothing/suit/armor/elder_atmosian/Initialize(mapload)
 	. = ..()
+	if(!allowed)
+		allowed = list()
 	allowed += list(
 		/obj/item/fireaxe/metal_h2_axe,
 	)

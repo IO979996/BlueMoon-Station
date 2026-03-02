@@ -5,6 +5,9 @@ GLOBAL_LIST_INIT(hfr_fuels_list, hfr_fuels_create_list())
 	. = list()
 	for(var/fuel_mix_path in subtypesof(/datum/hfr_fuel))
 		var/datum/hfr_fuel/fuel_mix = new fuel_mix_path()
+		if(!fuel_mix.id || .[fuel_mix.id])
+			stack_trace("hfr_fuel: skipping [fuel_mix_path] with empty or duplicate id '[fuel_mix.id]'")
+			continue
 		.[fuel_mix.id] = fuel_mix
 
 /datum/hfr_fuel

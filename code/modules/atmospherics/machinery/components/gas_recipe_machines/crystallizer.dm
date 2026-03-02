@@ -122,7 +122,9 @@
 	return FALSE
 
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_calculations()
-	var/progress_amount_to_quality = MIN_PROGRESS_AMOUNT * 4.5 / (round(log(10, total_recipe_moles * 0.1), 0.01))
+	var/log_arg = max(total_recipe_moles * 0.1, 1e-10)
+	var/rounded_log = round(log(10, log_arg), 0.01)
+	var/progress_amount_to_quality = (rounded_log != 0) ? (MIN_PROGRESS_AMOUNT * 4.5 / rounded_log) : 0
 	var/internal_temp = internal.return_temperature()
 	if((internal_temp >= (selected_recipe.min_temp * MIN_DEVIATION_RATE) && internal_temp <= selected_recipe.min_temp) || \
 		(internal_temp >= selected_recipe.max_temp && internal_temp <= (selected_recipe.max_temp * MAX_DEVIATION_RATE)))
@@ -132,16 +134,19 @@
 	if(internal_temp >= (median_temperature * MIN_DEVIATION_RATE) && internal_temp <= (median_temperature * MAX_DEVIATION_RATE))
 		quality_loss = max(quality_loss - progress_amount_to_quality, -85)
 
-	internal.set_temperature(max(internal_temp + (selected_recipe.energy_release / internal.heat_capacity()), TCMB))
+	var/heat_cap = max(internal.heat_capacity(), 1e-10)
+	internal.set_temperature(max(internal_temp + (selected_recipe.energy_release / heat_cap), TCMB))
 	update_parents()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_conduction()
 	var/datum/gas_mixture/cooling_port = airs[1]
 	if(cooling_port.total_moles() > MINIMUM_MOLE_COUNT)
 		if(internal.total_moles() > 0)
-			var/coolant_temperature_delta = cooling_port.return_temperature() - internal.return_temperature()
 			var/cooling_heat_capacity = cooling_port.heat_capacity()
 			var/internal_heat_capacity = internal.heat_capacity()
+			if(cooling_heat_capacity <= 0 || internal_heat_capacity <= 0)
+				return
+			var/coolant_temperature_delta = cooling_port.return_temperature() - internal.return_temperature()
 			var/cooling_heat_amount = HIGH_CONDUCTIVITY_RATIO * coolant_temperature_delta * (cooling_heat_capacity * internal_heat_capacity / (cooling_heat_capacity + internal_heat_capacity))
 			cooling_port.set_temperature(max(cooling_port.return_temperature() - cooling_heat_amount / cooling_heat_capacity, TCMB))
 			internal.set_temperature(max(internal.return_temperature() + cooling_heat_amount / internal_heat_capacity, TCMB))

@@ -155,7 +155,7 @@
 	to_chat(user, "<span class='notice'>You press the pack to your skin; it feels intensely cold.</span>")
 	if(isliving(user))
 		var/mob/living/L = user
-		L.adjust_bodytemperature(-80, BODYTEMP_COOLING_MAX)
+		L.adjust_bodytemperature(-80)
 
 /obj/item/stack/sheet/hot_ice
 	name = "hot ice"
@@ -198,7 +198,7 @@
 	to_chat(user, "<span class='notice'>You press the pack to your skin; it feels pleasantly cool.</span>")
 	if(isliving(user))
 		var/mob/living/L = user
-		L.adjust_bodytemperature(-50, BODYTEMP_COOLING_MAX)
+		L.adjust_bodytemperature(-50)
 
 // === Ammonia pack (craftable from ammonia crystals) ===
 /obj/item/ammonia_pack
