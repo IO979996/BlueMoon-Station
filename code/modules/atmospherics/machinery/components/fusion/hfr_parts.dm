@@ -165,7 +165,7 @@
 /obj/machinery/hypertorus/interface/Destroy()
 	if(connected_core)
 		connected_core = null
-	return..()
+	return ..()
 
 /obj/machinery/hypertorus/interface/multitool_act(mob/living/user, obj/item/I)
 	. = ..()
