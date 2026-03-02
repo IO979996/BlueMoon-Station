@@ -498,7 +498,7 @@
 	max_heat_protection_temperature = FIRE_IMMUNITY_MAX_TEMP_PROTECT
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAUR
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAUR|ALLOWS_BACK_TANK
 	clothing_flags = STOPSPRESSUREDAMAGE | THICKMATERIAL
 	strip_delay = 60
 	equip_delay_other = 60
