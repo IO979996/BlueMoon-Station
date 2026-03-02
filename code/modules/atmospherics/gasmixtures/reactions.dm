@@ -671,8 +671,9 @@
 	// Exothermic; BZ reduces energy released
 	var/energy_released = nob_formed * NOBLIUM_FORMATION_ENERGY / max(1, bz_moles * 10)
 	SSresearch.science_tech.add_point_type(TECHWEB_POINT_TYPE_DEFAULT, nob_formed*NOBLIUM_RESEARCH_AMOUNT)
-	if(old_heat_capacity > MINIMUM_HEAT_CAPACITY)
-		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / air.heat_capacity(), TCMB))
+	var/new_heat_capacity = air.heat_capacity()
+	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
+		air.set_temperature(max((temperature * old_heat_capacity + energy_released) / new_heat_capacity, TCMB))
 	return REACTING
 
 /datum/gas_reaction/nobliumformation/test()
