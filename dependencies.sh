@@ -20,9 +20,8 @@ export SPACEMAN_DMM_VERSION=suite-1.11
 # Python version for mapmerge and other tools
 export PYTHON_VERSION=3.9.0
 
-# Auxmos: форк BlueMoon (реакции в Rust). Репозиторий и ветка/тег.
-export AUXMOS_REPO="${AUXMOS_REPO:-https://github.com/IO979996/auxmos-bluemoon}"
-export AUXMOS_VERSION="${AUXMOS_VERSION:-master}"
+# Auxmos git tag
+export AUXMOS_VERSION=v2.5.1
 
 # Extools git tag
 export EXTOOLS_VERSION=v0.0.7
