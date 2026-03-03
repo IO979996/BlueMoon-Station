@@ -34,6 +34,7 @@
 	if(linked_interface)
 		SStgui.update_uis(linked_interface)
 
+/// Считает мощность, нестабильность, тепло и газы за тик. Без питания выставляет фолбек-значения и копит железо.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/fusion_process(seconds_per_tick)
 	CHECK_TICK
 	if (check_power_use())
@@ -41,24 +42,25 @@
 			inject_from_side_components(seconds_per_tick)
 			process_internal_cooling(seconds_per_tick)
 	else
-		magnetic_constrictor = 100
-		heating_conductor = 500
-		current_damper = 0
-		fuel_injection_rate = 200
-		moderator_injection_rate = 500
+		magnetic_constrictor = HFR_FALLBACK_MAGNETIC_CONSTRICTOR
+		heating_conductor = HFR_FALLBACK_HEATING_CONDUCTOR
+		current_damper = HFR_FALLBACK_CURRENT_DAMPER
+		fuel_injection_rate = HFR_FALLBACK_FUEL_INJECTION_RATE
+		moderator_injection_rate = HFR_FALLBACK_MODERATOR_INJECTION_RATE
 		waste_remove = FALSE
-		iron_content += 0.10 * seconds_per_tick
+		iron_content += HFR_FALLBACK_IRON_RATE * seconds_per_tick
 
 	update_temperature_status(seconds_per_tick)
 
+	// Объём учёта: от объёма смеси и магнитного сужения (проценты). Дальше от него scale_factor и торoidal_size.
 	var/archived_heat = internal_fusion.return_temperature()
-	var/volume = internal_fusion.return_volume() * (magnetic_constrictor * 0.01)
+	var/volume = internal_fusion.return_volume() * (magnetic_constrictor * HFR_MAGNETIC_VOLUME_FRAC)
 
 	var/energy_concentration_multiplier = 1
 	var/positive_temperature_multiplier = 1
 	var/negative_temperature_multiplier = 1
 
-	var/scale_factor = volume * 0.5
+	var/scale_factor = volume * HFR_VOLUME_SCALE
 
 	hfr_fuel_list.Cut()
 	hfr_scaled_fuel_list.Cut()
@@ -82,7 +84,7 @@
 
 	CHECK_TICK
 
-	// Instability calculation: single pass over both mixes using cached get_gases()
+	// Нестабильность: gas_power по fusion_powers из обеих смесей, потом (gas_power*factor)^2 mod toroidal_size плюс дампер, минус железо.
 	var/toroidal_size = (2 * PI) + TORADIANS(arctan((volume - TOROID_VOLUME_BREAKEVEN) / TOROID_VOLUME_BREAKEVEN))
 	var/list/fusion_powers = GLOB.gas_data.fusion_powers
 	var/gas_power = 0
@@ -90,16 +92,17 @@
 	for (var/gas_id in fusion_gases)
 		gas_power += (fusion_powers[gas_id] * internal_fusion.get_moles(gas_id))
 	for (var/gas_id in moderator_gases)
-		gas_power += (fusion_powers[gas_id] * moderator_internal.get_moles(gas_id) * 0.75)
+		gas_power += (fusion_powers[gas_id] * moderator_internal.get_moles(gas_id) * HFR_MODERATOR_GAS_POWER_FRAC)
 
-	instability = MODULUS((gas_power * INSTABILITY_GAS_POWER_FACTOR)**2, toroidal_size) + (current_damper * 0.01) - iron_content * 0.05
+	instability = MODULUS((gas_power * INSTABILITY_GAS_POWER_FACTOR)**2, toroidal_size) + (current_damper * HFR_INSTABILITY_DAMPER_FACTOR) - iron_content * HFR_INSTABILITY_IRON_PENALTY
+	// Знак нестабильности: ниже порога эндотермичность (1), иначе экзотермичность (-1). Влияет на знак heat_output.
 	var/internal_instability = 0
 	if(instability * 0.5 < FUSION_INSTABILITY_ENDOTHERMALITY)
 		internal_instability = 1
 	else
 		internal_instability = -1
 
-	// Modifiers - BlueMoon: hfr_scaled_moderator_list[GAS_*]
+	// Модификаторы от модератора и топлива: вклад каждого газа (scaled), потом clamp. Входят в energy, power_output, heat, radiation.
 	var/energy_modifiers = hfr_scaled_moderator_list[GAS_N2] * 0.35 + \
 								hfr_scaled_moderator_list[GAS_CO2] * 0.55 + \
 								hfr_scaled_moderator_list[GAS_NITROUS] * 0.95 + \
@@ -141,44 +144,47 @@
 
 		radiation_modifier += hfr_scaled_fuel_list[selected_fuel.primary_products[1]]
 
-	power_modifier = clamp(power_modifier, 0.25, 100)
-	heat_modifier = clamp(heat_modifier, 0.25, 100)
-	radiation_modifier = clamp(radiation_modifier, 0.005, 1000)
+	power_modifier = clamp(power_modifier, HFR_MODIFIER_CLAMP_MIN, HFR_MODIFIER_CLAMP_MAX)
+	heat_modifier = clamp(heat_modifier, HFR_MODIFIER_CLAMP_MIN, HFR_MODIFIER_CLAMP_MAX)
+	radiation_modifier = clamp(radiation_modifier, HFR_RADIATION_MODIFIER_MIN, HFR_RADIATION_MODIFIER_MAX)
 
 	internal_power = 0
 	efficiency = VOID_CONDUCTION * 1
 
+	// Внутренняя мощность: произведение по двум требованиям топлива (scaled*mod/100), площадь поперечника (радиусы H2/трит), и energy. Эффективность от первичного продукта.
 	if (selected_fuel)
 		internal_power = (hfr_scaled_fuel_list[selected_fuel.requirements[1]] * power_modifier / 100) * (hfr_scaled_fuel_list[selected_fuel.requirements[2]] * power_modifier / 100) * (PI * (2 * (hfr_scaled_fuel_list[selected_fuel.requirements[1]] * CALCULATED_H2RADIUS) * (hfr_scaled_fuel_list[selected_fuel.requirements[2]] * CALCULATED_TRITRADIUS))**2) * energy
 
 		efficiency = VOID_CONDUCTION * clamp(hfr_scaled_fuel_list[selected_fuel.primary_products[1]], 1, 100)
 
-	// Scaled to avoid overflow: (a * c²) = (a * (c²/scale)) * scale
+	// Energy: модификаторы * c² * (темп * heat_mod/100), с масштабом чтобы не переполнить float. Дальше core_temperature, conduction, radiation, power_output.
 	energy = (energy_modifiers * LIGHT_SPEED_SQ_SCALED) * max(internal_fusion.return_temperature() * heat_modifier / 100, 1) * LIGHT_SPEED_SQ_SCALE
 	energy = energy / energy_concentration_multiplier
-	energy = clamp(energy, 0, 1e35)
-	core_temperature = internal_power * power_modifier / 1000
+	energy = clamp(energy, 0, HFR_ENERGY_CLAMP_MAX)
+	core_temperature = internal_power * power_modifier / HFR_CORE_TEMP_DIVISOR
 	core_temperature = max(TCMB, core_temperature)
 	delta_temperature = archived_heat - core_temperature
-	conduction = - delta_temperature * (magnetic_constrictor * 0.001)
-	radiation = max(-(PLANCK_LIGHT_CONSTANT / 5e-18) * radiation_modifier * delta_temperature, 0)
+	conduction = - delta_temperature * (magnetic_constrictor * HFR_CONDUCTION_MAGNETIC_FACTOR)
+	radiation = max(-(PLANCK_LIGHT_CONSTANT / HFR_PLANCK_RADIATION_DIVISOR) * radiation_modifier * delta_temperature, 0)
 	power_output = efficiency * (internal_power - conduction - radiation)
-	heat_limiter_modifier = 5 * (10 ** power_level) * (heating_conductor / 100)
-	heat_output_min = - heat_limiter_modifier * 0.01 * negative_temperature_multiplier
+	// Лимиты тепла: от уровня и heating_conductor. heat_output от нестабильности и power_output, ограничен min/max.
+	heat_limiter_modifier = HFR_HEAT_LIMITER_BASE * (10 ** power_level) * (heating_conductor * HFR_MAGNETIC_VOLUME_FRAC)
+	heat_output_min = - heat_limiter_modifier * HFR_COOLING_PER_TICK_FACTOR * negative_temperature_multiplier
 	heat_output_max = heat_limiter_modifier * positive_temperature_multiplier
-	heat_output = clamp(internal_instability * power_output * heat_modifier / 200, heat_output_min, heat_output_max)
+	heat_output = clamp(internal_instability * power_output * heat_modifier / HFR_HEAT_OUTPUT_DIVISOR, heat_output_min, heat_output_max)
 
 	if (!check_fuel())
 		return
 
-	var/fuel_consumption_rate = clamp(fuel_injection_rate * 0.01 * 5 * power_level, 0.05, 30)
+	// Расход и производство за тик: consumption от уровня и fuel_injection_rate; production от heat_output и уровня (на 3/4 уровне по одному правилу, на остальных по другому).
+	var/fuel_consumption_rate = clamp(fuel_injection_rate * HFR_FUEL_CONSUMPTION_RATE_FACTOR * power_level, HFR_FUEL_CONSUMPTION_CLAMP_MIN, HFR_FUEL_CONSUMPTION_CLAMP_MAX)
 	var/consumption_amount = fuel_consumption_rate * seconds_per_tick
 	var/production_amount
 	switch(power_level)
 		if(3,4)
-			production_amount = clamp(heat_output / 1000, 0, fuel_consumption_rate) * seconds_per_tick
+			production_amount = clamp(heat_output / HFR_PRODUCTION_HEAT_DIVISOR, 0, fuel_consumption_rate) * seconds_per_tick
 		else
-			production_amount = clamp(heat_output * 2 / 10 ** (power_level+1), 0, fuel_consumption_rate) * seconds_per_tick
+			production_amount = clamp(heat_output * HFR_PRODUCTION_HEAT_MULT / 10 ** (power_level+1), 0, fuel_consumption_rate) * seconds_per_tick
 
 	var/dirty_production_rate = hfr_scaled_fuel_list[selected_fuel.primary_products[1]] / fuel_injection_rate
 
@@ -190,14 +196,15 @@
 	var/common_production_amount = production_amount * selected_fuel.gas_production_multiplier
 	moderator_common_process(seconds_per_tick, common_production_amount, hfr_internal_output, hfr_moderator_list, dirty_production_rate, heat_output, radiation_modifier)
 
+/// Топливо: вычитаем из fusion по requirements, добавляем primary_products. В модератор по уровням (tier) добавляем вторичные продукты. Коэффициенты по уровням захардкожены.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/moderator_fuel_process(seconds_per_tick, production_amount, consumption_amount, datum/gas_mixture/internal_output, moderator_list, datum/hfr_fuel/fuel, fuel_list)
-	var/fuel_consumption = consumption_amount * 0.85 * selected_fuel.fuel_consumption_multiplier
+	var/fuel_consumption = consumption_amount * HFR_FUEL_CONSUMPTION_MULT * selected_fuel.fuel_consumption_multiplier
 	var/scaled_production = production_amount * selected_fuel.gas_production_multiplier
 
 	for(var/gas_id in fuel.requirements)
 		internal_fusion.adjust_moles(gas_id, -min(fuel_list[gas_id], fuel_consumption))
 	for(var/gas_id in fuel.primary_products)
-		internal_fusion.adjust_moles(gas_id, fuel_consumption * 0.5)
+		internal_fusion.adjust_moles(gas_id, fuel_consumption * HFR_PRIMARY_PRODUCTION_FRAC)
 
 	var/list/tier = fuel.secondary_products
 	switch(power_level)
@@ -223,6 +230,7 @@
 			moderator_internal.adjust_moles(tier[5], scaled_production * 0.35)
 			moderator_internal.adjust_moles(tier[6], scaled_production)
 
+/// Выход в output: по уровням 1–6 от количества модератора (BZ, plasma, proto_nitrate и т.д.) добавляем газы в internal_output, правим radiation/heat. Healium при proximity > порога уменьшает proximity и съедает GAS_HEALIUM.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/moderator_common_process(seconds_per_tick, scaled_production, datum/gas_mixture/internal_output, moderator_list, dirty_production_rate, heat_output, radiation_modifier)
 	switch(power_level)
 		if(1)
@@ -278,10 +286,10 @@
 				visible_hallucination_pulse(src, HALLUCINATION_HFR(heat_output), 100 SECONDS * power_level * seconds_per_tick)
 				internal_output.adjust_moles(GAS_FREON, scaled_production * 1.15)
 			if(moderator_list[GAS_HEALIUM] > 100)
-				if(critical_threshold_proximity > 400)
-					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100) * 0.0011 * melting_point * seconds_per_tick, 0)
+				if(critical_threshold_proximity > HFR_HEALIUM_HEAL_PROXIMITY_THRESHOLD)
+					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100) * HFR_HEALIUM_HEAL_RATE_FACTOR * melting_point * seconds_per_tick, 0)
 					moderator_internal.adjust_moles(GAS_HEALIUM, -min(moderator_internal.get_moles(GAS_HEALIUM), scaled_production * 20))
-			if(moderator_internal.return_temperature() < 1e7 || (moderator_list[GAS_PLASMA] > 100 && moderator_list[GAS_BZ] > 50))
+			if(moderator_internal.return_temperature() < HFR_ANTINOBLIUM_TEMP_THRESHOLD || (moderator_list[GAS_PLASMA] > 100 && moderator_list[GAS_BZ] > 50))
 				internal_output.adjust_moles(GAS_ANTINOBLIUM, dirty_production_rate * 0.9 / 0.065 * seconds_per_tick)
 		if(6)
 			if(moderator_list[GAS_PLASMA] > 30)
@@ -297,11 +305,12 @@
 				visible_hallucination_pulse(src, HALLUCINATION_HFR(heat_output), 100 SECONDS * power_level * seconds_per_tick)
 				internal_output.adjust_moles(GAS_ANTINOBLIUM, clamp(dirty_production_rate / 0.045, 0, 10) * seconds_per_tick)
 			if(moderator_list[GAS_HEALIUM] > 100)
-				if(critical_threshold_proximity > 400)
-					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100) * 0.0011 * melting_point * seconds_per_tick, 0)
+				if(critical_threshold_proximity > HFR_HEALIUM_HEAL_PROXIMITY_THRESHOLD)
+					critical_threshold_proximity = max(critical_threshold_proximity - (moderator_list[GAS_HEALIUM] / 100) * HFR_HEALIUM_HEAL_RATE_FACTOR * melting_point * seconds_per_tick, 0)
 					moderator_internal.adjust_moles(GAS_HEALIUM, -min(moderator_internal.get_moles(GAS_HEALIUM), scaled_production * 20))
 			internal_fusion.adjust_moles(GAS_ANTINOBLIUM, dirty_production_rate * 0.01 / 0.095 * seconds_per_tick)
 
+	// Температура fusion: если не перегрев, добавляем heat_output за тик и clamp; иначе охлаждаем на heat_limiter_modifier за тик.
 	if(internal_fusion.return_temperature() <= FUSION_MAXIMUM_TEMPERATURE)
 		internal_fusion.set_temperature(clamp(
 			internal_fusion.return_temperature() + heat_output * seconds_per_tick,
@@ -309,8 +318,9 @@
 			FUSION_MAXIMUM_TEMPERATURE,
 		))
 	else
-		internal_fusion.set_temperature(internal_fusion.return_temperature() - heat_limiter_modifier * 0.01 * seconds_per_tick)
+		internal_fusion.set_temperature(internal_fusion.return_temperature() - heat_limiter_modifier * HFR_COOLING_PER_TICK_FACTOR * seconds_per_tick)
 
+	// Температура выхода: от модератора или от fusion. Мержим в linked_output и чистим кэш.
 	if(hfr_internal_output.total_moles() > 0)
 		if(moderator_internal.total_moles() > 0)
 			hfr_internal_output.set_temperature(moderator_internal.return_temperature() * HIGH_EFFICIENCY_CONDUCTIVITY)
@@ -325,7 +335,8 @@
 
 	check_lightning_arcs(hfr_moderator_list)
 
-	if(hfr_moderator_list[GAS_O2] > 150)
+	// Хил железа кислородом: при достаточном O2 в модераторе убавляем iron_content и тратим O2 по константам.
+	if(hfr_moderator_list[GAS_O2] > HFR_IRON_HEAL_O2_THRESHOLD)
 		if(iron_content > 0)
 			var/max_iron_removable = IRON_OXYGEN_HEAL_PER_SECOND
 			var/iron_removed = min(max_iron_removable * seconds_per_tick, iron_content)
@@ -334,19 +345,22 @@
 
 	check_gravity_pulse(seconds_per_tick)
 
-	radiation_pulse(src, 500, 6)
+	radiation_pulse(src, 500, HFR_LIGHTNING_RADIATION_RANGE)
 
+/// Удаляет из модератора долю молей за тик (экспонента от уровня). Чем выше уровень, тем быстрее испарение.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/evaporate_moderator(seconds_per_tick)
 	if (!power_level)
 		return
 	if(moderator_internal.total_moles() > 0)
-		moderator_internal.remove(moderator_internal.total_moles() * (1 - (1 - 0.0005 * power_level) ** seconds_per_tick))
+		moderator_internal.remove(moderator_internal.total_moles() * (1 - (1 - HFR_EVAPORATE_RATE_BASE * power_level) ** seconds_per_tick))
 
+/// Целостность (critical_threshold_proximity): урон от переполнения, температуры, железа, overmole; хил от малой массы, холодного куланта, кислорода. В конце cap по DAMAGE_CAP_MULTIPLIER.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_damageheal(seconds_per_tick)
 	critical_threshold_proximity_archived = critical_threshold_proximity
 
 	warning_damage_flags &= HYPERTORUS_FLAG_EMPED
 
+	// Урон при переполнении (много молей и/или высокая темп) на высоком уровне. Плюс урон от лога температуры.
 	if(power_level >= HYPERTORUS_OVERFULL_MIN_POWER_LEVEL)
 		var/fusion_temp = internal_fusion.return_temperature()
 		var/overfull_damage_taken = HYPERTORUS_OVERFULL_MOLAR_SLOPE * internal_fusion.total_moles() + HYPERTORUS_OVERFULL_TEMPERATURE_SLOPE * fusion_temp + HYPERTORUS_OVERFULL_CONSTANT
@@ -356,40 +370,46 @@
 		var/high_temp_damage = log(10, max(fusion_temp, 1)) - 5
 		critical_threshold_proximity = max(critical_threshold_proximity + max(high_temp_damage * seconds_per_tick, 0), 0)
 
+	// Хил при малой массе в смеси (ниже порога) на уровне не выше 4.
 	if(internal_fusion.total_moles() < HYPERTORUS_SUBCRITICAL_MOLES && power_level <= 4)
 		var/subcritical_heal_restore = (internal_fusion.total_moles() - HYPERTORUS_SUBCRITICAL_MOLES) / HYPERTORUS_SUBCRITICAL_SCALE
 		critical_threshold_proximity = max(critical_threshold_proximity + min(subcritical_heal_restore * seconds_per_tick, 0), 0)
 
+	// Хил от холодного куланта: температура куланта ниже порога, лог даёт отрицательный restore, min(...,0) убавляет proximity.
 	if(internal_fusion.total_moles() > 0 && (airs[1].total_moles() && coolant_temperature < HYPERTORUS_COLD_COOLANT_THRESHOLD) && power_level <= 4)
 		var/cold_coolant_heal_restore = log(10, max(coolant_temperature, 1) * HYPERTORUS_COLD_COOLANT_SCALE) - (HYPERTORUS_COLD_COOLANT_MAX_RESTORE * 2)
 		critical_threshold_proximity = max(critical_threshold_proximity + min(cold_coolant_heal_restore * seconds_per_tick, 0), 0)
 
-	critical_threshold_proximity += max(round(iron_content) - 1, 0) * 2.5 * seconds_per_tick
+	// Урон от железа: (iron_content - 1) * коэффициент за тик. Потом общий cap роста за тик.
+	critical_threshold_proximity += max(round(iron_content) - 1, 0) * HFR_IRON_DAMAGE_PER_POINT * seconds_per_tick
 	if(round(iron_content) > 1)
 		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_DAMAGE
 
 	critical_threshold_proximity = min(critical_threshold_proximity_archived + (seconds_per_tick * DAMAGE_CAP_MULTIPLIER * melting_point), critical_threshold_proximity)
 
+	// Гиперкритический урон: молей выше порога, прирост ограничен HYPERTORUS_HYPERCRITICAL_MAX_DAMAGE за тик.
 	if(internal_fusion.total_moles() >= HYPERTORUS_HYPERCRITICAL_MOLES)
 		var/hypercritical_damage_taken = max((internal_fusion.total_moles() - HYPERTORUS_HYPERCRITICAL_MOLES) * HYPERTORUS_HYPERCRITICAL_SCALE, 0)
 		var/clamped_increment = min(hypercritical_damage_taken, HYPERTORUS_HYPERCRITICAL_MAX_DAMAGE) * seconds_per_tick
 		critical_threshold_proximity = max(critical_threshold_proximity + clamped_increment, 0)
 		warning_damage_flags |= HYPERTORUS_FLAG_HIGH_FUEL_MIX_MOLE
 
-	// Over 5000 moles in fusion mix: lose 2% integrity every 5 seconds, capped so large melting_point doesn't overshoot
-	if(internal_fusion.total_moles() > 5000 && (world.time - last_overmole_damage) >= 50)
+	// Over HFR_OVERMOLE_MOLES: lose HFR_OVERMOLE_DAMAGE_FRAC integrity every HFR_OVERMOLE_INTERVAL_DS ds, capped so large melting_point doesn't overshoot
+	if(internal_fusion.total_moles() > HFR_OVERMOLE_MOLES && (world.time - last_overmole_damage) >= HFR_OVERMOLE_INTERVAL_DS)
 		var/overmole_cap = 10 * seconds_per_tick * DAMAGE_CAP_MULTIPLIER * melting_point
-		critical_threshold_proximity += min(melting_point * 0.02, overmole_cap, HYPERTORUS_OVERMOLE_MAX_ADD)
+		critical_threshold_proximity += min(melting_point * HFR_OVERMOLE_DAMAGE_FRAC, overmole_cap, HYPERTORUS_OVERMOLE_MAX_ADD)
 		critical_threshold_proximity = min(critical_threshold_proximity_archived + overmole_cap, critical_threshold_proximity)
 		last_overmole_damage = world.time
 
+	// Железо: на уровне >4 с вероятностью растёт; на уровне <=4 с вероятностью падает. Потом clamp в [0, max].
 	if(power_level > 4 && prob(IRON_CHANCE_PER_FUSION_LEVEL * power_level))
 		iron_content += IRON_ACCUMULATED_PER_SECOND * seconds_per_tick
 		warning_damage_flags |= HYPERTORUS_FLAG_IRON_CONTENT_INCREASE
-	if(iron_content > 0 && power_level <= 4 && prob(25 / (power_level + 1)))
-		iron_content = max(iron_content - 0.01 * seconds_per_tick, 0)
-	iron_content = clamp(iron_content, 0, 5)
+	if(iron_content > 0 && power_level <= 4 && prob(HFR_IRON_HEAL_CHANCE_DIVISOR / (power_level + 1)))
+		iron_content = max(iron_content - HFR_IRON_DECAY_RATE * seconds_per_tick, 0)
+	iron_content = clamp(iron_content, 0, HFR_IRON_CONTENT_MAX)
 
+/// При уровне >= 4 и достаточном BZ стреляет ядерной частицей из случайного угла в противоположную сторону.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_nuclear_particles(moderator_list)
 	if(power_level < 4)
 		return
@@ -398,10 +418,11 @@
 	var/obj/machinery/hypertorus/corner/picked_corner = pick(corners)
 	picked_corner.loc.fire_nuclear_particle(REVERSE_DIR(picked_corner.dir))
 
+/// При уровне >= 4, достаточном Antinoblium или proximity запускает tesla_zap. Количество разрядов и флаги урона зависят от power_level и proximity.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_lightning_arcs(moderator_list)
 	if(power_level < 4)
 		return
-	if(moderator_list[GAS_ANTINOBLIUM] <= 50 && critical_threshold_proximity <= 500)
+	if(moderator_list[GAS_ANTINOBLIUM] <= HFR_LIGHTNING_ANTINOBLIUM_MIN && critical_threshold_proximity <= HFR_LIGHTNING_PROXIMITY_MAX)
 		return
 	var/zap_number = power_level - 2
 
@@ -419,6 +440,7 @@
 	for(var/i in 1 to zap_number)
 		tesla_zap(src, 5, power_level * 2.4e5, flags)
 
+/// С вероятностью от proximity тянет мобов в радиусе grav_range к реактору. Радиус от log(2.5, proximity).
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/check_gravity_pulse(seconds_per_tick)
 	if(SPT_PROB(100 - critical_threshold_proximity / 15, seconds_per_tick))
 		return
@@ -428,6 +450,7 @@
 			continue
 		step_towards(alive_mob, loc)
 
+/// Сливает в output отфильтрованные газы модератора и часть He/Antinoblium из fusion. Вызывается при waste_remove и уровне < 6.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/remove_waste(seconds_per_tick)
 	if(!waste_remove)
 		return

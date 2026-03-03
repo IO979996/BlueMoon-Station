@@ -1,3 +1,7 @@
+//
+// HFR formula constants (what they scale: modifiers, heat, damage, thresholds)
+//
+
 ///Speed of light, in m/s
 #define LIGHT_SPEED 299792458
 /// Scale factor for (LIGHT_SPEED**2) to avoid 32-bit float overflow: compute (c²/scale) then multiply by scale.
@@ -11,6 +15,87 @@
 #define CALCULATED_TRITRADIUS 230e-3
 ///Power conduction in the void, used to calculate the efficiency of the reaction
 #define VOID_CONDUCTION 1e-2
+/// Volume scaling for scaled_fuel/scaled_moderator lists (scale_factor = volume * this)
+#define HFR_VOLUME_SCALE 0.5
+/// Moderator gas counts toward gas_power at this fraction (fusion mix = 1.0)
+#define HFR_MODERATOR_GAS_POWER_FRAC 0.75
+/// Instability: current_damper contribution per 0.01
+#define HFR_INSTABILITY_DAMPER_FACTOR 0.01
+/// Instability: iron_content penalty per point
+#define HFR_INSTABILITY_IRON_PENALTY 0.05
+/// Modifier clamp min (power/heat), max 100
+#define HFR_MODIFIER_CLAMP_MIN 0.25
+#define HFR_MODIFIER_CLAMP_MAX 100
+/// Radiation modifier clamp min
+#define HFR_RADIATION_MODIFIER_MIN 0.005
+#define HFR_RADIATION_MODIFIER_MAX 1000
+/// Energy upper bound (float safety)
+#define HFR_ENERGY_CLAMP_MAX 1e35
+/// core_temperature from internal_power: divide by this
+#define HFR_CORE_TEMP_DIVISOR 1000
+/// Conduction: magnetic_constrictor multiplier (0.001 = 0.1% per point)
+#define HFR_CONDUCTION_MAGNETIC_FACTOR 0.001
+/// Radiation formula: Planck constant divisor (scale to usable range)
+#define HFR_PLANCK_RADIATION_DIVISOR 5e-18
+/// Heat limiter base: 5 * (10 ** power_level) * (heating_conductor/100)
+#define HFR_HEAT_LIMITER_BASE 5
+/// Heat output formula divisor (internal_instability * power_output * heat_modifier / this)
+#define HFR_HEAT_OUTPUT_DIVISOR 200
+/// Fuel consumption: fuel_injection_rate * this * power_level, then clamp
+#define HFR_FUEL_CONSUMPTION_RATE_FACTOR (0.01 * 5)
+#define HFR_FUEL_CONSUMPTION_CLAMP_MIN 0.05
+#define HFR_FUEL_CONSUMPTION_CLAMP_MAX 30
+/// Production at level 3/4: heat_output / this
+#define HFR_PRODUCTION_HEAT_DIVISOR 1000
+/// Production at other levels: heat_output * 2 / (10 ** (power_level+1))
+#define HFR_PRODUCTION_HEAT_MULT 2
+/// Fuel consumption in moderator_fuel_process: consumption_amount * this * fuel_consumption_multiplier
+#define HFR_FUEL_CONSUMPTION_MULT 0.85
+/// Primary product moles added per fuel_consumption
+#define HFR_PRIMARY_PRODUCTION_FRAC 0.5
+/// Heat limiter cooling: per-tick multiplier (heat_limiter_modifier * this * seconds_per_tick)
+#define HFR_COOLING_PER_TICK_FACTOR 0.01
+/// Evaporate moderator: (1 - (1 - this * power_level)^seconds_per_tick) fraction removed per tick
+#define HFR_EVAPORATE_RATE_BASE 0.0005
+/// Iron content damage: (round(iron_content)-1) * this * seconds_per_tick per point above 1
+#define HFR_IRON_DAMAGE_PER_POINT 2.5
+/// Healium heal: only when critical_threshold_proximity > this
+#define HFR_HEALIUM_HEAL_PROXIMITY_THRESHOLD 400
+/// Healium heal rate: (moderator_list[GAS_HEALIUM]/100) * this * melting_point * seconds_per_tick
+#define HFR_HEALIUM_HEAL_RATE_FACTOR 0.0011
+/// Antinoblium production temp threshold (K): below this or (plasma+BZ) condition
+#define HFR_ANTINOBLIUM_TEMP_THRESHOLD 1e7
+/// Overmole: moles above this trigger 2% integrity damage every 5 sec
+#define HFR_OVERMOLE_MOLES 5000
+/// Overmole: deciseconds between damage applications (5 sec)
+#define HFR_OVERMOLE_INTERVAL_DS 50
+/// Overmole: integrity damage per trigger (2% of melting_point)
+#define HFR_OVERMOLE_DAMAGE_FRAC 0.02
+/// Iron heal chance: 25 / (power_level+1) prob per tick when power_level <= 4
+#define HFR_IRON_HEAL_CHANCE_DIVISOR 25
+/// Iron passive decay when power_level <= 4: this * seconds_per_tick per tick
+#define HFR_IRON_DECAY_RATE 0.01
+/// Iron content clamp max
+#define HFR_IRON_CONTENT_MAX 5
+/// O2 iron heal: moderator_list[GAS_O2] > this to allow iron heal
+#define HFR_IRON_HEAL_O2_THRESHOLD 150
+/// Lightning/tesla: radiation_pulse range
+#define HFR_LIGHTNING_RADIATION_RANGE 6
+/// Lightning: only when moderator_list[GAS_ANTINOBLIUM] > this and proximity <= 500
+#define HFR_LIGHTNING_ANTINOBLIUM_MIN 50
+#define HFR_LIGHTNING_PROXIMITY_MAX 500
+
+/// Fallback when no power / unanchored: default values written each tick
+#define HFR_FALLBACK_MAGNETIC_CONSTRICTOR 100
+#define HFR_FALLBACK_HEATING_CONDUCTOR 500
+#define HFR_FALLBACK_CURRENT_DAMPER 0
+#define HFR_FALLBACK_FUEL_INJECTION_RATE 200
+#define HFR_FALLBACK_MODERATOR_INJECTION_RATE 500
+/// Iron accumulation per second when no power
+#define HFR_FALLBACK_IRON_RATE 0.10
+/// Volume = internal_fusion.return_volume() * (magnetic_constrictor * this)
+#define HFR_MAGNETIC_VOLUME_FRAC 0.01
+
 ///Mole count required (tritium/hydrogen) to start a fusion reaction in HFR (reactions.dm uses 250 for other fusion)
 #define HFR_FUSION_MOLE_THRESHOLD 25
 ///Used to reduce the gas_power to a more useful amount

@@ -121,8 +121,8 @@
 		return TRUE
 	return FALSE
 
+/// Качество: у краёв диапазона темпов (min/max рецепта) quality_loss растёт; у медианы падает. Потом внутренняя темп сдвигается на energy_release с учётом теплоёмкости.
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_calculations()
-	// Quality change rate: scales with recipe size, clamped to avoid edge cases (no log)
 	var/quality_rate = MIN_PROGRESS_AMOUNT * 0.5 * clamp(total_recipe_moles / 20, 0.1, 5)
 	var/internal_temp = internal.return_temperature()
 	if((internal_temp >= (selected_recipe.min_temp * MIN_DEVIATION_RATE) && internal_temp <= selected_recipe.min_temp) || \
@@ -136,6 +136,7 @@
 	var/heat_cap = max(internal.heat_capacity(), 1e-10)
 	internal.set_temperature(max(internal_temp + (selected_recipe.energy_release / heat_cap), TCMB))
 
+/// Теплообмен между портом охлаждения (airs[1]) и внутренней смесью. Количество тепла по разности температур и теплоёмкостям, коэффициент HIGH_CONDUCTIVITY_RATIO.
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_conduction()
 	var/datum/gas_mixture/cooling_port = airs[1]
 	if(cooling_port.total_moles() > MINIMUM_MOLE_COUNT)
@@ -160,6 +161,7 @@
 	airs[2].merge(remove)
 	internal.clear()
 
+/// За тик: подкачка газов из входа, теплообмен, при выполнении требований рецепта и темпы считаем качество и прогресс. При progress_bar == 100 потребляем газы и выдаём предметы.
 /obj/machinery/atmospherics/components/binary/crystallizer/process_atmos()
 	if(!on || !is_operational || selected_recipe == null)
 		return
@@ -174,7 +176,6 @@
 	if(internal_check())
 		if(check_temp_requirements())
 			heat_calculations()
-			// Progress speed scales with recipe size, no log (was div-by-negative/zero prone)
 			var/progress_step = MIN_PROGRESS_AMOUNT * 0.5 * clamp(total_recipe_moles / 20, 0.5, 2)
 			progress_bar = min(progress_bar + progress_step, 100)
 		else

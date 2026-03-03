@@ -144,6 +144,7 @@
 	linked_output.update_parents()
 	linked_moderator.update_parents()
 
+/// Обновляет архивные темпы и выставляет power_level по температуре fusion (диапазоны 500, 1e3, 1e4, ... до 6).
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/update_temperature_status(seconds_per_tick)
 	fusion_temperature_archived = fusion_temperature
 	fusion_temperature = internal_fusion.return_temperature()
