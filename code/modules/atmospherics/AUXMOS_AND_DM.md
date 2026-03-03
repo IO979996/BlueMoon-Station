@@ -1,5 +1,7 @@
 # Граница между auxmos и DM в атмосфере
 
+BlueMoon-Station использует **форк auxmos** с реакциями в Rust: [IO979996/auxmos-bluemoon](https://github.com/IO979996/auxmos-bluemoon). Репозиторий и ветка задаются в корне проекта в `dependencies.sh` (`AUXMOS_REPO`, `AUXMOS_VERSION`). Сборка идёт с фичей `bluemoon_reactions`.
+
 Кратко: где выполняется логика в Rust (auxmos), а где в DM.
 
 ## Auxmos (Rust)

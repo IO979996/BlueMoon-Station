@@ -70,22 +70,27 @@ cd ..
 # Auxtools dependencies
 apt-get install -y build-essential g++-multilib libc6-i386 libstdc++6:i386
 
-# Update auxmos
+# Update auxmos (форк BlueMoon: auxmos-bluemoon с bluemoon_reactions; AUXMOS_REPO из dependencies.sh)
 if [ ! -d "auxmos" ]; then
-	echo "Cloning auxmos..."
-	git clone https://github.com/Putnam3145/auxmos
+	echo "Cloning auxmos (BlueMoon fork)..."
+	git clone "${AUXMOS_REPO:-https://github.com/IO979996/auxmos-bluemoon}" auxmos
 	cd auxmos
 	rustup target add i686-unknown-linux-gnu
 else
 	echo "Fetching auxmos..."
 	cd auxmos
-	git fetch
+	repo="${AUXMOS_REPO:-https://github.com/IO979996/auxmos-bluemoon}"
+	current_url="$(git remote get-url origin 2>/dev/null || true)"
+	if [ "$current_url" != "$repo" ]; then
+		git remote set-url origin "$repo"
+	fi
+	git fetch origin
 	rustup target add i686-unknown-linux-gnu
 fi
 
 echo "Deploying auxmos..."
 git checkout "$AUXMOS_VERSION"
-env PKG_CONFIG_ALLOW_CROSS=1 cargo rustc --release --target=i686-unknown-linux-gnu --features "all_reaction_hooks katmos" -- -C target-cpu=native
+env PKG_CONFIG_ALLOW_CROSS=1 cargo build --release --target=i686-unknown-linux-gnu --features "bluemoon_reactions"
 mv -f target/i686-unknown-linux-gnu/release/libauxmos.so "$1/libauxmos.so"
 cd ..
 
