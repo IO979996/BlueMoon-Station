@@ -1,4 +1,6 @@
 //All defines used in reactions are located in ..\__DEFINES\reactions.dm
+// Полная реализация всех реакций на C++: code/native/atmos_reactions/ (reactions.cpp, README.md).
+// В рантайме расчёты выполняет auxmos; C++ модуль — эталон и вариант для отдельного расширения.
 
 /proc/init_gas_reactions()
 	. = list()

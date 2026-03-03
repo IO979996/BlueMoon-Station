@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(air)
 	name = "Atmospherics"
 	init_order = INIT_ORDER_AIR
 	priority = FIRE_PRIORITY_AIR
-	wait = 5
+	wait = 6
 	flags = SS_BACKGROUND
 	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 
@@ -81,6 +81,10 @@ SUBSYSTEM_DEF(air)
 	gas_reactions = init_gas_reactions()
 	auxtools_update_reactions()
 	equalize_enabled = CONFIG_GET(flag/atmos_equalize_enabled)
+	var/atmos_wait = CONFIG_GET(number/atmos_processing_wait)
+	if(atmos_wait >= 4)
+		wait = atmos_wait
+	__detect_atmos_cpp()
 	return ..()
 
 /datum/controller/subsystem/air/proc/extools_update_ssair()
@@ -114,9 +118,11 @@ SUBSYSTEM_DEF(air)
 	// Adaptive throttling: reduce atmos processing intensity when server is lagging
 	if(!resumed && SStime_track?.initialized)
 		var/dilation = SStime_track.time_dilation_avg_fast
-		if(dilation > 40)
+		if(dilation > 35)
 			share_max_steps = 1
-		else if(dilation > 20)
+		else if(dilation > 22)
+			share_max_steps = max(1, share_max_steps_target - 1)
+		else if(dilation > 18)
 			share_max_steps = max(1, share_max_steps_target - 1)
 		else
 			share_max_steps = share_max_steps_target

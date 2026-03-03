@@ -2,7 +2,7 @@ SUBSYSTEM_DEF(machines)
 	name = "Machines"
 	init_order = INIT_ORDER_MACHINES
 	flags = SS_KEEP_TIMING
-	wait = 2 SECONDS
+	wait = 3 SECONDS
 
 	/// Assosciative list of all machines that exist.
 	VAR_PRIVATE/list/machines_by_type = list()
@@ -17,6 +17,9 @@ SUBSYSTEM_DEF(machines)
 	var/static/list/bluespaceminer_by_zlevel[][] //BLUEMOON ADD счётчик бс майнеров на z уровне
 
 /datum/controller/subsystem/machines/Initialize()
+	var/machines_wait = CONFIG_GET(number/machines_processing_wait)
+	if(machines_wait >= 2)
+		wait = machines_wait SECONDS
 	makepowernets()
 	fire()
 	return ..()

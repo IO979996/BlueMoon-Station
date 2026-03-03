@@ -531,6 +531,12 @@ PAI_CUSTOM_HOLOFORMS
 ## Enables monstermos/"equalization" step in atmos.
 # ATMOS_EQUALIZE_ENABLED
 
+## Performance: интервал обработки атмосферы в децисекундах (больше = меньше нагрузка, по умолчанию 6).
+# ATMOS_PROCESSING_WAIT 6
+
+## Performance: интервал обработки машин в секундах (больше = меньше нагрузка, по умолчанию 3).
+# MACHINES_PROCESSING_WAIT 3
+
 ## Do station renames from the station charter require admin approval to pass, as opposed to autoapproving if not denied.
 STATION_NAME_NEEDS_APPROVAL
 

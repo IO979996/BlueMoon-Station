@@ -346,6 +346,18 @@
 /datum/config_entry/flag/atmos_equalize_enabled
 	default = FALSE
 
+/// Интервал обработки атмосферы (децисекунды). Больше = меньше нагрузка, медленнее отклик. По умолчанию 6.
+/datum/config_entry/number/atmos_processing_wait
+	default = 6
+	min_val = 4
+	max_val = 15
+
+/// Интервал обработки машин (секунды). Больше = меньше нагрузка. По умолчанию 3.
+/datum/config_entry/number/machines_processing_wait
+	default = 3
+	min_val = 2
+	max_val = 10
+
 /datum/config_entry/flag/dynamic_config_enabled
 
 /datum/config_entry/flag/station_name_needs_approval
