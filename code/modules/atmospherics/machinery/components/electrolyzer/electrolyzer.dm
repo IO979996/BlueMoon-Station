@@ -108,12 +108,12 @@
 		cell.use(power_to_use)
 
 /obj/machinery/electrolyzer/proc/call_reactions(datum/gas_mixture/env)
-	var/list/args = list()
+	var/list/electrolyzer_args = list()
 	for(var/reaction_id in GLOB.electrolyzer_reactions)
 		var/datum/electrolyzer_reaction/R = GLOB.electrolyzer_reactions[reaction_id]
-		if(!R.reaction_check(env, args))
+		if(!R.reaction_check(env, electrolyzer_args))
 			continue
-		R.react(env, working_power, args)
+		R.react(env, working_power, electrolyzer_args)
 
 /obj/machinery/electrolyzer/RefreshParts()
 	. = ..()
