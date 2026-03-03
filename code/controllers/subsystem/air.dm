@@ -1,3 +1,5 @@
+// Граница auxmos vs DM: кто что считает, см. code/modules/atmospherics/AUXMOS_AND_DM.md
+
 SUBSYSTEM_DEF(air)
 	name = "Atmospherics"
 	init_order = INIT_ORDER_AIR

@@ -42,6 +42,9 @@
 	return call_ext(AUXMOS, "byond:adjust_heat_hook_ffi")(src, temp)
 
 /datum/gas_mixture/proc/react(holder)
+	// BLUEMOON: ранний выход при пустой смеси, не дергать auxmos по всем тайлам
+	if(!total_moles())
+		return NO_REACTION
 	return call_ext(AUXMOS, "byond:react_hook_ffi")(src, holder)
 
 /datum/gas_mixture/proc/compare(other)
