@@ -507,4 +507,7 @@
 /obj/item/clothing/suit/armor/elder_atmosian/Initialize(mapload)
 	. = ..()
 	allowed = islist(allowed) ? allowed.Copy() : list()
-	allowed += /obj/item/fireaxe/metal_h2_axe
+	allowed += list(
+		/obj/item/fireaxe,
+		/obj/item/tank,
+	)
