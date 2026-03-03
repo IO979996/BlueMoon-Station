@@ -292,6 +292,10 @@
 /proc/bluemoon_add_research_points(amount)
 	return
 
+/// Опциональный callback на тайле при реакции фреона (hot_ice при 120–160 K). Заглушка, если логика не переопределена.
+/turf/proc/bluemoon_freon_hot_ice_check(datum/gas_mixture/air)
+	return
+
 /proc/fire_expose(turf/open/location, datum/gas_mixture/air, temperature)
 	if(istype(location) && temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		location.hotspot_expose(temperature, CELL_VOLUME)
