@@ -131,6 +131,7 @@ jobs:
       - name: Install auxmos
         run: |
           sudo apt update || true
+          sudo apt-get install -y libc6-dev-i386 gcc-multilib
           bash tools/ci/install_auxmos.sh
       - name: Compile and run tests
         run: |
