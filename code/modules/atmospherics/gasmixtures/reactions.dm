@@ -1174,7 +1174,7 @@
 	var/old_heat_capacity = air.heat_capacity()
 	var/temperature = air.return_temperature()
 	air.adjust_moles(GAS_HYDROGEN, -produced_amount)
-	air.adjust_moles(GAS_PROTO_NITRATE, -produced_amount * 0.5)
+	air.adjust_moles(GAS_PROTO_NITRATE, produced_amount * 0.5)
 	var/energy_used = produced_amount * PN_HYDROGEN_CONVERSION_ENERGY
 	var/new_heat_capacity = air.heat_capacity()
 	if(new_heat_capacity > MINIMUM_HEAT_CAPACITY)
