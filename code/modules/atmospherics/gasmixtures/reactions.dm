@@ -312,7 +312,7 @@
 
 // no requirements, always runs
 // bad idea? maybe
-// this is overridden by auxmos but, hey, good idea to have it readable
+// требования по температуре и топливу из gas_data
 
 /datum/gas_reaction/genericfire/react(datum/gas_mixture/air, datum/holder)
 	var/temperature = air.return_temperature()

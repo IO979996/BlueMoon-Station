@@ -65,7 +65,7 @@
 
 		//Conductivity Update
 		var/opp = REVERSE_DIR(direction)
-		//all these must be above zero for auxmos to even consider them
+		// all these must be above zero for processing
 		if(!thermal_conductivity || !heat_capacity || !current_turf.thermal_conductivity || !current_turf.heat_capacity)
 			conductivity_blocked_directions |= direction
 			current_turf.conductivity_blocked_directions |= opp

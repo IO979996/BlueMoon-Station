@@ -1,5 +1,3 @@
-// Граница auxmos vs DM: кто что считает, см. code/modules/atmospherics/AUXMOS_AND_DM.md
-
 SUBSYSTEM_DEF(air)
 	name = "Atmospherics"
 	init_order = INIT_ORDER_AIR
@@ -42,7 +40,7 @@ SUBSYSTEM_DEF(air)
 	//atmos singletons
 	var/list/gas_reactions = list()
 	var/list/atmos_gen
-	var/list/planetary = list() //auxmos already caches static planetary mixes but could be convenient to do so here too
+	var/list/planetary = list()
 	//Special functions lists
 	var/list/turf/open/high_pressure_delta = list()
 
