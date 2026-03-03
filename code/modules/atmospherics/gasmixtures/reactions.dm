@@ -79,7 +79,7 @@
 		reagents_holder.reaction(AM, TOUCH)
 	reagents_holder.reaction(location, TOUCH)
 
-// Реакции в Rust (auxmos-bluemoon): только id и min_requirements для регистрации в auxmos, логика в bluemoon.rs
+// Реакции в Rust "auxmos-bluemoon": только id и min_requirements для регистрации в auxmos, логика в bluemoon.rs
 /datum/gas_reaction/nobstop
 	priority = 400
 	name = "Noblium suppression"
