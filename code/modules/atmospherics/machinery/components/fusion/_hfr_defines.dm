@@ -1,5 +1,8 @@
 ///Speed of light, in m/s
 #define LIGHT_SPEED 299792458
+/// Scale factor for (LIGHT_SPEED**2) to avoid 32-bit float overflow: compute (c²/scale) then multiply by scale.
+#define LIGHT_SPEED_SQ_SCALE 1e10
+#define LIGHT_SPEED_SQ_SCALED (LIGHT_SPEED * LIGHT_SPEED / LIGHT_SPEED_SQ_SCALE)
 ///Calculation between the plank constant and the lambda of the lightwave
 #define PLANCK_LIGHT_CONSTANT 2e-16
 ///Radius of the h2 calculated based on the amount of number of atom in a mole (and some addition for balancing issues)
@@ -30,6 +33,8 @@
 #define MIN_POWER_USAGE (50 KILO WATTS)
 ///Sets the multiplier for the damage
 #define DAMAGE_CAP_MULTIPLIER 0.005
+/// Max overmole (5000+ moles) damage per 5-second trigger so huge melting_point doesn't overshoot (still subject to cap)
+#define HYPERTORUS_OVERMOLE_MAX_ADD 50
 ///Sets the range of the hallucinations
 #define HALLUCINATION_HFR(P) (min(7, round(abs(P) ** 0.25)))
 ///Chance in percentage points per fusion level of iron accumulation when operating at unsafe levels

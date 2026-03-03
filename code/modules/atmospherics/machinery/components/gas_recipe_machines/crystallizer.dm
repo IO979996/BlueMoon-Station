@@ -122,21 +122,19 @@
 	return FALSE
 
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_calculations()
-	var/log_arg = max(total_recipe_moles * 0.1, 1e-10)
-	var/rounded_log = round(log(10, log_arg), 0.01)
-	var/progress_amount_to_quality = (rounded_log != 0) ? (MIN_PROGRESS_AMOUNT * 4.5 / rounded_log) : 0
+	// Quality change rate: scales with recipe size, clamped to avoid edge cases (no log)
+	var/quality_rate = MIN_PROGRESS_AMOUNT * 0.5 * clamp(total_recipe_moles / 20, 0.1, 5)
 	var/internal_temp = internal.return_temperature()
 	if((internal_temp >= (selected_recipe.min_temp * MIN_DEVIATION_RATE) && internal_temp <= selected_recipe.min_temp) || \
 		(internal_temp >= selected_recipe.max_temp && internal_temp <= (selected_recipe.max_temp * MAX_DEVIATION_RATE)))
-		quality_loss = min(quality_loss + progress_amount_to_quality, 100)
+		quality_loss = min(quality_loss + quality_rate, 100)
 
 	var/median_temperature = (selected_recipe.max_temp + selected_recipe.min_temp) / 2
 	if(internal_temp >= (median_temperature * MIN_DEVIATION_RATE) && internal_temp <= (median_temperature * MAX_DEVIATION_RATE))
-		quality_loss = max(quality_loss - progress_amount_to_quality, -85)
+		quality_loss = max(quality_loss - quality_rate, -85)
 
 	var/heat_cap = max(internal.heat_capacity(), 1e-10)
 	internal.set_temperature(max(internal_temp + (selected_recipe.energy_release / heat_cap), TCMB))
-	update_parents()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/heat_conduction()
 	var/datum/gas_mixture/cooling_port = airs[1]
@@ -150,7 +148,6 @@
 			var/cooling_heat_amount = HIGH_CONDUCTIVITY_RATIO * coolant_temperature_delta * (cooling_heat_capacity * internal_heat_capacity / (cooling_heat_capacity + internal_heat_capacity))
 			cooling_port.set_temperature(max(cooling_port.return_temperature() - cooling_heat_amount / cooling_heat_capacity, TCMB))
 			internal.set_temperature(max(internal.return_temperature() + cooling_heat_amount / internal_heat_capacity, TCMB))
-			update_parents()
 
 /obj/machinery/atmospherics/components/binary/crystallizer/proc/moles_calculations()
 	var/amounts = 0
@@ -177,7 +174,9 @@
 	if(internal_check())
 		if(check_temp_requirements())
 			heat_calculations()
-			progress_bar = min(progress_bar + (MIN_PROGRESS_AMOUNT * 5 / (round(log(10, total_recipe_moles * 0.1), 0.01))), 100)
+			// Progress speed scales with recipe size, no log (was div-by-negative/zero prone)
+			var/progress_step = MIN_PROGRESS_AMOUNT * 0.5 * clamp(total_recipe_moles / 20, 0.5, 2)
+			progress_bar = min(progress_bar + progress_step, 100)
 		else
 			quality_loss = min(quality_loss + 0.5, 100)
 			progress_bar = max(progress_bar - 1, 0)

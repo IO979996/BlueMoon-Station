@@ -88,10 +88,22 @@
 	/// Last world.time when overmole (5000+) integrity damage was applied
 	var/last_overmole_damage = 0
 
+	/// Cached lists reused every process_atmos to avoid allocations (fusion_process)
+	var/list/hfr_fuel_list = list()
+	var/list/hfr_scaled_fuel_list = list()
+	var/list/hfr_moderator_list = list()
+	var/list/hfr_scaled_moderator_list = list()
+	/// Reused gas_mixture for output each tick instead of new
+	var/datum/gas_mixture/hfr_internal_output
+	/// Reused for remove_specific in remove_waste and inject_fuel to avoid 10+ allocations per tick
+	var/datum/gas_mixture/hfr_removed_waste
+
 /obj/machinery/atmospherics/components/unary/hypertorus/core/Initialize(mapload)
 	. = ..()
 	internal_fusion = new(5000)
 	moderator_internal = new(10000)
+	hfr_internal_output = new
+	hfr_removed_waste = new
 
 	radio = new(src)
 	radio.keyslot = new radio_key

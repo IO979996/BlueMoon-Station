@@ -105,9 +105,9 @@
 #define CAT_SPAGHETTI	"Spaghettis"
 #define CAT_ICE	"Frozen"
 #define CAT_EAST "East foods" //BLUEMOON ADD
-// Main category key in crafting.cm categories list; subcategory key for recipes (both display as "Atmospherics" in UI)
-#define CAT_ATMOSPHERIC "Atmospherics" //BLUEMOON ADD - кристаллы и крафты из кристаллайзера (все в одной вкладке)
-#define CAT_ATMOSPHERICS "Atmospherics" // единственная подкатегория — все рецепты в одном списке
+// Category tab; single subcategory for crystallizer crystals and gas crafts (BLUEMOON ADD)
+#define CAT_ATMOSPHERIC "Atmospherics"
+#define CAT_ATMOSPHERICS "Gas Crystals"
 
 #define RCD_FLOORWALL 1
 #define RCD_AIRLOCK 2

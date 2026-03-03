@@ -182,12 +182,19 @@ we use a hook instead
 
 	return removed
 
-/// Removes a specific amount of one gas. Returns a new gas_mixture with that gas, or null if amount <= 0.
-/datum/gas_mixture/proc/remove_specific(gas_id, amount)
+/// Removes a specific amount of one gas. Returns a gas_mixture with that gas, or null if amount <= 0.
+/// If into is supplied, that mixture is cleared and filled (no allocation); otherwise a new mixture is created.
+/datum/gas_mixture/proc/remove_specific(gas_id, amount, datum/gas_mixture/into)
 	var/current = get_moles(gas_id)
 	amount = min(amount, current)
 	if(amount <= 0)
 		return null
+	if(into)
+		into.clear()
+		into.set_moles(gas_id, amount)
+		into.set_temperature(return_temperature())
+		adjust_moles(gas_id, -amount)
+		return into
 	var/datum/gas_mixture/removed = new type(return_volume())
 	removed.set_moles(gas_id, amount)
 	removed.set_temperature(return_temperature())

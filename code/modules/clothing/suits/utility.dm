@@ -36,7 +36,7 @@
 	icon_state = "firesuit"
 	item_state = "firefighter"
 	tail_state = "atmos"
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAUR
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAUR|ALLOWS_BACK_TANK
 	mutantrace_variation = STYLE_DIGITIGRADE|STYLE_SNEK_TAURIC|STYLE_PAW_TAURIC
 
 

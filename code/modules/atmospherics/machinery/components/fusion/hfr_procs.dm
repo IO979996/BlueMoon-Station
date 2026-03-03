@@ -5,6 +5,8 @@
 	. = TRUE
 	if(!anchored || panel_open)
 		return FALSE
+	corners.Cut()
+	machine_parts.Cut()
 
 	for(var/obj/machinery/hypertorus/object in orange(1,src))
 		if(. == FALSE)
@@ -132,14 +134,9 @@
 		corners = list()
 	QDEL_NULL(soundloop)
 
+/// Removed: was iterating GLOB.gas_data.ids every tick and doing set_moles(get_moles(...)) — no-op and major perf sink. get_moles() already returns 0 for missing gases.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/assert_gases()
-	internal_fusion.set_moles(GAS_ANTINOBLIUM, internal_fusion.get_moles(GAS_ANTINOBLIUM))
-	for(var/gas_id in GLOB.gas_data.ids)
-		moderator_internal.set_moles(gas_id, moderator_internal.get_moles(gas_id))
-	if(!selected_fuel)
-		return
-	for(var/gas_id in selected_fuel.requirements | selected_fuel.primary_products)
-		internal_fusion.set_moles(gas_id, internal_fusion.get_moles(gas_id))
+	return
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/update_pipenets()
 	update_parents()
@@ -324,6 +321,8 @@
 	radio.talk_into(src, speaking, common_channel)
 	notify_ghosts("The [src] has begun melting down!", 'sound/machines/warning-buzzer.ogg', FALSE, src, header = "Meltdown Incoming")
 	for(var/i in HYPERTORUS_COUNTDOWN_TIME to 0 step -10)
+		if(QDELETED(src))
+			return
 		if(critical_threshold_proximity < melting_point)
 			radio.talk_into(src, "[safe_alert] Failsafe has been disengaged.", common_channel)
 			final_countdown = FALSE
@@ -394,10 +393,11 @@
 		gas_pockets = 15
 		gas_spread = power_level * 8
 	var/list/around_turfs = spiral_range_turfs(gas_spread, src)
+	var/list/turfs_to_remove = list()
 	for(var/turf/turf as anything in around_turfs)
 		if(isclosedturf(turf) || isspaceturf(turf))
-			around_turfs -= turf
-			continue
+			turfs_to_remove += turf
+	around_turfs -= turfs_to_remove
 	var/datum/gas_mixture/remove_fusion
 	if(internal_fusion.total_moles() > 0)
 		remove_fusion = internal_fusion.remove_ratio(0.2)

@@ -72,11 +72,4 @@ GLOBAL_LIST_INIT(electrolyzer_reactions, electrolyzer_reactions_list())
 	if(new_heat > MINIMUM_HEAT_CAPACITY)
 		air_mixture.set_temperature(max(((air_mixture.return_temperature() * old_heat + energy_used) / new_heat), TCMB))
 
-/datum/gas_mixture/proc/electrolyze(working_power = 0, list/electrolyzer_args = list())
-	for(var/reaction_id in GLOB.electrolyzer_reactions)
-		var/datum/electrolyzer_reaction/R = GLOB.electrolyzer_reactions[reaction_id]
-		if(!R.reaction_check(src, electrolyzer_args))
-			continue
-		R.react(src, working_power, electrolyzer_args)
-
 #undef HALON_FORMATION_ENERGY
