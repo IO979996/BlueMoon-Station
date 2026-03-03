@@ -3,6 +3,7 @@ What are the archived variables for?
 	Calculations are done using the archived variables with the results merged into the regular variables.
 	This prevents race conditions that arise based on the order of tile processing.
 */
+#define MINIMUM_HEAT_CAPACITY	0.0003
 #define MINIMUM_MOLE_COUNT		0.01
 
 /datum/gas_mixture
@@ -11,20 +12,16 @@ What are the archived variables for?
 	var/initial_volume = CELL_VOLUME //liters
 	var/list/reaction_results
 	var/list/analyzer_results //used for analyzer feedback - not initialized until its used
-	var/_extools_pointer_gasmixture // legacy, не используется при нативной атмосфере
-	var/list/gases = list()
-	var/temperature = TCMB
-	var/tmp/temperature_archived = TCMB
-	var/volume = CELL_VOLUME
-	var/last_share = 0
-	var/list/gas_archive
+	var/_extools_pointer_gasmixture // Contains the index in the gas vector for this gas mixture in rust land. Don't. Touch. This. Var.
+
+GLOBAL_LIST_INIT(auxtools_atmos_initialized,FALSE)
 
 /datum/gas_mixture/New(volume)
 	if (!isnull(volume))
 		initial_volume = volume
-	src.volume = initial_volume
-	temperature = TCMB
-	temperature_archived = TCMB
+	if(!GLOB.auxtools_atmos_initialized && auxtools_atmos_init(GLOB.gas_data))
+		GLOB.auxtools_atmos_initialized = TRUE
+	__gasmixture_register()
 	reaction_results = new
 
 /datum/gas_mixture/vv_edit_var(var_name, var_value)
@@ -134,6 +131,11 @@ we use a hook instead
 
 /datum/gas_mixture/proc/get_last_share()
 
+/datum/gas_mixture/proc/archive()
+	//Update archived versions of variables
+	//Returns: 1 in all cases
+
+
 /datum/gas_mixture/proc/remove(amount)
 	//Removes amount of gas from the gas_mixture
 	//Returns: gas_mixture with the gases removed
@@ -212,6 +214,8 @@ we use a hook instead
 
 /datum/gas_mixture/parse_gas_string(gas_string)
 	gas_string = SSair.preprocess_gas_string(gas_string)
+	return __auxtools_parse_gas_string(gas_string)
+/*
 	var/list/gas = params2list(gas_string)
 	if(gas["TEMP"])
 		var/temp = text2num(gas["TEMP"])
@@ -224,6 +228,56 @@ we use a hook instead
 		set_moles(id, text2num(gas[id]))
 	archive()
 	return TRUE
+	*/
+/*
+/datum/gas_mixture/react(datum/holder)
+	. = NO_REACTION
+	if(!total_moles())
+		return
+	var/list/reactions = list()
+	for(var/datum/gas_reaction/G in SSair.gas_reactions)
+		if(get_moles(G.major_gas))
+			reactions += G
+	if(!length(reactions))
+		return
+	reaction_results = new
+	var/temp = return_temperature()
+	var/ener = thermal_energy()
+
+	reaction_loop:
+		for(var/r in reactions)
+			var/datum/gas_reaction/reaction = r
+
+			var/list/min_reqs = reaction.min_requirements
+			if((min_reqs["TEMP"] && temp < min_reqs["TEMP"]) \
+			|| (min_reqs["ENER"] && ener < min_reqs["ENER"]))
+				continue
+
+			for(var/id in min_reqs)
+				if (id == "TEMP" || id == "ENER")
+					continue
+				if(get_moles(id) < min_reqs[id])
+					continue reaction_loop
+			//at this point, all minimum requirements for the reaction are satisfied.
+
+			/*	currently no reactions have maximum requirements, so we can leave the checks commented out for a slight performance boost
+				PLEASE DO NOT REMOVE THIS CODE. the commenting is here only for a performance increase.
+				enabling these checks should be as easy as possible and the fact that they are disabled should be as clear as possible
+			var/list/max_reqs = reaction.max_requirements
+			if((max_reqs["TEMP"] && temp > max_reqs["TEMP"]) \
+			|| (max_reqs["ENER"] && ener > max_reqs["ENER"]))
+				continue
+			for(var/id in max_reqs)
+				if(id == "TEMP" || id == "ENER")
+					continue
+				if(cached_gases[id] && cached_gases[id][MOLES] > max_reqs[id])
+					continue reaction_loop
+			//at this point, all requirements for the reaction are satisfied. we can now react()
+			*/
+			. |= reaction.react(src, holder)
+			if (. & STOP_REACTIONS)
+				break
+*/
 
 /datum/gas_mixture/proc/set_analyzer_results(instability)
 	if(!analyzer_results)

@@ -36,7 +36,7 @@
 /turf/open/Destroy()
 	if(active_hotspot)
 		QDEL_NULL(active_hotspot)
-	update_air_ref(-1)
+	update_air_ref(-1) // deregister from auxmos before nulling air, prevents null-access race with SSair
 	air = null
 	return ..()
 
@@ -172,7 +172,7 @@
 /turf/proc/process_cell(fire_count)
 /turf/open/proc/equalize_pressure_in_zone(cyclenum)
 
-/turf/proc/consider_firelocks(turf/T2)
+/turf/proc/consider_firelocks(turf/T2) //TODO: Find out why this sometimes gets called. Possibly to do with atmos adjacency not being updated in auxmos?
 /turf/open/consider_firelocks(turf/T2)
 	if(blocks_air)
 		return
