@@ -288,10 +288,6 @@
 /datum/gas_reaction/antinoblium_replication/init_reqs()
 	min_requirements = list("TEMP" = REACTION_OPPRESSION_MIN_TEMP, GAS_ANTINOBLIUM = MINIMUM_MOLE_COUNT, GAS_PLASMA = MINIMUM_MOLE_COUNT)
 
-/// Опциональный прок для auxmos-bluemoon: начисление очков исследований при реакциях. Заглушка, если R&D не используется.
-/proc/bluemoon_add_research_points(amount)
-	return
-
 /proc/fire_expose(turf/open/location, datum/gas_mixture/air, temperature)
 	if(istype(location) && temperature > FIRE_MINIMUM_TEMPERATURE_TO_EXIST)
 		location.hotspot_expose(temperature, CELL_VOLUME)
