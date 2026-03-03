@@ -66,6 +66,8 @@ SUBSYSTEM_DEF(air)
 	var/share_max_steps = 3
 	// Target for share_max_steps; can go below this, if it determines the thread is taking too long.
 	var/share_max_steps_target = 3
+	// Ratio for planet atmos sharing (auxmos: planet_process). Default 0.125 (GAS_DIFFUSION_CONSTANT).
+	var/planet_share_ratio = 0.125
 	// Excited group processing will try to equalize groups with total pressure difference less than this amount.
 	var/excited_group_pressure_goal = 1
 	// Target for excited_group_pressure_goal; can go below this, if it determines the thread is taking too long.
