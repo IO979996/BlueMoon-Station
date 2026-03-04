@@ -58,8 +58,7 @@
 	if(owner.mob_biotypes & MOB_MINERAL)//does not process in inorganic things
 		return
 	if (causes_damage && !iszombie(owner) && owner.stat != DEAD)
-		owner.adjustToxLoss(0.15 * seconds_per_tick)
-		owner.adjustOrganLoss(ORGAN_SLOT_HEART, 1)
+		owner.adjustToxLoss(1 * seconds_per_tick)
 		owner.adjustOrganLoss(ORGAN_SLOT_BRAIN, 1)
 		if (SPT_PROB(5, seconds_per_tick))
 			to_chat(owner, span_danger("Мне плоховато..."))
