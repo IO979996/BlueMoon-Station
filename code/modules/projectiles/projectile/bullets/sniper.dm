@@ -22,7 +22,8 @@
 	. = ..()
 	if(blocked >= 100)
 		return .
-	if(iscarbon(target))
+	// Только летальные снаряды могут отрубать голову с близкой дистанции
+	if(iscarbon(target) && damage > 0)
 		var/mob/living/carbon/C = target
 		if(def_zone == BODY_ZONE_HEAD && starting && get_dist(starting, get_turf(C)) <= SNIPER_HEAD_GIB_CLOSE_RANGE && prob(SNIPER_HEAD_GIB_CHANCE))
 			C.gib_head()
