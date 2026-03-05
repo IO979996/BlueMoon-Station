@@ -41,11 +41,11 @@
 	lefthand_file = 'icons/mob/inhands/hellgate/rifles_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/rifles_right_1.dmi'
 	mag_type = /obj/item/ammo_box/magazine/m762
-	fire_sound = 'sound/weapons/gun/rifle/shot.ogg'
+	fire_sound = 'sound/weapons/rifleshot.ogg'
 	can_suppress = FALSE
 	burst_size = 1
 	fire_delay = 2
-	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_BURST)
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_BURST_SHOT)
 	automatic_burst_overlay = FALSE
 	weapon_weight = WEAPON_MEDIUM
 
@@ -61,12 +61,12 @@
 	lefthand_file = 'icons/mob/inhands/hellgate/machineguns_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/machineguns_right_1.dmi'
 	mag_type = /obj/item/ammo_box/magazine/m556
-	fire_sound = 'sound/weapons/gun/rifle/shot.ogg'
+	fire_sound = 'sound/weapons/rifleshot.ogg'
 	can_suppress = FALSE
 	burst_size = 3
 	burst_shot_delay = 2
 	fire_delay = 2
-	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_BURST, SELECT_FULLY_AUTOMATIC)
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_BURST_SHOT, SELECT_FULLY_AUTOMATIC)
 	automatic_burst_overlay = TRUE
 	weapon_weight = WEAPON_MEDIUM
 
