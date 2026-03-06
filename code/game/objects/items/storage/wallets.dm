@@ -86,7 +86,14 @@
 
 /obj/item/storage/wallet/proc/refreshID()
 	LAZYCLEARLIST(combined_access)
-	if(!(front_id in src))
+	// front_id is valid if it's in contents or inside a PDA in contents
+	var/keep_front_id = (front_id in src)
+	if(!keep_front_id && front_id)
+		for(var/obj/item/pda/PDA in contents)
+			if(PDA.GetID() == front_id)
+				keep_front_id = TRUE
+				break
+	if(!keep_front_id)
 		front_id = null
 	for(var/obj/item/card/id/I in contents)
 		if(!front_id)
@@ -127,7 +134,16 @@
 	if(!front_id)
 		return
 	. = front_id
-	front_id.forceMove(get_turf(src))
+	if(front_id in src)
+		front_id.forceMove(get_turf(src))
+	else
+		for(var/obj/item/pda/PDA in contents)
+			if(PDA.GetID() == front_id)
+				. = PDA.RemoveID()
+				front_id = null
+				return
+		// fallback: not in contents and not from PDA (e.g. stale ref)
+		front_id.forceMove(get_turf(src))
 
 /obj/item/storage/wallet/InsertID(obj/item/inserting_item)
 	var/obj/item/card/inserting_id = inserting_item.RemoveID()
