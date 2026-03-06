@@ -195,7 +195,7 @@
 /datum/sprite_accessory/ears/human/sergal
 	name = "Sergal"
 	icon_state = "sergal"
-	icon = 'modular_citadel/icons/mob/mam_ears.dmi'
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	color_src = MATRIXED
 	matrixed_sections = MATRIX_RED_GREEN
 
@@ -410,6 +410,7 @@
 /datum/sprite_accessory/ears/mam_ears/sergal
 	name = "Sergal"
 	icon_state = "sergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/ears/mam_ears/skunk

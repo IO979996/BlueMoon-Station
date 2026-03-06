@@ -463,14 +463,14 @@
 	name = "Sergal"
 	icon_state = "sergal"
 	color_src = MATRIXED
-	icon = 'modular_citadel/icons/mob/mam_tails.dmi'
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/tails_animated/human/sergal
 	name = "Sergal"
 	icon_state = "sergal"
 	color_src = MATRIXED
-	icon = 'modular_citadel/icons/mob/mam_tails.dmi'
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/tails/human/shark
@@ -983,11 +983,13 @@
 /datum/sprite_accessory/tails/mam_tails/sergal
 	name = "Sergal"
 	icon_state = "sergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/tails_animated/mam_tails_animated/sergal
 	name = "Sergal"
 	icon_state = "sergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/tails/mam_tails/shark

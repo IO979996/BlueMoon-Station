@@ -51,6 +51,7 @@
 /datum/sprite_accessory/mam_body_markings/secondary/sergal
 	name = "Partial - Sergal"
 	icon_state = "sergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	covered_limbs = list("Chest" =  MATRIX_RED, "Head" = MATRIX_RED)
 
 /datum/sprite_accessory/mam_body_markings/secondary/husky

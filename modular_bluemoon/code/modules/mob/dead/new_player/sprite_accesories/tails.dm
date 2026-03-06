@@ -75,10 +75,10 @@
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/tails/mam_tails/sergal //Респрайт
-	icon = 'modular_bluemoon/icons/mob/bm_tails.dmi'
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 
 /datum/sprite_accessory/tails_animated/mam_tails_animated/sergal //Респрайт
-	icon = 'modular_bluemoon/icons/mob/bm_tails.dmi'
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 
 /datum/sprite_accessory/tails/mam_tails/scorpid
 	icon = 'modular_bluemoon/icons/mob/bm_tails.dmi'

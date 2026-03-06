@@ -1,7 +1,7 @@
 /datum/sprite_accessory/snouts/mam_snouts/sergal_alt
     name = "Sergal (Alt)"
     icon_state = "fsergalalt"
-    icon = 'modular_bluemoon/icons/mob/mam_snouts.dmi'
+    icon = 'icons/Sergal-resprite/final_mob.dmi'
     matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/snouts/mam_snouts/skulldogalt2

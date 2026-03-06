@@ -193,6 +193,7 @@ datum/sprite_accessory/mam_body_markings/shark/datashark // BLUEMOON CHANGE PORT
 /datum/sprite_accessory/mam_body_markings/sergal
 	name = "Sergal"
 	icon_state = "sergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	covered_limbs = list("Head" = MATRIX_RED_GREEN, "Chest" = MATRIX_RED_GREEN)
 
 /datum/sprite_accessory/mam_body_markings/pede

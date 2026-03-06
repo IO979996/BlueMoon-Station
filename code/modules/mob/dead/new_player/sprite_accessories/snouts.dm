@@ -130,7 +130,7 @@
 /datum/sprite_accessory/snouts/sergal
 	name = "Sergal"
 	icon_state = "sergal"
-	icon = 'modular_citadel/icons/mob/mam_snouts.dmi'
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	color_src = MATRIXED
 
 /datum/sprite_accessory/snouts/shark
@@ -265,6 +265,7 @@
 /datum/sprite_accessory/snouts/mam_snouts/sergal
 	name = "Sergal"
 	icon_state = "sergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/snouts/mam_snouts/shark
@@ -436,6 +437,7 @@
 /datum/sprite_accessory/snouts/mam_snouts/fsergal
 	name = "Sergal (Top)"
 	icon_state = "fsergal"
+	icon = 'icons/Sergal-resprite/final_mob.dmi'
 	matrixed_sections = MATRIX_RED_GREEN
 
 /datum/sprite_accessory/snouts/mam_snouts/fshark
