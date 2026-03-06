@@ -13,7 +13,7 @@
 	to_chat(c, "<span class='notice'>***********************************************************</span>")
 
 /datum/buildmode_mode/offercontrol/handle_click(c, params, object)
-	if(!ismob(object))
+	if(!istype(object, /mob/living))
 		return
 
 	var/mob/living/mob_to_offer = object
