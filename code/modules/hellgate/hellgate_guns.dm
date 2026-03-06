@@ -96,7 +96,7 @@
 	automatic_burst_overlay = FALSE
 
 /obj/item/gun/ballistic/automatic/pistol/hellgate_vp78/update_icon_state()
-	icon_state = chambered ? "vp78" : "vp78_e"
+	icon_state = magazine ? "vp78" : "vp78_e"
 
 /obj/item/gun/ballistic/automatic/hellgate_c77
 	name = "C77"
@@ -116,7 +116,7 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/ballistic/automatic/hellgate_c77/update_icon_state()
-	icon_state = chambered ? "c77" : "c77_e"
+	icon_state = magazine ? "c77" : "c77_e"
 
 /obj/item/gun/ballistic/automatic/hellgate_m41a
 	name = "M41A"
@@ -137,7 +137,7 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/ballistic/automatic/hellgate_m41a/update_icon_state()
-	icon_state = chambered ? "m41a" : "m41a_e"
+	icon_state = magazine ? "m41a" : "m41a_e"
 
 // V41 — 7.62x39. В inhand .dmi нет состояния v41 — используем m41a для отображения в руках
 /obj/item/gun/ballistic/automatic/hellgate_v41
@@ -159,7 +159,7 @@
 	weapon_weight = WEAPON_HEAVY
 
 /obj/item/gun/ballistic/automatic/hellgate_v41/update_icon_state()
-	icon_state = chambered ? "v41" : "v41_e"
+	icon_state = magazine ? "v41" : "v41_e"
 
 // C74 — 7.62x39
 /obj/item/gun/ballistic/automatic/hellgate_c74
@@ -181,7 +181,7 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/ballistic/automatic/hellgate_c74/update_icon_state()
-	icon_state = chambered ? "c74" : "c74_e"
+	icon_state = magazine ? "c74" : "c74_e"
 
 // SG60 — .45
 /obj/item/gun/ballistic/automatic/hellgate_sg60
@@ -203,4 +203,4 @@
 	weapon_weight = WEAPON_MEDIUM
 
 /obj/item/gun/ballistic/automatic/hellgate_sg60/update_icon_state()
-	icon_state = chambered ? "sg60" : "sg60_e"
+	icon_state = magazine ? "sg60" : "sg60_e"
