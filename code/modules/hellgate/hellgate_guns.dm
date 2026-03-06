@@ -1,7 +1,71 @@
 // HellGate / PactDivest — оружие на спрайтах sprites_HellGate
-// Пистолет VP78 10mm, винтовки/пулемёты 7.62x39 (C77, C74, V41) — магазин AK-47, пулемёт M41A 5.56, SG60 .45
-// Иконки: icons/obj/hellgate/, в руках: icons/mob/inhands/hellgate/
-// Имена состояний взяты из .dmi. 7.62x39 — стандарт modular_bluemoon (a762x39, магазин ak47).
+// Магазины из machinegun-ammo.dmi: под каждое оружие свой (100 патр.), иконка _e — пустой.
+// C77, C74, V41 — 7.62x39; M41A — 5.56; SG60 — .45
+
+// Магазин для C77 (7.62x39, 100 патр.) — спрайт rifle-ammo.dmi (винтовочный)
+/obj/item/ammo_box/magazine/hellgate_c77
+	name = "магазин C77 (7.62x39, 100 патр.)"
+	desc = "Магазин под винтовку C77. 7.62x39."
+	icon = 'icons/obj/hellgate/rifle-ammo.dmi'
+	icon_state = "c77"
+	ammo_type = /obj/item/ammo_casing/a762x39
+	caliber = "a762x39"
+	max_ammo = 100
+
+/obj/item/ammo_box/magazine/hellgate_c77/update_icon_state()
+	icon_state = ammo_count() ? "c77" : "c77_e"
+
+// Магазин для M41A (5.56, 100 патр.)
+/obj/item/ammo_box/magazine/hellgate_m41a
+	name = "магазин M41A (5.56, 100 патр.)"
+	desc = "Магазин под автомат M41A. 5.56мм."
+	icon = 'icons/obj/hellgate/machinegun-ammo.dmi'
+	icon_state = "m41a"
+	ammo_type = /obj/item/ammo_casing/a556
+	caliber = "a556"
+	max_ammo = 100
+
+/obj/item/ammo_box/magazine/hellgate_m41a/update_icon_state()
+	icon_state = ammo_count() ? "m41a" : "m41a_e"
+
+// Магазин для V41 (7.62x39, 100 патр.)
+/obj/item/ammo_box/magazine/hellgate_v41
+	name = "магазин V41 (7.62x39, 100 патр.)"
+	desc = "Магазин под пулемёт V41. 7.62x39."
+	icon = 'icons/obj/hellgate/machinegun-ammo.dmi'
+	icon_state = "v41"
+	ammo_type = /obj/item/ammo_casing/a762x39
+	caliber = "a762x39"
+	max_ammo = 100
+
+/obj/item/ammo_box/magazine/hellgate_v41/update_icon_state()
+	icon_state = ammo_count() ? "v41" : "v41_e"
+
+// Магазин для C74 (7.62x39, 100 патр.)
+/obj/item/ammo_box/magazine/hellgate_c74
+	name = "магазин C74 (7.62x39, 100 патр.)"
+	desc = "Магазин под автомат C74. 7.62x39."
+	icon = 'icons/obj/hellgate/machinegun-ammo.dmi'
+	icon_state = "c74"
+	ammo_type = /obj/item/ammo_casing/a762x39
+	caliber = "a762x39"
+	max_ammo = 100
+
+/obj/item/ammo_box/magazine/hellgate_c74/update_icon_state()
+	icon_state = ammo_count() ? "c74" : "c74_e"
+
+// Магазин для SG60 (.45, 100 патр.)
+/obj/item/ammo_box/magazine/hellgate_sg60
+	name = "магазин SG60 (.45, 100 патр.)"
+	desc = "Магазин под пулемёт SG60. Калибр .45."
+	icon = 'icons/obj/hellgate/machinegun-ammo.dmi'
+	icon_state = "sg60"
+	ammo_type = /obj/item/ammo_casing/c45
+	caliber = ".45"
+	max_ammo = 100
+
+/obj/item/ammo_box/magazine/hellgate_sg60/update_icon_state()
+	icon_state = ammo_count() ? "sg60" : "sg60_e"
 
 /obj/item/gun/ballistic/automatic/pistol/hellgate_vp78
 	name = "VP78"
@@ -30,7 +94,7 @@
 	item_state = "c77"
 	lefthand_file = 'icons/mob/inhands/hellgate/rifles_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/rifles_right_1.dmi'
-	mag_type = /obj/item/ammo_box/magazine/ak47
+	mag_type = /obj/item/ammo_box/magazine/hellgate_c77
 	fire_sound = 'sound/weapons/rifleshot.ogg'
 	can_suppress = FALSE
 	burst_size = 1
@@ -50,7 +114,7 @@
 	item_state = "m41a"
 	lefthand_file = 'icons/mob/inhands/hellgate/machineguns_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/machineguns_right_1.dmi'
-	mag_type = /obj/item/ammo_box/magazine/m556
+	mag_type = /obj/item/ammo_box/magazine/hellgate_m41a
 	fire_sound = 'sound/weapons/rifleshot.ogg'
 	can_suppress = FALSE
 	burst_size = 3
@@ -72,7 +136,7 @@
 	item_state = "m41a"
 	lefthand_file = 'icons/mob/inhands/hellgate/machineguns_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/machineguns_right_1.dmi'
-	mag_type = /obj/item/ammo_box/magazine/ak47
+	mag_type = /obj/item/ammo_box/magazine/hellgate_v41
 	fire_sound = 'sound/weapons/rifleshot.ogg'
 	can_suppress = FALSE
 	burst_size = 3
@@ -94,7 +158,7 @@
 	item_state = "c74"
 	lefthand_file = 'icons/mob/inhands/hellgate/machineguns_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/machineguns_right_1.dmi'
-	mag_type = /obj/item/ammo_box/magazine/ak47
+	mag_type = /obj/item/ammo_box/magazine/hellgate_c74
 	fire_sound = 'sound/weapons/rifleshot.ogg'
 	can_suppress = FALSE
 	burst_size = 3
@@ -116,7 +180,7 @@
 	item_state = "sg60"
 	lefthand_file = 'icons/mob/inhands/hellgate/machineguns_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/machineguns_right_1.dmi'
-	mag_type = /obj/item/ammo_box/magazine/smgm45
+	mag_type = /obj/item/ammo_box/magazine/hellgate_sg60
 	fire_sound = 'sound/weapons/gunshot_smg.ogg'
 	can_suppress = FALSE
 	burst_size = 3
