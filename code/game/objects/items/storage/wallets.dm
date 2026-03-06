@@ -78,7 +78,16 @@
 /obj/item/storage/wallet/CtrlClick(mob/user)
 	. = ..()
 	for(var/obj/item/I in contents)
-		if(I.GetID())
+		if(!I.GetID())
+			continue
+		if(istype(I, /obj/item/pda))
+			var/obj/item/pda/PDA = I
+			var/obj/item/card/id/taken_id = PDA.RemoveID()
+			if(taken_id)
+				user.put_in_hands(taken_id)
+				refreshID()
+				return TRUE
+		else
 			user.put_in_hands(I)
 			refreshID()
 			return TRUE
@@ -140,10 +149,13 @@
 		for(var/obj/item/pda/PDA in contents)
 			if(PDA.GetID() == front_id)
 				. = PDA.RemoveID()
-				front_id = null
+				refreshID()
 				return
-		// fallback: not in contents and not from PDA (e.g. stale ref)
-		front_id.forceMove(get_turf(src))
+		// fallback: not in contents and not from PDA (stale ref) — don't forceMove, reset state
+		front_id = null
+		refreshID()
+		. = null
+		return
 
 /obj/item/storage/wallet/InsertID(obj/item/inserting_item)
 	var/obj/item/card/inserting_id = inserting_item.RemoveID()
