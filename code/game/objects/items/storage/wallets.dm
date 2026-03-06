@@ -39,6 +39,8 @@
 		/obj/item/valentine,
 		/obj/item/stamp,
 		/obj/item/key,
+		/obj/item/pda,
+		/obj/item/paicard,
 		/obj/item/cartridge,
 		/obj/item/camera_film,
 		/obj/item/stack/ore/bluespace_crystal,
