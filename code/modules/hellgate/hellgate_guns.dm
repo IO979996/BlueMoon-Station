@@ -1,16 +1,28 @@
 // HellGate / PactDivest — оружие на спрайтах sprites_HellGate
-// Магазины из machinegun-ammo.dmi: под каждое оружие свой (100 патр.), иконка _e — пустой.
-// C77, C74, V41 — 7.62x39; M41A — 5.56; SG60 — .45
+// Пистолеты: pistol-ammo.dmi, 17 патр. Винтовки: rifle-ammo.dmi, 30 патр. Пулемёты: machinegun-ammo.dmi, 100 патр. Иконка _e — пустой.
 
-// Магазин для C77 (7.62x39, 100 патр.) — спрайт rifle-ammo.dmi (винтовочный)
+// Магазин для VP78 (10мм, 17 патр.) — спрайт pistol-ammo.dmi
+/obj/item/ammo_box/magazine/hellgate_vp78
+	name = "магазин VP78 (10мм, 17 патр.)"
+	desc = "Магазин под пистолет VP78. 10мм."
+	icon = 'icons/obj/hellgate/pistol-ammo.dmi'
+	icon_state = "vp78"
+	ammo_type = /obj/item/ammo_casing/c10mm
+	caliber = "10mm"
+	max_ammo = 17
+
+/obj/item/ammo_box/magazine/hellgate_vp78/update_icon_state()
+	icon_state = ammo_count() ? "vp78" : "vp78_e"
+
+// Магазин для C77 (7.62x39, 30 патр.) — спрайт rifle-ammo.dmi (винтовочный)
 /obj/item/ammo_box/magazine/hellgate_c77
-	name = "магазин C77 (7.62x39, 100 патр.)"
+	name = "магазин C77 (7.62x39, 30 патр.)"
 	desc = "Магазин под винтовку C77. 7.62x39."
 	icon = 'icons/obj/hellgate/rifle-ammo.dmi'
 	icon_state = "c77"
 	ammo_type = /obj/item/ammo_casing/a762x39
 	caliber = "a762x39"
-	max_ammo = 100
+	max_ammo = 30
 
 /obj/item/ammo_box/magazine/hellgate_c77/update_icon_state()
 	icon_state = ammo_count() ? "c77" : "c77_e"
@@ -75,7 +87,7 @@
 	item_state = "vp78"
 	lefthand_file = 'icons/mob/inhands/hellgate/pistols_left_1.dmi'
 	righthand_file = 'icons/mob/inhands/hellgate/pistols_right_1.dmi'
-	mag_type = /obj/item/ammo_box/magazine/m10mm
+	mag_type = /obj/item/ammo_box/magazine/hellgate_vp78
 	fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	can_suppress = FALSE
 	burst_size = 1
