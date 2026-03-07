@@ -1056,7 +1056,7 @@
 	required_round_type = list(ROUNDTYPE_DYNAMIC_HARD, ROUNDTYPE_DYNAMIC_MEDIUM) // BLUEMOON ADD
 	requirements = list(101,101,101,50,30,25,20,10,10,10) //BLUEMOON CHANGES
 	repeatable = TRUE
-	var/dead_mobs_required = 20
+	var/dead_mobs_required = 10
 	var/need_extra_spawns_value = 15
 	var/list/spawn_locs = list()
 

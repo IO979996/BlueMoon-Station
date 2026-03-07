@@ -1,12 +1,12 @@
 /mob/living/carbon/monkey/punpun //except for a few special persistence features, pun pun is just a normal monkey
-	name = "Пун пун" //C A N O N
+	name = "Pun Pun"
 	unique_name = 0
 	var/ancestor_name
 	var/ancestor_chain = 1
 	var/relic_hat	//Note: these two are paths
 	var/relic_mask
 	var/memory_saved = FALSE
-	var/list/pet_monkey_names = list("Пун пун", "Bubbles", "Mojo", "George", "Darwin", "Aldo", "Caeser", "Kanzi", "Kong", "Terk", "Grodd", "Mala", "Bojangles", "Coco", "Able", "Baker", "Scatter", "Norbit", "Travis")
+	var/list/pet_monkey_names = list("Pun Pun", "Bubbles", "Mojo", "George", "Darwin", "Aldo", "Caeser", "Kanzi", "Kong", "Terk", "Grodd", "Mala", "Bojangles", "Coco", "Able", "Baker", "Scatter", "Norbit", "Travis")
 	var/list/rare_pet_monkey_names = list("Professor Bobo", "Deempisi's Revenge", "Furious George", "King Louie", "Dr. Zaius", "Jimmy Rustles", "Dinner", "Lanky")
 
 /mob/living/carbon/monkey/punpun/Initialize(mapload)
@@ -16,7 +16,11 @@
 		if(ancestor_chain > 1)
 			name += " \Roman[ancestor_chain]"
 	else
-		name = initial(name) // всегда "Пун пун" в новом раунде
+		// 90% Pun Pun, 10% имя из списка редких
+		if(prob(90))
+			name = "Pun Pun"
+		else
+			name = pick(rare_pet_monkey_names)
 		gender = pick(MALE, FEMALE)
 	. = ..()
 
