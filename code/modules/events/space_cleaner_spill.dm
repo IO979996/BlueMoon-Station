@@ -1,11 +1,11 @@
 /datum/round_event_control/space_cleaner_spill
-	name = "Аварийная очистка космической станции"
+	name = "Scrubber overflow: space cleaner"
 	typepath = /datum/round_event/space_cleaner_spill
 	weight = 40
 	max_occurrences = 3
 	min_players = 5
 	category = EVENT_CATEGORY_JANITORIAL
-	description = "Скрубберы и вентиляции выплёскивают space cleaner в виде пены."
+	description = "Scrubbers and vents spill space cleaner foam."
 
 /datum/round_event/space_cleaner_spill
 	announce_when = 1
@@ -18,7 +18,7 @@
 	var/list/atmos_devices = list()
 
 /datum/round_event/space_cleaner_spill/announce(fake)
-	priority_announce("Запущена аварийная очистка космической станции. Из части скрубберов и вентилей будет подана моющая пена.", "ВНИМАНИЕ: АТМОСФЕРА", 'sound/announcer/classic/ventclog.ogg')
+	priority_announce("Запущена аварийная очистка космической станции. Из части скрубберов и вентиляций будет подана моющая пена.", "ВНИМАНИЕ: АТМОСФЕРА", 'sound/announcer/classic/ventclog.ogg')
 
 /datum/round_event/space_cleaner_spill/setup()
 	// Собираем скрубберы
