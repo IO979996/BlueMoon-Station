@@ -120,6 +120,9 @@ There are several things that need to be remembered:
 
 /mob/living/carbon/human/apply_overlay(cache_index)
 	. = ..()
+	// ReapplyDisguise() calls update_inv_hands() -> apply_overlay(HANDS_LAYER); skip here to avoid infinite recursion
+	if(cache_index == HANDS_LAYER)
+		return
 	// Keep abductor stealth disguise when any single overlay updates (e.g. inventory change)
 	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
 		var/obj/item/clothing/suit/armor/abductor/vest/V = wear_suit
