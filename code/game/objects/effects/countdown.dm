@@ -69,7 +69,8 @@
 
 /obj/effect/countdown/Destroy()
 	STOP_PROCESSING(SSfastprocess, src)
-	UnregisterSignal(attached_to, COMSIG_PARENT_QDELETING)
+	if(attached_to && !QDELETED(attached_to))
+		UnregisterSignal(attached_to, COMSIG_PARENT_QDELETING)
 	attached_to = null
 	. = ..()
 

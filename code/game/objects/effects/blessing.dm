@@ -19,7 +19,8 @@
 	RegisterSignal(loc, COMSIG_ATOM_INTERCEPT_TELEPORT, PROC_REF(block_cult_teleport))
 
 /obj/effect/blessing/Destroy()
-	UnregisterSignal(loc, COMSIG_ATOM_INTERCEPT_TELEPORT)
+	if(loc && !QDELETED(loc))
+		UnregisterSignal(loc, COMSIG_ATOM_INTERCEPT_TELEPORT)
 	return ..()
 
 /obj/effect/blessing/proc/block_cult_teleport(datum/source, channel, turf/origin, turf/destination)

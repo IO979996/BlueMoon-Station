@@ -47,7 +47,8 @@
 	speech_args[SPEECH_MESSAGE] = message
 
 /datum/disease/pierrot_throat/Destroy()
-	UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
+	if(affected_mob && !QDELETED(affected_mob))
+		UnregisterSignal(affected_mob, COMSIG_MOB_SAY)
 	return ..()
 
 /datum/disease/pierrot_throat/remove_disease()

@@ -13,7 +13,8 @@
 
 /datum/action/cooldown/bloodsucker/lunge/Destroy()
 	. = ..()
-	UnregisterSignal(owner, COMSIG_CARBON_TACKLED)
+	if(owner && !QDELETED(owner))
+		UnregisterSignal(owner, COMSIG_CARBON_TACKLED)
 
 /datum/action/cooldown/bloodsucker/lunge/ActivatePower()
 	var/mob/living/carbon/user = owner

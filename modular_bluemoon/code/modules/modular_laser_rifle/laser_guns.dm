@@ -53,8 +53,8 @@
 	var/list/radial_menu_data = list()
 	/// Is the gun currently changing types? Prevents the gun from firing if yes
 	var/currently_switching_types = FALSE
-	/// How long transitioning takes before you're allowed to pick a weapon type
-	var/transition_duration = 1 SECONDS
+	/// How long the switch animation plays before the radial menu opens (short delay for feedback without feeling sluggish)
+	var/transition_duration = 0.35 SECONDS
 	/// What the currently selected weapon mode is, for quickly referencing for use in procs and whatnot
 	var/datum/laser_weapon_mode/currently_selected_mode
 	/// Name of the firing mode that is selected by default
@@ -121,9 +121,10 @@
 	if(mode_switch_timer_id)
 		deltimer(mode_switch_timer_id)
 		mode_switch_timer_id = null
-	if(currently_selected_mode)
-		currently_selected_mode.remove_from_weapon(src)
-		currently_selected_mode = null
+	// Не вызываем remove_from_weapon() при уничтожении: это делает QDEL_NULL(autofire_component)
+	// и может вызвать повторное удаление во время Destroy → краш BYOND "illegal operation".
+	// Компоненты и так удалятся вместе с пушкой.
+	currently_selected_mode = null
 	weapon_mode_name_to_path = null
 	radial_menu_data = null
 	return ..()
