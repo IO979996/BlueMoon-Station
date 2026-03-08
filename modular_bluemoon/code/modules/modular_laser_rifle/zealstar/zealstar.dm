@@ -36,10 +36,10 @@
 /obj/item/gun/energy/modular_laser_rifle/zealstar/Initialize(mapload)
 	. = ..()
 
-/// SPEAR - ПАРАЛИЗАТОР (100 выстрелов) ///
+/// SPEAR - ПАРАЛИЗАТОР (100 выстрелов из 10k ячейки) ///
 
 /obj/item/ammo_casing/energy/cybersun_small_disabler/zealstar
-	e_cost = 1
+	e_cost = 100
 
 /datum/laser_weapon_mode/spear
 	standard_firing_mode = FALSE
@@ -59,11 +59,11 @@
 
 /// SPEAR - ПАРАЛИЗАТОР ///
 
-/// THUNDER - РАКЕТНИЦА (2 выстрела) ///
+/// THUNDER - РАКЕТНИЦА (2 выстрела из 10k ячейки) ///
 
 /obj/item/ammo_casing/energy/laser/thunder
 	projectile_type = /obj/item/projectile/bullet/a84mm
-	e_cost = 50
+	e_cost = 5000
 	fire_sound = 'sound/weapons/rocketlaunch.ogg'
 
 /datum/laser_weapon_mode/thunder
@@ -86,13 +86,13 @@
 
 /// THUNDER - РАКЕТНИЦА ///
 
-/// HAMMER - ДРОБОВИК (20 выстрелов) ///
+/// HAMMER - ДРОБОВИК (20 выстрелов из 10k ячейки) ///
 
 /obj/item/ammo_casing/energy/laser/hammer
 	projectile_type = /obj/item/projectile/bullet/pellet/buckshot23
 	pellets = 8
 	variance = 10
-	e_cost = 5
+	e_cost = 500
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/shotgun_heavy.ogg'
 
 /datum/laser_weapon_mode/hammer
@@ -117,13 +117,13 @@
 
 /// HAMMER - ДРОБОВИК ///
 
-/// PHOENIX - ОГНЕМЁТ (50 выстрелов) ///
+/// PHOENIX - ОГНЕМЁТ (50 выстрелов из 10k ячейки) ///
 
 /obj/item/ammo_casing/energy/laser/flamethrower
 	projectile_type = /obj/item/projectile/bullet/incendiary/flamethrower
 	pellets = 6
 	variance = 35
-	e_cost = 2
+	e_cost = 200
 	select_name = "Fire"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/flamethrower.ogg'
 
@@ -157,11 +157,11 @@
 
 /// PHOENIX - ОГНЕМЁТ ///
 
-/// SQUALL - АВТОМАТИЧЕСКАЯ ВИНТОВКА (50 выстрелов) ///
+/// SQUALL - АВТОМАТИЧЕСКАЯ ВИНТОВКА (50 выстрелов из 10k ячейки) ///
 
 /obj/item/ammo_casing/energy/laser/squall
 	projectile_type = /obj/item/projectile/bullet/a556
-	e_cost = 2
+	e_cost = 200
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/ak17_fire.ogg'
 
 /datum/laser_weapon_mode/squall
