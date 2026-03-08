@@ -1,15 +1,15 @@
-// Red kill lasers for the big gun (30 shots from 10k cell)
+// Red kill lasers for the big gun (20 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_big_kill
 	projectile_type = /obj/item/projectile/beam/cybersun_laser
-	e_cost = 333
+	e_cost = 500
 	select_name = "Kill"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/laser.ogg'
 
 /obj/item/projectile/beam/cybersun_laser
 	icon = 'modular_bluemoon/code/modules/modular_laser_rifle/icons/projectiles.dmi'
 	icon_state = "kill_large"
-	damage = 20
+	damage = 25
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
 	light_color = COLOR_SOFT_RED
 	wound_falloff_tile = -1
@@ -18,13 +18,13 @@
 
 /obj/item/ammo_casing/energy/cybersun_big_sniper
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/marksman
-	e_cost = 667
+	e_cost = 1000
 	select_name = "Marksman"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/vaporize.ogg'
 
 /obj/item/projectile/beam/cybersun_laser/marksman
 	icon_state = "sniper"
-	damage = 40
+	damage = 80
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
 	pixels_per_second = TILES_TO_PIXELS(30)
 	light_range = 2
@@ -32,11 +32,11 @@
 	wound_falloff_tile = -0.1
 	armour_penetration = 15
 
-// Disabler machinegun for the big gun (60 shots from 10k cell)
+// Disabler machinegun for the big gun (50 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_big_disabler
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/disable
-	e_cost = 167
+	e_cost = 200
 	select_name = "Disable"
 	harmful = FALSE
 
@@ -47,17 +47,17 @@
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/blue_laser
 	light_color = COLOR_BRIGHT_BLUE
 
-// Plasma burst grenade for the big gun (5 shots from 10k cell)
+// Plasma burst grenade for the big gun (10 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_big_launcher
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/granata
-	e_cost = 2000
+	e_cost = 1000
 	select_name = "Launcher"
 
 /obj/item/projectile/beam/cybersun_laser/granata
 	name = "plasma grenade"
 	icon_state = "grenade"
-	damage = 50
+	damage = 75
 	pixels_per_second = TILES_TO_PIXELS(10)
 	range = 6
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/green_laser
@@ -99,45 +99,45 @@
 	shrapnel_type = /obj/item/projectile/beam/cybersun_laser/granata_shrapnel
 	shrapnel_radius = 3
 
-// Shotgun casing for the big gun (15 shots from 10k cell)
+// Shotgun casing for the big gun (20 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_big_shotgun
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/granata_shrapnel/shotgun_pellet
-	e_cost = 667
-	pellets = 4
+	e_cost = 500
+	pellets = 7
 	variance = 30
 	select_name = "Shotgun"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/melt.ogg'
 
 /obj/item/projectile/beam/cybersun_laser/granata_shrapnel/shotgun_pellet
 	icon_state = "because_it_doesnt_miss"
-	damage = 15
+	damage = 12
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/purple_laser
 	pixels_per_second = TILES_TO_PIXELS(15)
 	light_color = COLOR_PINK
 	range = 9
 	wound_falloff_tile = -3
-// Hellfire lasers for the little guy / carbine (20 shots from 10k cell)
+// Hellfire lasers for the little guy / carbine (10 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_small_hellfire
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/hellfire
-	e_cost = 500
+	e_cost = 1000
 	select_name = "Incinerate"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/melt.ogg'
 
 /obj/item/projectile/beam/cybersun_laser/hellfire
 	icon_state = "hellfire"
-	damage = 30
+	damage = 20
 	impact_effect_type = /obj/effect/temp_visual/impact_effect/red_laser
 	pixels_per_second = TILES_TO_PIXELS(20)
 	wound_bonus = 0
 	light_color = COLOR_SOFT_RED
 
-// Bounce disabler lasers for the little guy / carbine (40 shots from 10k cell)
+// Bounce disabler lasers for the little guy / carbine (20 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_small_disabler
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/disable_bounce
-	e_cost = 250
+	e_cost = 500
 	select_name = "Disable"
 	harmful = FALSE
 
@@ -221,7 +221,7 @@
 /obj/item/ammo_casing/energy/cybersun_small_shotgun
 	projectile_type = /obj/item/projectile/beam/cybersun_laser/granata_shrapnel/shotgun_pellet
 	e_cost = 1000
-	pellets = 3
+	pellets = 5
 	variance = 20
 	select_name = "Shotgun"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/melt.ogg'

@@ -86,13 +86,13 @@
 
 /// THUNDER - РАКЕТНИЦА ///
 
-/// HAMMER - ДРОБОВИК (20 выстрелов из 10k ячейки) ///
+/// HAMMER - ДРОБОВИК (10 выстрелов из 10k ячейки) ///
 
 /obj/item/ammo_casing/energy/laser/hammer
 	projectile_type = /obj/item/projectile/bullet/pellet/buckshot23
 	pellets = 8
 	variance = 10
-	e_cost = 500
+	e_cost = 1000
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/shotgun_heavy.ogg'
 
 /datum/laser_weapon_mode/hammer
@@ -121,7 +121,7 @@
 
 /obj/item/ammo_casing/energy/laser/flamethrower
 	projectile_type = /obj/item/projectile/bullet/incendiary/flamethrower
-	pellets = 6
+	pellets = 8
 	variance = 35
 	e_cost = 200
 	select_name = "Fire"
