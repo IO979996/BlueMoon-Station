@@ -1,10 +1,5 @@
 #define ZEALSTAR_SPEECH "saibasan/zealstar.json"
 
-/obj/item/stock_parts/cell/zealstar_internal_cell
-	name = "\improper Zealstar internal cell"
-	desc = "Bluespace singularity core. Usually not meant to be removed from the weapon."
-	maxcharge = 20000
-
 /obj/item/gun/energy/modular_laser_rifle/zealstar
 	name = "\improper Zealstar Rifle"
 	desc = "«Zealstar» - модульный блюспейс-комплекс с адаптивной баллистикой. \
@@ -19,7 +14,7 @@
 	base_icon_state = "zealstar"
 	charge_sections = 3
 	charge_delay = 1
-	cell_type = /obj/item/stock_parts/cell/zealstar_internal_cell
+	cell_type = /obj/item/stock_parts/cell/hyeseong_internal_cell
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse)
 	weapon_mode_options = list(
 		/datum/laser_weapon_mode/squall,
@@ -41,11 +36,14 @@
 /obj/item/gun/energy/modular_laser_rifle/zealstar/Initialize(mapload)
 	. = ..()
 
-/// SPEAR - ПАРАЛИЗАТОР ///
+/// SPEAR - ПАРАЛИЗАТОР (100 выстрелов) ///
+
+/obj/item/ammo_casing/energy/cybersun_small_disabler/zealstar
+	e_cost = 1
 
 /datum/laser_weapon_mode/spear
 	name = "Spear"
-	casing = /obj/item/ammo_casing/energy/cybersun_small_disabler
+	casing = /obj/item/ammo_casing/energy/cybersun_small_disabler/zealstar
 	weapon_icon_state = "spear"
 	charge_sections = 3
 	shot_delay = 0.25 SECONDS
@@ -62,11 +60,11 @@
 
 /// SPEAR - ПАРАЛИЗАТОР ///
 
-/// THUNDER - РАКЕТНИЦА ///
+/// THUNDER - РАКЕТНИЦА (2 выстрела) ///
 
 /obj/item/ammo_casing/energy/laser/thunder
 	projectile_type = /obj/item/projectile/bullet/a84mm
-	e_cost = 10000
+	e_cost = 50
 	fire_sound = 'sound/weapons/rocketlaunch.ogg'
 
 /datum/laser_weapon_mode/thunder
@@ -86,13 +84,13 @@
 
 /// THUNDER - РАКЕТНИЦА ///
 
-/// HAMMER - ДРОБОВИК ///
+/// HAMMER - ДРОБОВИК (20 выстрелов) ///
 
 /obj/item/ammo_casing/energy/laser/hammer
 	projectile_type = /obj/item/projectile/bullet/pellet/buckshot23
 	pellets = 8
 	variance = 10
-	e_cost = 800
+	e_cost = 5
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/shotgun_heavy.ogg'
 
 /datum/laser_weapon_mode/hammer
@@ -114,13 +112,13 @@
 
 /// PHOENIX - ДРОБОВИК ///
 
-/// PHOENIX - ОГНЕМЁТ ///
+/// PHOENIX - ОГНЕМЁТ (50 выстрелов) ///
 
 /obj/item/ammo_casing/energy/laser/flamethrower
 	projectile_type = /obj/item/projectile/bullet/incendiary/flamethrower
 	pellets = 6
 	variance = 35
-	e_cost = 200
+	e_cost = 2
 	select_name = "Fire"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/flamethrower.ogg'
 
@@ -153,11 +151,11 @@
 
 /// PHOENIX - ОГНЕМЁТ ///
 
-/// SQUALL - АВТОМАТИЧЕСКАЯ ВИНТОВКА ///
+/// SQUALL - АВТОМАТИЧЕСКАЯ ВИНТОВКА (50 выстрелов) ///
 
 /obj/item/ammo_casing/energy/laser/squall
 	projectile_type = /obj/item/projectile/bullet/a556
-	e_cost = 400
+	e_cost = 2
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/ak17_fire.ogg'
 
 /datum/laser_weapon_mode/squall

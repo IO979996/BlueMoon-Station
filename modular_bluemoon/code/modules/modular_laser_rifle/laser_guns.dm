@@ -235,10 +235,92 @@
 		speak_up(currently_selected_mode.json_speech_string, TRUE)
 	currently_switching_types = FALSE
 
+/// Returns energy cost for a shot: e_cost is treated as percent of cell maxcharge (0-100).
+/obj/item/gun/energy/modular_laser_rifle/proc/get_shot_energy_cost(obj/item/ammo_casing/energy/shot)
+	if(!cell || !shot)
+		return 0
+	return round(cell.maxcharge * shot.e_cost / 100)
+
 /obj/item/gun/energy/modular_laser_rifle/can_shoot()
 	if(!length(ammo_type))
 		return FALSE
-	return ..()
+	var/obj/item/ammo_casing/energy/shot = ammo_type[current_firemode_index]
+	return !QDELETED(cell) && (cell.charge >= get_shot_energy_cost(shot))
+
+/obj/item/gun/energy/modular_laser_rifle/recharge_newshot(no_cyborg_drain)
+	if(!ammo_type || !cell)
+		return
+	if(use_cyborg_cell && !no_cyborg_drain)
+		if(iscyborg(loc))
+			var/mob/living/silicon/robot/R = loc
+			if(R.cell)
+				var/obj/item/ammo_casing/energy/shot = ammo_type[current_firemode_index]
+				var/cost = get_shot_energy_cost(shot)
+				if(R.cell.use(cost))
+					cell.give(cost)
+	if(!chambered)
+		var/obj/item/ammo_casing/energy/AC = ammo_type[current_firemode_index]
+		var/cost = get_shot_energy_cost(AC)
+		if(cell.charge >= cost)
+			chambered = AC
+			if(!chambered.BB)
+				chambered.newshot()
+
+/obj/item/gun/energy/modular_laser_rifle/process_chamber()
+	if(chambered && !chambered.BB)
+		var/obj/item/ammo_casing/energy/shot = chambered
+		cell.use(get_shot_energy_cost(shot))
+	chambered = null
+	recharge_newshot()
+
+/obj/item/gun/energy/modular_laser_rifle/suicide_act(mob/living/user)
+	if(istype(user) && can_shoot() && can_trigger_gun(user) && user.get_bodypart(BODY_ZONE_HEAD))
+		user.visible_message(span_suicide("[user] is putting the barrel of [src] in [user.ru_ego()] mouth.  It looks like [user.p_theyre()] trying to commit suicide!"))
+		sleep(25)
+		if(user.is_holding(src))
+			user.visible_message(span_suicide("[user] melts [user.ru_ego()] face off with [src]!"))
+			playsound(loc, fire_sound, 50, 1, -1)
+			playsound(src, 'sound/weapons/dink.ogg', 30, 1)
+			var/obj/item/ammo_casing/energy/shot = ammo_type[current_firemode_index]
+			cell.use(get_shot_energy_cost(shot))
+			update_appearance()
+			return FIRELOSS
+		else
+			user.visible_message(span_suicide("[user] panics and starts choking to death!"))
+			return OXYLOSS
+	else
+		user.visible_message(span_suicide("[user] is pretending to melt [user.ru_ego()] face off with [src]! It looks like [user.p_theyre()] trying to commit suicide!</b>"))
+		playsound(src, "gun_dry_fire", 30, 1)
+		return OXYLOSS
+
+/obj/item/gun/energy/modular_laser_rifle/ignition_effect(atom/A, mob/living/user)
+	if(!can_shoot() || !ammo_type[current_firemode_index])
+		shoot_with_empty_chamber()
+		. = ""
+	else
+		var/obj/item/ammo_casing/energy/E = ammo_type[current_firemode_index]
+		var/obj/item/projectile/energy/BB = E.BB
+		var/cost = get_shot_energy_cost(E)
+		if(!BB)
+			. = ""
+		else if(BB.nodamage || !BB.damage || BB.damage_type == STAMINA)
+			user.visible_message(span_danger("[user] tries to light [user.ru_ego()] [A.name] with [src], but it doesn't do anything. Dumbass."))
+			playsound(user, E.fire_sound, 50, 1)
+			playsound(user, BB.hitsound, 50, 1)
+			cell.use(cost)
+			. = ""
+		else if(BB.damage_type != BURN)
+			user.visible_message(span_danger("[user] tries to light [user.ru_ego()] [A.name] with [src], but only succeeds in utterly destroying it. Dumbass."))
+			playsound(user, E.fire_sound, 50, 1)
+			playsound(user, BB.hitsound, 50, 1)
+			cell.use(cost)
+			qdel(A)
+			. = ""
+		else
+			playsound(user, E.fire_sound, 50, 1)
+			playsound(user, BB.hitsound, 50, 1)
+			cell.use(cost)
+			. = span_danger("[user] casually lights their [A.name] with [src]. Damn.")
 
 /obj/item/gun/energy/modular_laser_rifle/can_trigger_gun(mob/living/user, akimbo_usage)
 	. = ..()
