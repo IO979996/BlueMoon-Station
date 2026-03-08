@@ -84,11 +84,10 @@
 	gun_runetext_color = "#47a1b3"
 
 /datum/laser_weapon_mode/disabler_machinegun/apply_to_weapon(obj/item/gun/energy/applied_gun)
-	applied_gun.burst_size = 3
-	autofire_component = applied_gun.AddComponent(/datum/component/automatic_fire, shot_delay)
+	..()
 
 /datum/laser_weapon_mode/disabler_machinegun/remove_from_weapon(obj/item/gun/energy/applied_gun)
-	QDEL_NULL(autofire_component)
+	..()
 
 // Grenade launching mode for the large laser
 /datum/laser_weapon_mode/launcher

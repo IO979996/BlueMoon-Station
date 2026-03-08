@@ -52,12 +52,10 @@
 	gun_runetext_color = "#47a1b3"
 
 /datum/laser_weapon_mode/spear/apply_to_weapon(obj/item/gun/energy/applied_gun)
-	applied_gun.burst_size = 3
-	autofire_component = applied_gun.AddComponent(/datum/component/automatic_fire, shot_delay)
+	..()
 
 /datum/laser_weapon_mode/spear/remove_from_weapon(obj/item/gun/energy/applied_gun)
-	QDEL_NULL(autofire_component)
-	applied_gun.burst_size = 1
+	..()
 
 /// SPEAR - ПАРАЛИЗАТОР ///
 
