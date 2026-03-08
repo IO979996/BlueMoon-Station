@@ -80,6 +80,8 @@
 
 		playsound(C.loc, "sound/goonstation/machines/printer_dotmatrix.ogg", 50, 1)
 		GLOB.cell_logs += P
+		if(length(GLOB.cell_logs) > 500)
+			GLOB.cell_logs.Cut(1, length(GLOB.cell_logs) - 300)
 
 	var/datum/data/record/G = find_record("name", criminal, GLOB.data_core.general)
 	var/prisoner_drank = "unknown"

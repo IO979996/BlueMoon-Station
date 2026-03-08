@@ -136,6 +136,8 @@
 
 		playsound(C.loc, "sound/goonstation/machines/printer_dotmatrix.ogg", 50, 1)
 		GLOB.cell_logs += P
+		if(length(GLOB.cell_logs) > 500)
+			GLOB.cell_logs.Cut(1, length(GLOB.cell_logs) - 300)
 	return
 
 /obj/structure/closet/secure_closet/genpop/proc/generate_report()
