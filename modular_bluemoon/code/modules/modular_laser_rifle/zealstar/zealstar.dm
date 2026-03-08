@@ -42,6 +42,7 @@
 	e_cost = 1
 
 /datum/laser_weapon_mode/spear
+	standard_firing_mode = FALSE
 	name = "Spear"
 	casing = /obj/item/ammo_casing/energy/cybersun_small_disabler/zealstar
 	weapon_icon_state = "spear"
@@ -49,14 +50,14 @@
 	shot_delay = 0.25 SECONDS
 	json_speech_string = "spear"
 	gun_runetext_color = "#47a1b3"
-	/// Keeps track of the autofire component for deleting later
-	var/datum/component/automatic_fire/autofire_component
 
 /datum/laser_weapon_mode/spear/apply_to_weapon(obj/item/gun/energy/applied_gun)
+	applied_gun.burst_size = 3
 	autofire_component = applied_gun.AddComponent(/datum/component/automatic_fire, shot_delay)
 
 /datum/laser_weapon_mode/spear/remove_from_weapon(obj/item/gun/energy/applied_gun)
 	QDEL_NULL(autofire_component)
+	applied_gun.burst_size = 1
 
 /// SPEAR - ПАРАЛИЗАТОР ///
 
@@ -68,6 +69,7 @@
 	fire_sound = 'sound/weapons/rocketlaunch.ogg'
 
 /datum/laser_weapon_mode/thunder
+	standard_firing_mode = FALSE
 	name = "Thunder"
 	casing = /obj/item/ammo_casing/energy/laser/thunder
 	weapon_icon_state = "thunder"
@@ -77,9 +79,11 @@
 	gun_runetext_color = "#77bd5d"
 
 /datum/laser_weapon_mode/thunder/apply_to_weapon(obj/item/gun/energy/applied_gun)
+	..()
 	applied_gun.recoil = 4
 
 /datum/laser_weapon_mode/thunder/remove_from_weapon(obj/item/gun/energy/applied_gun)
+	..()
 	applied_gun.recoil = initial(applied_gun.recoil)
 
 /// THUNDER - РАКЕТНИЦА ///
@@ -94,6 +98,7 @@
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/shotgun_heavy.ogg'
 
 /datum/laser_weapon_mode/hammer
+	standard_firing_mode = FALSE
 	name = "Hammer"
 	casing = /obj/item/ammo_casing/energy/laser/hammer
 	weapon_icon_state = "hammer"
@@ -105,12 +110,14 @@
 	gun_runetext_color = "#7a0bb7"
 
 /datum/laser_weapon_mode/hammer/apply_to_weapon(obj/item/gun/energy/applied_gun)
+	..()
 	applied_gun.recoil = 2
 
 /datum/laser_weapon_mode/hammer/remove_from_weapon(obj/item/gun/energy/applied_gun)
+	..()
 	applied_gun.recoil = initial(applied_gun.recoil)
 
-/// PHOENIX - ДРОБОВИК ///
+/// HAMMER - ДРОБОВИК ///
 
 /// PHOENIX - ОГНЕМЁТ (50 выстрелов) ///
 
@@ -133,6 +140,7 @@
 	range = 15
 
 /datum/laser_weapon_mode/phoenix
+	standard_firing_mode = FALSE
 	name = "Phoenix"
 	casing = /obj/item/ammo_casing/energy/laser/flamethrower
 	weapon_icon_state = "phoenix"
@@ -144,10 +152,10 @@
 	gun_runetext_color = "#cd4456"
 
 /datum/laser_weapon_mode/phoenix/apply_to_weapon(obj/item/gun/energy/applied_gun)
-	return
+	return ..()
 
 /datum/laser_weapon_mode/phoenix/remove_from_weapon(obj/item/gun/energy/applied_gun)
-	return
+	return ..()
 
 /// PHOENIX - ОГНЕМЁТ ///
 
@@ -168,14 +176,14 @@
 	shot_delay = 0.25 SECONDS
 	json_speech_string = "squall"
 	gun_runetext_color = "#47a1b3"
-	/// Keeps track of the autofire component for deleting later
-	var/datum/component/automatic_fire/autofire_component
 
 /datum/laser_weapon_mode/squall/apply_to_weapon(obj/item/gun/energy/applied_gun)
+	applied_gun.burst_size = 3
 	autofire_component = applied_gun.AddComponent(/datum/component/automatic_fire, shot_delay)
 
 /datum/laser_weapon_mode/squall/remove_from_weapon(obj/item/gun/energy/applied_gun)
 	QDEL_NULL(autofire_component)
+	applied_gun.burst_size = 1
 
 /// SQUALL - АВТОМАТИЧЕСКАЯ ВИНТОВКА ///
 

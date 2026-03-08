@@ -35,6 +35,7 @@
 	weapon_weight = WEAPON_HEAVY
 	actions_types = list(/datum/action/item_action/toggle_personality)
 	recoil = 0.25 // This isn't enough to mean ANYTHING aside from it jolting your screen the tiniest amount
+	fire_select_modes = list(SELECT_SEMI_AUTOMATIC, SELECT_BURST_SHOT, SELECT_FULLY_AUTOMATIC)
 	zoomable = TRUE
 	zoom_amt = 8 //Long range, enough to see in front of you, but no tiles behind you.
 	zoom_out_amt = 5
@@ -80,6 +81,13 @@
 	var/panel_open = FALSE
 	/// Timer id for the delayed radial menu (so we can cancel it in Destroy)
 	var/mode_switch_timer_id
+
+/obj/item/gun/energy/modular_laser_rifle/ComponentInitialize()
+	. = ..()
+	// Автострельба добавляется при смене режима (apply_to_weapon), а не здесь
+	var/datum/component/automatic_fire/af = GetComponent(/datum/component/automatic_fire)
+	if(af)
+		qdel(af)
 
 /obj/item/gun/energy/modular_laser_rifle/Initialize(mapload)
 	. = ..()
