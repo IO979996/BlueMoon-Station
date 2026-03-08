@@ -1,5 +1,10 @@
 #define ZEALSTAR_SPEECH "saibasan/zealstar.json"
 
+/obj/item/stock_parts/cell/zealstar_internal_cell
+	name = "\improper Zealstar internal cell"
+	desc = "Bluespace singularity core. Usually not meant to be removed from the weapon."
+	maxcharge = 20000
+
 /obj/item/gun/energy/modular_laser_rifle/zealstar
 	name = "\improper Zealstar Rifle"
 	desc = "«Zealstar» - модульный блюспейс-комплекс с адаптивной баллистикой. \
@@ -14,7 +19,7 @@
 	base_icon_state = "zealstar"
 	charge_sections = 3
 	charge_delay = 1
-	cell_type = /obj/item/stock_parts/cell/hyeseong_internal_cell
+	cell_type = /obj/item/stock_parts/cell/zealstar_internal_cell
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse)
 	weapon_mode_options = list(
 		/datum/laser_weapon_mode/squall,
