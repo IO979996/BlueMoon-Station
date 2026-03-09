@@ -1,24 +1,22 @@
 /datum/round_event_control/space_cleaner_spill
-	name = "Аварийная очистка космической станции"
+	name = "Scrubber overflow: space cleaner"
 	typepath = /datum/round_event/space_cleaner_spill
 	weight = 40
 	max_occurrences = 3
 	min_players = 5
 	category = EVENT_CATEGORY_JANITORIAL
-	description = "Скрубберы и вентиляции выплёскивают space cleaner в виде пены."
+	description = "Scrubbers and vents spill space cleaner foam."
 
 /datum/round_event/space_cleaner_spill
 	announce_when = 1
 	start_when = 5
-	/// Количество реагента из каждой точки
-	var/reagents_amount = 80
-	/// Вероятность срабатывания для каждой вентиляции/скруббера (в процентах)
-	var/spill_probability = 45
+	/// Количество реагента из каждой точки (больше = дальше распространение пены)
+	var/reagents_amount = 220
 	/// Список скрубберов и вентилей, из которых польётся пена
 	var/list/atmos_devices = list()
 
 /datum/round_event/space_cleaner_spill/announce(fake)
-	priority_announce("Запущена аварийная очистка космической станции. Из части скрубберов и вентилей будет подана моющая пена.", "ВНИМАНИЕ: АТМОСФЕРА", 'sound/announcer/classic/ventclog.ogg')
+	priority_announce("Запущена аварийная очистка космической станции. Из части скрубберов и вентиляций будет подана моющая пена.", "ВНИМАНИЕ: АТМОСФЕРА", 'sound/announcer/classic/ventclog.ogg')
 
 /datum/round_event/space_cleaner_spill/setup()
 	// Собираем скрубберы
@@ -30,8 +28,6 @@
 			continue
 		if(temp_vent.welded)
 			continue
-		if(!prob(spill_probability))
-			continue
 		atmos_devices += temp_vent
 
 	// Собираем вентили (vent_pump)
@@ -42,8 +38,6 @@
 		if(!is_station_level(vent_turf.z))
 			continue
 		if(temp_vent.welded)
-			continue
-		if(!prob(spill_probability))
 			continue
 		atmos_devices += temp_vent
 
