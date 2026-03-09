@@ -3041,6 +3041,8 @@
 /obj/effect/turf_decal/siding/wood/thin{
 	dir = 4
 	},
+/obj/structure/safe/spare_id,
+/obj/item/card/id/captains_spare,
 /turf/open/floor/carpet/royalblue,
 /area/command/heads_quarters/captain)
 "awn" = (

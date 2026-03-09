@@ -21800,6 +21800,7 @@
 /obj/machinery/status_display/ai{
 	pixel_y = 32
 	},
+/obj/structure/safe/spare_id,
 /obj/item/card/id/captains_spare,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain/private)

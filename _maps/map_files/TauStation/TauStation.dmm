@@ -16784,6 +16784,7 @@
 /area/command/heads_quarters/captain/private)
 "fKy" = (
 /obj/structure/table/wood,
+/obj/structure/safe/spare_id,
 /obj/item/card/id/captains_spare,
 /obj/item/razor{
 	pixel_x = -4;

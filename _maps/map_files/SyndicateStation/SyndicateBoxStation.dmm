@@ -20834,6 +20834,7 @@
 	dir = 1
 	},
 /obj/structure/dresser,
+/obj/structure/safe/spare_id,
 /obj/item/card/id/captains_spare,
 /turf/open/floor/carpet,
 /area/command/heads_quarters/captain)

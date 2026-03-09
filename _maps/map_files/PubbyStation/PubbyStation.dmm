@@ -9906,8 +9906,7 @@
 /turf/open/floor/plasteel/grimy,
 /area/command/heads_quarters/captain)
 "aAs" = (
-/obj/structure/table/wood,
-/obj/item/kitchen/fork,
+/obj/structure/safe/spare_id,
 /obj/item/card/id/captains_spare,
 /turf/open/floor/plasteel/grimy,
 /area/command/heads_quarters/captain)

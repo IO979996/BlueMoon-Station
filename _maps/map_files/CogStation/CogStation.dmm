@@ -3163,6 +3163,8 @@
 	dir = 8;
 	name = "scrubbers"
 	},
+/obj/structure/safe/spare_id,
+/obj/item/card/id/captains_spare,
 /turf/open/floor/wood,
 /area/command/heads_quarters/captain)
 "ajY" = (

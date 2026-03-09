@@ -1,5 +1,21 @@
 // Armory redcode safe
 
+#define SPARE_ID_SAFE_CODE_1 47
+#define SPARE_ID_SAFE_CODE_2 23
+
+/// Золотой сейф для запасной карты капитана. Фиксированный код выдается главам на бумажке.
+/obj/structure/safe/spare_id
+	name = "golden safe"
+	desc = "A prestigious safe with a golden sheen, designated for storing the Captain's spare ID. The combination is known to station heads."
+	icon_state = "safe"
+
+/obj/structure/safe/spare_id/Initialize(mapload)
+	. = ..()
+	tumblers = list(SPARE_ID_SAFE_CODE_1, SPARE_ID_SAFE_CODE_2)
+
+#undef SPARE_ID_SAFE_CODE_1
+#undef SPARE_ID_SAFE_CODE_2
+
 /obj/structure/safe
 	/// Список кодов, при которых открывается сейф
 	var/list/open_security_levels = list()

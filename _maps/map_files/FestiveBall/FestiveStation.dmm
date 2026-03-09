@@ -1427,6 +1427,7 @@
 /area/command/heads_quarters/captain)
 "adX" = (
 /obj/structure/table/wood,
+/obj/structure/safe/spare_id,
 /obj/item/card/id/captains_spare,
 /obj/structure/window/reinforced{
 	dir = 8
