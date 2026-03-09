@@ -56,38 +56,38 @@
 	if(!air)
 		air = new
 	var/list/possible_expansions = list(base)
-	while(possible_expansions.len>0)
-		for(var/obj/machinery/atmospherics/borderline in possible_expansions)
+	while(possible_expansions.len > 0)
+		// Don't use for-in here - modifying list during iteration causes illegal operation crashes
+		var/obj/machinery/atmospherics/borderline = possible_expansions[1]
+		possible_expansions -= borderline
 
-			var/list/result = borderline.pipeline_expansion(src)
+		var/list/result = borderline.pipeline_expansion(src)
 
-			if(result.len>0)
-				for(var/obj/machinery/atmospherics/P in result)
-					if(istype(P, /obj/machinery/atmospherics/pipe))
-						var/obj/machinery/atmospherics/pipe/item = P
-						if(!members.Find(item))
+		if(result.len > 0)
+			for(var/obj/machinery/atmospherics/P in result)
+				if(istype(P, /obj/machinery/atmospherics/pipe))
+					var/obj/machinery/atmospherics/pipe/item = P
+					if(!members.Find(item))
 
-							if(item.parent)
-								var/static/pipenetwarnings = 10
-								if(pipenetwarnings > 0)
-									log_mapping("build_pipeline(): [item.type] added to a pipenet while still having one. (pipes leading to the same spot stacking in one turf) Nearby: ([item.x], [item.y], [item.z]).")
-									pipenetwarnings -= 1
-									if(pipenetwarnings == 0)
-										log_mapping("build_pipeline(): further messages about pipenets will be suppressed")
-							members += item
-							possible_expansions += item
+						if(item.parent)
+							var/static/pipenetwarnings = 10
+							if(pipenetwarnings > 0)
+								log_mapping("build_pipeline(): [item.type] added to a pipenet while still having one. (pipes leading to the same spot stacking in one turf) Nearby: ([item.x], [item.y], [item.z]).")
+								pipenetwarnings -= 1
+								if(pipenetwarnings == 0)
+									log_mapping("build_pipeline(): further messages about pipenets will be suppressed")
+						members += item
+						possible_expansions += item
 
-							volume += item.volume
-							item.parent = src
+						volume += item.volume
+						item.parent = src
 
-							if(item.air_temporary)
-								air.merge(item.air_temporary)
-								QDEL_NULL(item.air_temporary)
-					else
-						P.setPipenet(src, borderline)
-						addMachineryMember(P)
-
-			possible_expansions -= borderline
+						if(item.air_temporary)
+							air.merge(item.air_temporary)
+							item.air_temporary = null // Don't QDEL_NULL - GC during pipeline build causes illegal operation crash
+				else
+					P.setPipenet(src, borderline)
+					addMachineryMember(P)
 
 	air.set_volume(volume)
 
