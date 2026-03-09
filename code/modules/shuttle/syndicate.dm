@@ -80,4 +80,12 @@
 	whitelist_turfs = list(/turf/open/space, /turf/open/floor/plating, /turf/open/lava, /turf/closed/mineral)
 	see_hidden = TRUE
 
+/obj/machinery/computer/camera_advanced/shuttle_docker/syndicate/Initialize(mapload)
+	. = ..()
+	GLOB.jam_on_wardec += src
+
+/obj/machinery/computer/camera_advanced/shuttle_docker/syndicate/Destroy()
+	GLOB.jam_on_wardec -= src
+	return ..()
+
 #undef CHALLENGE_SHUTTLE_DELAY
