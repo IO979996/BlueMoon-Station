@@ -81,12 +81,11 @@ GLOBAL_VAR_INIT(war_declared, FALSE)
 
 /obj/item/nuclear_challenge/proc/war_was_declared(mob/living/user, memo)
 	priority_announce(
-		text = memo,
-		title = "Объявление Войны",
-		sound = announcement_sound,
+		memo,
+		"Объявление Войны",
+		announcement_sound,
 		has_important_message = TRUE,
 		sender_override = "InteQ Outpost",
-		color_override = "red",
 	)
 
 	if(user)
@@ -119,7 +118,7 @@ GLOBAL_VAR_INIT(war_declared, FALSE)
 
 /obj/item/nuclear_challenge/proc/distribute_tc()
 	var/list/orphans = list()
-	var/list/uplinks = list()
+	var/list/datum/component/uplink/uplinks = list()
 
 	for(var/datum/mind/M in get_antag_minds(/datum/antagonist/nukeop))
 		if(iscyborg(M.current))
