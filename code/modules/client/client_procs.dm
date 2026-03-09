@@ -1303,11 +1303,19 @@ GLOBAL_LIST_INIT(blacklisted_builds, list(
 			addtimer(CALLBACK(SSassets.transport, TYPE_PROC_REF(/datum/asset_transport, send_assets_slow), src, SSassets.transport.preload), 5 SECONDS)
 
 		#if (PRELOAD_RSC == 0)
-		for (var/type in GLOB.vox_types)
-			for(var/word in GLOB.vox_types[type])
-				var/file = GLOB.vox_types[type][word]
-				Export("##action=load_rsc", file)
-				stoplag()
+		// Only run vox preload if client is still connected (avoids Bad ref in IncRefCount / sequence desync when client disconnects during preload)
+		if (src in GLOB.clients)
+			var/abort = FALSE
+			for (var/type in GLOB.vox_types)
+				if (abort)
+					break
+				for(var/word in GLOB.vox_types[type])
+					if (!(src in GLOB.clients))
+						abort = TRUE
+						break
+					var/file = GLOB.vox_types[type][word]
+					Export("##action=load_rsc", file)
+					stoplag()
 		#endif
 
 

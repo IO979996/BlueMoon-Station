@@ -415,7 +415,11 @@
 		return
 	if(moderator_list[GAS_BZ] < (150 / power_level))
 		return
+	if(!length(corners))
+		return
 	var/obj/machinery/hypertorus/corner/picked_corner = pick(corners)
+	if(!picked_corner)
+		return
 	picked_corner.loc.fire_nuclear_particle(REVERSE_DIR(picked_corner.dir))
 
 /// При уровне >= 4, достаточном Antinoblium или proximity запускает tesla_zap. Количество разрядов и флаги урона зависят от power_level и proximity.
@@ -458,6 +462,8 @@
 	if(power_level >= 6)
 		return
 	var/filtering_amount = moderator_scrubbing.len
+	if(filtering_amount <= 0)
+		return
 	for(var/gas_id in moderator_internal.get_gases() & moderator_scrubbing)
 		var/datum/gas_mixture/removed = moderator_internal.remove_specific(gas_id, (moderator_filtering_rate / filtering_amount) * seconds_per_tick, hfr_removed_waste)
 		if(removed)

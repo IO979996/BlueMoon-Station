@@ -210,7 +210,7 @@
 		multiplier *= 0.1
 	else if(locate(/obj/structure/table) in src)
 		multiplier *= 0.2
-	for(var/atom/movable/M as anything in src)
+	for(var/atom/movable/M as anything in contents.Copy())
 		if(!M.anchored && !M.pulledby && M.last_high_pressure_movement_air_cycle < SSair.times_fired && (M.flags_1 & INITIALIZED_1) && !QDELETED(M))
 			M.experience_pressure_difference(pressure_difference * multiplier, pressure_direction, 0, pressure_specific_target)
 

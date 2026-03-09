@@ -24,13 +24,21 @@
 	var/total_recipe_moles = 0
 
 /obj/machinery/atmospherics/components/binary/crystallizer/Initialize(mapload)
-	. = ..(mapload)
+	. = ..()
 	internal = new
 	register_context()
 
+/obj/machinery/atmospherics/components/binary/crystallizer/Destroy()
+	if(internal?.total_moles() > 0)
+		var/turf/T = get_turf(loc)
+		if(T)
+			T.assume_air(internal)
+	internal = null
+	return ..()
+
 /obj/machinery/atmospherics/components/binary/crystallizer/on_deconstruction(disassembled)
 	var/turf/local_turf = get_turf(loc)
-	if(internal.total_moles() > 0)
+	if(internal?.total_moles() > 0)
 		local_turf.assume_air(internal)
 	return ..()
 

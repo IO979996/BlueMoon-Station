@@ -311,9 +311,12 @@
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/countdown()
 	set waitfor = FALSE
-	if(final_countdown)
+	if(QDELETED(src) || final_countdown)
 		return
 	final_countdown = TRUE
+	if(!selected_fuel)
+		final_countdown = FALSE
+		return
 	var/critical = selected_fuel.meltdown_flags & HYPERTORUS_FLAG_CRITICAL_MELTDOWN
 	if(critical)
 		priority_announce("ВНИМАНИЕ! Взрыв ХФР, скорее всего, охватит большую часть станции, а грядущий ЭМИ уничтожит большую часть электроники. \
@@ -339,6 +342,8 @@
 			speaking = "[i*0.1]..."
 		radio.talk_into(src, speaking, common_channel)
 		sleep(1 SECONDS)
+	if(QDELETED(src))
+		return
 	meltdown()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/meltdown()
@@ -399,24 +404,29 @@
 		if(isclosedturf(turf) || isspaceturf(turf))
 			turfs_to_remove += turf
 	around_turfs -= turfs_to_remove
+	var/turf/core_turf = get_turf(src)
 	var/datum/gas_mixture/remove_fusion
 	if(internal_fusion.total_moles() > 0)
 		remove_fusion = internal_fusion.remove_ratio(0.2)
 		var/datum/gas_mixture/remove
 		for(var/i in 1 to gas_pockets)
 			remove = remove_fusion.remove_ratio(1/gas_pockets)
-			var/turf/local = pick(around_turfs)
-			local.assume_air(remove)
-		loc.assume_air(internal_fusion)
+			var/turf/local = length(around_turfs) ? pick(around_turfs) : core_turf
+			if(local)
+				local.assume_air(remove)
+		if(core_turf)
+			core_turf.assume_air(internal_fusion)
 	var/datum/gas_mixture/remove_moderator
 	if(moderator_internal.total_moles() > 0)
 		remove_moderator = moderator_internal.remove_ratio(0.2)
 		var/datum/gas_mixture/remove
 		for(var/i in 1 to gas_pockets)
 			remove = remove_moderator.remove_ratio(1/gas_pockets)
-			var/turf/local = pick(around_turfs)
-			local.assume_air(remove)
-		loc.assume_air(moderator_internal)
+			var/turf/local = length(around_turfs) ? pick(around_turfs) : core_turf
+			if(local)
+				local.assume_air(remove)
+		if(core_turf)
+			core_turf.assume_air(moderator_internal)
 	explosion(loc, critical ? devastating_explosion * 2 : devastating_explosion, critical ? heavy_impact_explosion * 2 : heavy_impact_explosion, light_impact_explosion, flash_explosion, TRUE, TRUE)
 	if(rad_pulse)
 		radiation_pulse(src, 3000, rad_pulse_size, TRUE)
