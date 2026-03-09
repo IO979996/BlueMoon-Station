@@ -87,10 +87,18 @@
 	if(copy)
 		air.copy_from(copy)
 
+// Cached gas mixtures for closed turfs - prevents creating 100k+ mixtures from wall-mounted objects (cameras, lights, etc.)
+GLOBAL_LIST_INIT(closed_turf_air_cache, list())
+
 /turf/return_air()
 	RETURN_TYPE(/datum/gas_mixture)
-	var/datum/gas_mixture/GM = new
-	GM.copy_from_turf(src)
+	var/mix_key = initial_gas_mix || OPENTURF_DEFAULT_ATMOS
+	var/datum/gas_mixture/GM = GLOB.closed_turf_air_cache[mix_key]
+	if(!GM)
+		GM = new
+		GM.parse_gas_string(SSair.preprocess_gas_string(mix_key))
+		GM.mark_immutable()
+		GLOB.closed_turf_air_cache[mix_key] = GM
 	return GM
 
 /turf/open/return_air()
