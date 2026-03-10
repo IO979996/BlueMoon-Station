@@ -28,6 +28,9 @@
 	set waitfor = FALSE
 	for(var/i in user_by_item)
 		var/mob/living/carbon/user = user_by_item[i]
+		if(!user)
+			user_by_item -= i
+			continue
 		if(HAS_TRAIT(user, TRAIT_DEAF))
 			continue
 		var/obj/item/organ/ears/ears = user.getorganslot(ORGAN_SLOT_EARS)

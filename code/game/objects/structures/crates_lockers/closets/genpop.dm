@@ -18,6 +18,11 @@
 	var/filteredsentlength
 	var/datum/data/record/target_record
 
+/obj/structure/closet/secure_closet/genpop/Destroy()
+	registered_id = null
+	target_record = null
+	return ..()
+
 /obj/structure/closet/secure_closet/genpop/attackby(obj/item/W, mob/user, params)
 	if(!broken && locked && W == registered_id) //Prisoner opening
 		handle_prisoner_id(user)

@@ -88,6 +88,7 @@
 		air.copy_from(copy)
 
 // Cached gas mixtures for closed turfs - prevents creating 100k+ mixtures from wall-mounted objects (cameras, lights, etc.)
+// Each unique initial_gas_mix string gets exactly one shared immutable mixture. Reduces gas mixture count significantly.
 GLOBAL_LIST_INIT(closed_turf_air_cache, list())
 
 /turf/return_air()

@@ -84,7 +84,9 @@
 
 						if(item.air_temporary)
 							air.merge(item.air_temporary)
-							item.air_temporary = null // Don't QDEL_NULL - GC during pipeline build causes illegal operation crash
+							var/datum/gas_mixture/to_del = item.air_temporary
+							item.air_temporary = null
+							addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(qdel), to_del), 0) // Deferred to avoid illegal operation during pipeline build
 				else
 					P.setPipenet(src, borderline)
 					addMachineryMember(P)
@@ -165,19 +167,25 @@
 
 /datum/pipeline/proc/temporarily_store_air()
 	//Update individual gas_mixtures by volume ratio
+	var/air_vol = air.return_volume()
+	if(air_vol <= 0)
+		return
 
 	for(var/obj/machinery/atmospherics/pipe/member as anything in members)
 		member.air_temporary = new
 		member.air_temporary.set_volume(member.volume)
 		member.air_temporary.copy_from(air)
 
-		member.air_temporary.multiply(member.volume/air.return_volume())
+		member.air_temporary.multiply(member.volume/air_vol)
 
 		member.air_temporary.set_temperature(air.return_temperature())
 
 /datum/pipeline/proc/temperature_interact(turf/target, share_volume, thermal_conductivity)
+	var/air_vol = air.return_volume()
+	if(air_vol <= 0)
+		return
 	var/total_heat_capacity = air.heat_capacity()
-	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.return_volume())
+	var/partial_heat_capacity = total_heat_capacity*(share_volume/air_vol)
 	var/target_temperature
 	var/target_heat_capacity
 

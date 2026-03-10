@@ -51,6 +51,7 @@
 
 /obj/machinery/door_timer/Destroy()
 	GLOB.celltimers_list -= src
+	prisoner = null
 	return ..()
 
 /obj/machinery/door_timer/proc/print_report()
