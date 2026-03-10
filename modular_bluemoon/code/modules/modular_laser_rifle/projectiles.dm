@@ -1,8 +1,8 @@
-// Red kill lasers for the big gun (~30 shots from 10k cell)
+// Red kill lasers for the big gun (~20 shots from 10k cell)
 
 /obj/item/ammo_casing/energy/cybersun_big_kill
 	projectile_type = /obj/item/projectile/beam/cybersun_laser
-	e_cost = 333
+	e_cost = 500
 	select_name = "Kill"
 	fire_sound = 'modular_bluemoon/code/modules/modular_laser_rifle/sounds/laser.ogg'
 
