@@ -257,7 +257,7 @@
 						dat += "<br>\nImportant Notes:<br>\n\t<A href='?src=[REF(src)];choice=Edit Field;field=notes'>&nbsp;[active2.fields["notes"]]&nbsp;</A>"
 						dat += "<br><br><font size='4'><b>Comments/Log</b></font><br>"
 						var/list/logs = active2.fields["actions_logs"]
-						var/log_string = logs.Join("<br>")
+						var/log_string = logs ? logs.Join("<br>") : ""
 						dat += "<br>\n<b>Actions Logs</b>:<br>[log_string]\n\t"
 						dat += "<br><A href='?src=[REF(src)];choice=Print Logs;'>Print Logs</A>"
 						dat += "<A href='?src=[REF(src)];choice=Delete Logs;'>Delete Logs</A>"
