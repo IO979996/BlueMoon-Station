@@ -110,6 +110,7 @@ GLOBAL_LIST_INIT(auxtools_atmos_initialized,FALSE)
 	reaction_results = null
 	analyzer_results = null
 	// auxmos/external refs prevent soft GC; skip to hard delete to avoid "unable to be GC'd" spam
+	..()
 	return QDEL_HINT_HARDDEL
 
 /proc/gas_types()
