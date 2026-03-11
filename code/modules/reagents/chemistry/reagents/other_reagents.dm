@@ -125,7 +125,7 @@
 		if(data["blood_DNA"] != mix_data["blood_DNA"])
 			data["cloneable"] = FALSE //On mix, consider the genetic sampling unviable for pod cloning if the DNA sample doesn't match.
 		// Merge disease resistances (antibodies) from both blood samples so pandemic can create vaccines
-		if(islist(mix_data["resistances"]) && mix_data["resistances"].len)
+		if(islist(mix_data["resistances"]) && length(mix_data["resistances"]))
 			LAZYINITLIST(data["resistances"])
 			data["resistances"] |= mix_data["resistances"]
 		if(data["viruses"] || mix_data["viruses"])
