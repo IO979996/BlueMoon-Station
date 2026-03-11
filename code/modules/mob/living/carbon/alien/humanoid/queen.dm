@@ -30,7 +30,7 @@
 	caste = "q"
 	maxHealth = 400
 	health = 400
-	icon_state = "alienq"
+	icon_state = "queen_s"
 	var/datum/action/small_sprite/smallsprite = new/datum/action/small_sprite/queen()
 	var/obj/effect/proc_holder/alien/royal/queen/promote/promote
 
