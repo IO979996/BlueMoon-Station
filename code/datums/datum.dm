@@ -97,11 +97,6 @@
  *
  * Returns [QDEL_HINT_QUEUE]
  */
-
-/// Override to provide debug info when this datum fails to GC and gets hard deleted. Return a string or null.
-/datum/proc/dump_harddel_info()
-	return null
-
 /datum/proc/Destroy(force=FALSE, ...)
 	SHOULD_CALL_PARENT(TRUE)
 	tag = null

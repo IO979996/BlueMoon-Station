@@ -200,20 +200,8 @@
 /proc/log_sql(text)
 	WRITE_LOG(GLOB.sql_error_log, "SQL: [text]")
 
-/proc/log_qdel(text, list/del_log)
-	if (del_log)
-		for (var/path in del_log)
-			var/list/entry = del_log[path]
-			var/list/parts = list("Path: [path]")
-			for (var/key in entry)
-				var/val = entry[key]
-				if (islist(val))
-					parts += "\t[key]: [jointext(val, "; ")]"
-				else
-					parts += "\t[key]: [val]"
-			WRITE_LOG(GLOB.world_qdel_log, "QDEL: [jointext(parts, "")]")
-	else if (text)
-		WRITE_LOG(GLOB.world_qdel_log, "QDEL: [text]")
+/proc/log_qdel(text)
+	WRITE_LOG(GLOB.world_qdel_log, "QDEL: [text]")
 
 /proc/log_query_debug(text)
 	WRITE_LOG(GLOB.query_debug_log, "SQL: [text]")
