@@ -24,9 +24,17 @@
 #define QDEL_HINT_IFFAIL_FINDREFERENCE 6
 #endif
 
-#define GC_QUEUE_CHECK 1
-#define GC_QUEUE_HARDDELETE 2
-#define GC_QUEUE_COUNT 2 //increase this when adding more steps.
+// Defines for the ssgarbage queues
+#define GC_QUEUE_FILTER 1 //! Short queue to filter out quick gc successes so they don't hang around in the main queue for 5 minutes
+#define GC_QUEUE_CHECK 2 //! Main queue that waits 5 minutes because that's the longest byond can hold a reference
+#define GC_QUEUE_HARDDELETE 3 //! Short queue for things that hard delete instead of going thru the gc subsystem
+#define GC_QUEUE_COUNT 3 //! Number of queues. Don't forget to increase this if you add a new queue stage
+
+// Defines for the ssgarbage queue items
+#define GC_QUEUE_ITEM_QUEUE_TIME 1 //! Time this item entered the queue
+#define GC_QUEUE_ITEM_REF 2 //! Ref to the item (datum or ref string depending on DM version)
+#define GC_QUEUE_ITEM_GCD_DESTROYED 3 //! Item's gc_destroyed var value. Used to detect ref reuse.
+#define GC_QUEUE_ITEM_INDEX_COUNT 3 //! Number of item indexes
 
 #define QDEL_ITEM_ADMINS_WARNED (1<<0) //! Set when admins are told about lag causing qdels in this type.
 #define QDEL_ITEM_SUSPENDED_FOR_LAG (1<<1) //! Set when a type can no longer be hard deleted on failure because of lag it causes while this happens.
@@ -35,9 +43,10 @@
 #define GC_QUEUED_FOR_QUEUING -1
 #define GC_CURRENTLY_BEING_QDELETED -2
 
-// Defines for the time left for an item to get its reference cleaned
-#define GC_FILTER_QUEUE 2 MINUTES
-#define GC_DEL_QUEUE 10 SECONDS
+// Defines for the time an item has to get its reference cleaned before it fails the queue and moves to the next
+#define GC_FILTER_QUEUE (1 SECONDS)
+#define GC_CHECK_QUEUE (5 MINUTES)
+#define GC_DEL_QUEUE (10 SECONDS)
 
 #define QDELING(X) (X.gc_destroyed)
 #define QDELETED(X) (isnull(X) || QDELING(X))
