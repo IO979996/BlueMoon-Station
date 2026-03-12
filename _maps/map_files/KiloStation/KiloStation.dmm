@@ -43279,8 +43279,7 @@
 	dir = 4;
 	name = "command camera"
 	},
-/obj/machinery/suit_storage_unit/open,
-/obj/item/mod/control/pre_equipped/corporate,
+/obj/machinery/suit_storage_unit/corporate,
 /turf/open/floor/plasteel,
 /area/command/bridge)
 "bue" = (
@@ -84700,12 +84699,12 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
-/obj/machinery/autolathe,
 /obj/item/stack/sheet/metal/fifty,
 /obj/item/stack/sheet/glass/fifty{
 	pixel_x = 3;
 	pixel_y = 3
 	},
+/obj/machinery/autolathe/hacked,
 /turf/open/floor/plasteel/dark,
 /area/security/office)
 "oXl" = (
