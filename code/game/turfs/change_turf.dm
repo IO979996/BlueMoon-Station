@@ -20,7 +20,7 @@ GLOBAL_LIST_INIT(blacklisted_automated_baseturfs, typecacheof(list(
 /turf/proc/copyTurf(turf/T)
 	if(T.type != type)
 		var/obj/O
-		if(underlays.len)	//we have underlays, which implies some sort of transparency, so we want to a snapshot of the previous turf as an underlay
+		if(underlays.len && !istype(T, /turf/closed)) // we have underlays, which implies some sort of transparency, so we want a snapshot of the previous turf as an underlay
 			O = new()
 			O.underlays += T
 		T.ChangeTurf(type)
