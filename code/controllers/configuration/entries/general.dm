@@ -343,6 +343,11 @@
 	default = 0
 	min_val = 0
 
+/// Max hard deletes per GC fire. Limits memory spikes from del() scanning. 0 = unlimited.
+/datum/config_entry/number/gc_max_hard_deletes_per_fire
+	default = 10
+	min_val = 0
+
 /datum/config_entry/flag/atmos_equalize_enabled
 	default = FALSE
 
