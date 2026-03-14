@@ -8,7 +8,8 @@
 
 
 /obj/structure/alien
-	icon = 'icons/mob/alien.dmi'
+	icon = 'icons/Xeno/Effects.dmi'
+	icon_state = "resin"
 	max_integrity = 100
 
 /obj/structure/alien/run_obj_armor(damage_amount, damage_type, damage_flag = 0, attack_dir)
@@ -212,7 +213,7 @@
 	name = "egg"
 	desc = "A large mottled egg."
 	var/base_icon = "egg"
-	icon_state = "egg_growing"
+	icon_state = "egg_hugger1"
 	density = FALSE
 	anchored = TRUE
 	max_integrity = 100
@@ -235,11 +236,11 @@
 /obj/structure/alien/egg/update_icon_state()
 	switch(status)
 		if(GROWING)
-			icon_state = "[base_icon]_growing"
+			icon_state = "egg_hugger1"
 		if(GROWN)
-			icon_state = "[base_icon]"
+			icon_state = "egg_hugger2"
 		if(BURST)
-			icon_state = "[base_icon]_hatched"
+			icon_state = "egg exploding"
 
 /obj/structure/alien/egg/attack_paw(mob/living/user)
 	return attack_hand(user)
@@ -280,7 +281,7 @@
 		proximity_monitor.SetRange(0)
 		status = BURST
 		update_icon()
-		flick("egg_opening", src)
+		flick("egg opening", src)
 		addtimer(CALLBACK(src, PROC_REF(finish_bursting), kill), 15)
 
 /obj/structure/alien/egg/proc/finish_bursting(kill = TRUE)
@@ -319,11 +320,11 @@
 
 /obj/structure/alien/egg/grown
 	status = GROWN
-	icon_state = "egg"
+	icon_state = "egg_hugger2"
 
 /obj/structure/alien/egg/burst
 	status = BURST
-	icon_state = "egg_hatched"
+	icon_state = "egg exploding"
 
 #undef BURST
 #undef GROWING

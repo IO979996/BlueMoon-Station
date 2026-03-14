@@ -1,6 +1,6 @@
 /mob/living/carbon/alien/humanoid/royal
 	//Common stuffs for Praetorian and Queen
-	icon = 'icons/mob/alienqueen.dmi'
+	icon = 'icons/Xeno/castes/queen.dmi'
 	status_flags = 0
 	unique_name = 0
 	pixel_x = -16
@@ -18,7 +18,7 @@
 	meleeSlashHumanPower = 30
 	meleeSlashSAPower = 60
 
-	var/alt_inhands_file = 'icons/mob/alienqueen.dmi'
+	var/alt_inhands_file = 'icons/Xeno/castes/queen.dmi'
 
 	typing_indicator_state = /obj/effect/overlay/typing_indicator/additional/alien_royal
 
@@ -30,7 +30,7 @@
 	caste = "q"
 	maxHealth = 400
 	health = 400
-	icon_state = "queen_s"
+	icon_state = "Queen Walking"
 	var/datum/action/small_sprite/smallsprite = new/datum/action/small_sprite/queen()
 	var/obj/effect/proc_holder/alien/royal/queen/promote/promote
 

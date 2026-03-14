@@ -1,10 +1,10 @@
 /mob/living/simple_animal/hostile/alien
 	name = "alien hunter"
 	desc = "Hiss!"
-	icon = 'icons/mob/xenomorph.dmi'
-	icon_state = "alienh_s"
-	icon_living = "alienh_s"
-	icon_dead = "alienh_dead"
+	icon = 'icons/Xeno/castes/hunter.dmi'
+	icon_state = "Hunter Walking"
+	icon_living = "Hunter Walking"
+	icon_dead = "Hunter Dead"
 	icon_gib = "syndicate_gib"
 	gender = FEMALE
 	response_help_continuous = "pokes"
@@ -46,9 +46,10 @@
 
 /mob/living/simple_animal/hostile/alien/drone
 	name = "alien drone"
-	icon_state = "aliend_s"
-	icon_living = "aliend_s"
-	icon_dead = "aliend_dead"
+	icon = 'icons/Xeno/castes/drone.dmi'
+	icon_state = "Drone Walking"
+	icon_living = "Drone Walking"
+	icon_dead = "Drone Dead"
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	var/plant_cooldown = 30
@@ -65,9 +66,10 @@
 
 /mob/living/simple_animal/hostile/alien/sentinel
 	name = "alien sentinel"
-	icon_state = "aliens_s"
-	icon_living = "aliens_s"
-	icon_dead = "aliens_dead"
+	icon = 'icons/Xeno/castes/sentinel.dmi'
+	icon_state = "Sentinel Walking"
+	icon_living = "Sentinel Walking"
+	icon_dead = "Sentinel Dead"
 	health = 150
 	maxHealth = 150
 	melee_damage_lower = 15
@@ -89,10 +91,10 @@
 
 /mob/living/simple_animal/hostile/alien/queen
 	name = "alien queen"
-	icon = 'icons/mob/alienqueen.dmi'
-	icon_state = "queen_s"
-	icon_living = "queen_s"
-	icon_dead = "queen_dead"
+	icon = 'icons/Xeno/castes/queen.dmi'
+	icon_state = "Queen Walking"
+	icon_living = "Queen Walking"
+	icon_dead = "Queen Dead"
 	pixel_x = -16
 	health = 250
 	maxHealth = 250
@@ -145,11 +147,11 @@
 
 /mob/living/simple_animal/hostile/alien/queen/large
 	name = "alien empress"
-	icon = 'icons/mob/alienqueen.dmi'
-	icon_state = "queen_s"
-	icon_living = "queen_s"
-	icon_dead = "queen_dead"
-	health_doll_icon = "queen_s"
+	icon = 'icons/Xeno/castes/queen.dmi'
+	icon_state = "Queen Walking"
+	icon_living = "Queen Walking"
+	icon_dead = "Queen Dead"
+	health_doll_icon = "Queen Walking"
 	bubble_icon = "alienroyal"
 	move_to_delay = 4
 	maxHealth = 400
@@ -161,8 +163,8 @@
 
 /obj/item/projectile/neurotox
 	name = "neurotoxin"
-	damage = 30
 	icon_state = "toxin"
+	damage = 30
 
 /mob/living/simple_animal/hostile/alien/handle_temperature_damage()
 	if(bodytemperature < minbodytemp)
@@ -181,10 +183,10 @@
 	obj_damage = 0
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	gold_core_spawnable = HOSTILE_SPAWN
-	icon = 'icons/mob/xenomorph.dmi'
-	icon_state = "alienm_s"
-	icon_living = "alienm_s"
-	icon_dead = "alienm_dead"
+	icon = 'icons/Xeno/castes/hunter.dmi'
+	icon_state = "Hunter Walking"
+	icon_living = "Hunter Walking"
+	icon_dead = "Hunter Dead"
 
 /mob/living/simple_animal/hostile/alien/maid/Initialize(mapload)
 	. = ..()
