@@ -528,9 +528,6 @@ PAI_CUSTOM_HOLOFORMS
 ## Once a typepath causes overrun from hard deletes this many times, stop hard deleting it on garbage collection failures. (set to 0 to disable)
 #HARD_DELETES_OVERRUN_LIMIT 0
 
-## Max hard deletes per GC fire. Limits memory spikes from del() scanning. 0 = unlimited. Helps with gas_mixture-heavy servers.
-#GC_MAX_HARD_DELETES_PER_FIRE 10
-
 ## Enables monstermos/"equalization" step in atmos.
 # ATMOS_EQUALIZE_ENABLED
 
