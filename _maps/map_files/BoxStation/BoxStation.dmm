@@ -3041,8 +3041,6 @@
 /obj/effect/turf_decal/siding/wood/thin{
 	dir = 4
 	},
-/obj/structure/safe/spare_id,
-/obj/item/card/id/captains_spare,
 /turf/open/floor/carpet/royalblue,
 /area/command/heads_quarters/captain)
 "awn" = (
@@ -9935,7 +9933,6 @@
 /area/command/bridge)
 "aZU" = (
 /obj/structure/dresser,
-/obj/item/card/id/captains_spare,
 /turf/open/floor/wood/wood_large,
 /area/command/heads_quarters/captain)
 "aZV" = (
@@ -71750,6 +71747,10 @@
 	pixel_y = 6
 	},
 /obj/item/storage/fancy/donut_box,
+/obj/structure/safe/spare_id{
+	pixel_x = 31;
+	pixel_y = 32
+	},
 /turf/open/floor/plasteel/dark/textured/large,
 /area/command/bridge)
 "sfr" = (

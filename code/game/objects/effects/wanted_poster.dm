@@ -1,5 +1,7 @@
 /obj/item/poster/wanted
 	icon_state = "rolled_poster"
+	/// Unique ID for this wanted poster (matches criminal's record ID). Used for area limit checks.
+	var/poster_id = null
 
 /obj/item/poster/wanted/Initialize(mapload, icon/person_icon, wanted_name, description)
 	. = ..(mapload, new /obj/structure/sign/poster/wanted(src, person_icon, wanted_name, description))
@@ -8,6 +10,8 @@
 
 /obj/structure/sign/poster/wanted
 	var/wanted_name
+	/// Unique ID for area limit checks. Set when poster is created from brig console.
+	var/poster_id = null
 	poster_item_type = /obj/item/poster/wanted
 
 /obj/structure/sign/poster/wanted/Initialize(mapload, icon/person_icon, person_name, description)
@@ -32,8 +36,45 @@
 	the_icon.Insert(icon('icons/obj/contraband.dmi', "poster_ripped"), "poster_ripped")
 	icon = the_icon
 
+/obj/structure/sign/poster/wanted/attackby(obj/item/I, mob/user, params)
+	if(I.tool_behaviour == TOOL_WIRECUTTER && poster_id && isliving(user))
+		var/ckey = user.ckey
+		if(ckey)
+			var/list/remove_tasks = GLOB.brig_assistant_remove_tasks[ckey]
+			if(remove_tasks && (poster_id in remove_tasks))
+				remove_tasks -= poster_id
+				if(remove_tasks.len == 0)
+					GLOB.brig_assistant_remove_tasks -= ckey
+				var/datum/bank_account/account = user.get_bank_account()
+				if(account)
+					var/reward = rand(75, 100)
+					account.adjust_money(reward, "Brig: Remove wanted poster task")
+					playsound(user, 'modular_bluemoon/sound/machines/slot-machine/money.ogg', 50, TRUE)
+					to_chat(user, span_green("За снятие плаката начислено [reward] кредитов."))
+	. = ..()
+
 /obj/structure/sign/poster/wanted/roll_and_drop(turf/location)
 	var/obj/item/poster/P = ..(location)
 	P.name = "wanted poster ([wanted_name])"
 	P.desc = "A wanted poster for [wanted_name]."
+	if(istype(P, /obj/item/poster/wanted))
+		var/obj/item/poster/wanted/W = P
+		W.poster_id = poster_id
 	return P
+
+/obj/item/poster/wanted/poster_place_check(mob/user, turf/closed/wall)
+	var/check_id = poster_id || (poster_structure && poster_structure.poster_id)
+	if(!check_id)
+		return TRUE // Legacy posters without ID - no limit
+	var/area/A = get_area(src)
+	if(!A)
+		return TRUE
+	var/count = 0
+	for(var/turf/T in A)
+		for(var/obj/structure/sign/poster/wanted/W in T.contents)
+			if(W.poster_id == check_id)
+				count++
+	if(count >= WANTED_POSTER_MAX_PER_AREA)
+		to_chat(user, span_warning("В этой зоне уже достаточно плакатов с этим разыскиваемым (макс. [WANTED_POSTER_MAX_PER_AREA])."))
+		return FALSE
+	return TRUE
