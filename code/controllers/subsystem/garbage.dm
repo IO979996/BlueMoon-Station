@@ -143,8 +143,6 @@ SUBSYSTEM_DEF(garbage)
 	var/list/queue = queues[level]
 	var/static/lastlevel
 	var/static/count = 0
-	var/max_hard_deletes = CONFIG_GET(number/gc_max_hard_deletes_per_fire)
-	var/hard_deletes_this_fire = 0
 	if (count) //runtime last run before we could do this.
 		var/c = count
 		count = 0 //so if we runtime on the Cut, we don't try again.
@@ -166,8 +164,6 @@ SUBSYSTEM_DEF(garbage)
 		var/GCd_at_time = L[1]
 		if(GCd_at_time > cut_off_time)
 			break // Everything else is newer, skip them
-		if (level == GC_QUEUE_HARDDELETE && max_hard_deletes && hard_deletes_this_fire >= max_hard_deletes)
-			break // Throttle hard deletes to prevent memory spikes
 		count++
 		var/refID = L[2]
 		var/queued_qdel_hint = (length(L) >= 3) ? L[3] : null
@@ -228,17 +224,9 @@ SUBSYSTEM_DEF(garbage)
 					continue
 			if (GC_QUEUE_HARDDELETE)
 				HardDelete(D)
-				hard_deletes_this_fire++
 				if (MC_TICK_CHECK)
 					return
 				continue
-
-		// gas_mixture never goes to hard delete - keep in CHECK until it soft-deletes on its own
-		if(level == GC_QUEUE_CHECK && istype(D, /datum/gas_mixture))
-			count-- // don't remove from queue, let it stay for next check
-			if (MC_TICK_CHECK)
-				return
-			continue
 
 		Queue(D, level+1)
 
