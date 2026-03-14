@@ -68,16 +68,17 @@
 
 	var/asleep = IsSleeping()
 	var/tauceti_state
+	var/queen_prefix = (caste == "q" && rouny) ? "Queen rouny" : "Queen"
 	if(stat == DEAD)
-		tauceti_state = (caste == "q") ? "Queen Dead" : "Praetorian Dead"
+		tauceti_state = (caste == "q") ? "[queen_prefix] Dead" : "Praetorian Dead"
 	else if((stat == UNCONSCIOUS && !asleep) || stat == SOFT_CRIT || IsParalyzed())
-		tauceti_state = (caste == "q") ? "Queen Knocked Down" : "Praetorian Knocked Down"
+		tauceti_state = (caste == "q") ? "[queen_prefix] Knocked Down" : "Praetorian Knocked Down"
 	else if(leap_on_click)
-		tauceti_state = (caste == "q") ? "Queen Walking" : "Praetorian Walking"
+		tauceti_state = (caste == "q") ? "[queen_prefix] Walking" : "Praetorian Walking"
 	else if(lying || !CHECK_MOBILITY(src, MOBILITY_STAND) || asleep)
-		tauceti_state = (caste == "q") ? "Queen Sleeping" : "Praetorian Sleeping"
+		tauceti_state = (caste == "q") ? "[queen_prefix] Sleeping" : "Praetorian Sleeping"
 	else
-		tauceti_state = (caste == "q") ? "Queen Walking" : "Praetorian Walking"
+		tauceti_state = (caste == "q") ? "[queen_prefix] Walking" : "Praetorian Walking"
 		if(drooling)
 			add_overlay((caste == "q") ? "alienspit_q" : "alienspit_p")
 

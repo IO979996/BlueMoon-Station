@@ -1,6 +1,7 @@
 /mob/living/carbon/alien/humanoid/royal
 	//Common stuffs for Praetorian and Queen
 	icon = 'icons/Xeno/castes/queen.dmi'
+	var/rouny = FALSE // 1% пасхалка для королевы: спрайт Queen rouny
 	status_flags = 0
 	unique_name = 0
 	pixel_x = -16
@@ -35,6 +36,9 @@
 	var/obj/effect/proc_holder/alien/royal/queen/promote/promote
 
 /mob/living/carbon/alien/humanoid/royal/queen/Initialize(mapload)
+	if(prob(1))
+		rouny = TRUE
+		icon_state = "Queen rouny Walking"
 	//there should only be one queen
 	for(var/mob/living/carbon/alien/humanoid/royal/queen/Q in GLOB.carbon_list)
 		if(Q == src)

@@ -116,6 +116,15 @@
 	var/egg_cooldown = 30
 	var/plant_cooldown = 30
 
+/mob/living/simple_animal/hostile/alien/queen/Initialize(mapload)
+	. = ..()
+	if(prob(1))
+		icon_state = "Queen rouny Walking"
+		icon_living = "Queen rouny Walking"
+		icon_dead = "Queen rouny Dead"
+		if(istype(src, /mob/living/simple_animal/hostile/alien/queen/large))
+			health_doll_icon = "Queen rouny Walking"
+
 /mob/living/simple_animal/hostile/alien/queen/handle_automated_action()
 	if(!..()) //AIStatus is off
 		return
