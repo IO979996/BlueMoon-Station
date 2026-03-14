@@ -45,7 +45,8 @@
 				remove_tasks -= poster_id
 				if(remove_tasks.len == 0)
 					GLOB.brig_assistant_remove_tasks -= ckey
-				var/datum/bank_account/account = user.get_bank_account()
+				var/mob/living/living_user = user
+				var/datum/bank_account/account = living_user.get_bank_account()
 				if(account)
 					var/reward = rand(75, 100)
 					account.adjust_money(reward, "Brig: Remove wanted poster task")

@@ -63,6 +63,8 @@
 	var/poster_item_desc = "This hypothetical poster item should not exist, let's be honest here."
 	var/poster_item_icon_state = "rolled_poster"
 	var/poster_item_type = /obj/item/poster
+	/// Unique ID for wanted posters (area limit checks). Used by wanted subtype.
+	var/poster_id = null
 
 /obj/structure/sign/poster/Initialize(mapload)
 	. = ..()
@@ -182,7 +184,8 @@
 			if(istype(D, /obj/structure/sign/poster/wanted))
 				var/obj/structure/sign/poster/wanted/W = D
 				if(W.poster_id && isliving(user))
-					var/datum/bank_account/account = user.get_bank_account()
+					var/mob/living/living_user = user
+					var/datum/bank_account/account = living_user.get_bank_account()
 					if(account)
 						var/reward = rand(75, 100)
 						account.adjust_money(reward, "Brig: Wanted poster task")

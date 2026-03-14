@@ -88,7 +88,7 @@
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 	head = /obj/item/clothing/head/hardhat/white
 	gloves = /obj/item/clothing/gloves/color/black
-	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1, /obj/item/paper/fluff/spare_id_safe_code = 1)
+	backpack_contents = list(/obj/item/modular_computer/tablet/preset/advanced=1)
 	accessory = list(/obj/item/clothing/accessory/permit/special/chief_engineer)
 
 	backpack = /obj/item/storage/backpack/industrial

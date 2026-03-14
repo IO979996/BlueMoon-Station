@@ -79,7 +79,7 @@
 	suit = /obj/item/clothing/suit/toggle/labcoat/rd
 	l_hand = /obj/item/clipboard
 	l_pocket = /obj/item/laser_pointer
-	backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced=1, /obj/item/paper/fluff/spare_id_safe_code = 1)
+	backpack_contents = list(/obj/item/melee/classic_baton/telescopic=1, /obj/item/modular_computer/tablet/preset/advanced=1)
 	accessory = list(/obj/item/clothing/accessory/permit/special/research_director)
 
 	backpack = /obj/item/storage/backpack/science

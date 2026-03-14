@@ -4,14 +4,24 @@
 #define SPARE_ID_SAFE_CODE_2 23
 
 /// Золотой сейф для запасной карты капитана. Фиксированный код выдается главам на бумажке.
+/// Спрайт из tgstation: icons/obj/storage/storage.dmi
 /obj/structure/safe/spare_id
 	name = "golden safe"
 	desc = "A prestigious safe with a golden sheen, designated for storing the Captain's spare ID. The combination is known to station heads."
-	icon_state = "safe"
+	icon = 'modular_bluemoon/icons/obj/storage/storage.dmi'
+	icon_state = "spare_safe"
 
 /obj/structure/safe/spare_id/Initialize(mapload)
 	. = ..()
 	tumblers = list(SPARE_ID_SAFE_CODE_1, SPARE_ID_SAFE_CODE_2)
+	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(setup_spare_id_safe_and_bridge_airlocks)))
+
+/obj/structure/safe/spare_id/update_icon_state()
+	// tgstation storage.dmi: spare_safe (open), spare_safe_locked (closed)
+	if(open)
+		icon_state = "spare_safe"
+	else
+		icon_state = "spare_safe_locked"
 
 #undef SPARE_ID_SAFE_CODE_1
 #undef SPARE_ID_SAFE_CODE_2
@@ -66,4 +76,38 @@
 /obj/structure/safe/floor/syndi/armory/Destroy()
 	. = ..()
 	UnregisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED)
+
+GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
+
+/// Роли глав, которым может выдаваться код от золотого сейфа
+#define SPARE_ID_SAFE_HEAD_ROLES list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director", "Chief Medical Officer")
+
+/// Выдача бумажки с кодом одному случайному главе и аварийный режим шлюзов мостика при отсутствии командования
+/proc/setup_spare_id_safe_and_bridge_airlocks()
+	if(GLOB.spare_id_safe_setup_done)
+		return
+	GLOB.spare_id_safe_setup_done = TRUE
+
+	var/list/mob/living/carbon/human/heads = list()
+	for(var/mob/living/carbon/human/H in GLOB.human_list)
+		if(H.stat == DEAD || !H.mind || !(H.mind.assigned_role in SPARE_ID_SAFE_HEAD_ROLES))
+			continue
+		heads += H
+
+	if(length(heads))
+		var/mob/living/carbon/human/chosen_head = pick(heads)
+		var/obj/item/paper/fluff/spare_id_safe_code/paper = new()
+		if(chosen_head.equip_to_slot_if_possible(paper, ITEM_SLOT_BACKPACK, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
+			// Успешно положено в рюкзак
+		else
+			paper.forceMove(get_turf(chosen_head))
+	else
+		// Нет глав — шлюзы в области мостика переводим в аварийный режим
+		for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
+			var/area/airlock_area = get_area(A)
+			if(!istype(airlock_area, /area/command/bridge))
+				continue
+			A.set_emergency_exit(TRUE)
+
+#undef SPARE_ID_SAFE_HEAD_ROLES
 
