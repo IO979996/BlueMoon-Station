@@ -13,7 +13,7 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 
 /obj/machinery/computer/brig_assistant_console
 	name = "консоль заданий брига"
-	desc = "Консоль для выдачи заданий ассистентам. В первую очередь - развешивание плакатов с разыскиваемыми."
+	desc = "Консоль для выдачи заданий. В первую очередь - развешивание плакатов с разыскиваемыми."
 	icon_screen = "security"
 	icon_keyboard = "security_key"
 	circuit = /obj/item/circuitboard/computer/brig_assistant_console
@@ -139,9 +139,6 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 		return
 
 	var/mob/user = usr
-	if(!is_assistant_job(user))
-		to_chat(user, span_warning("Эта консоль предназначена только для ассистентов."))
-		return
 
 	switch(action)
 		if("take_task")
