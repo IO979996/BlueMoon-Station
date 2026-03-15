@@ -7,20 +7,14 @@ export const BrigAssistantConsole = (props, context) => {
   const {
     wanted = [],
     remove = [],
-    is_assistant,
   } = data;
 
   return (
     <Window
-      title="Задания для ассистентов"
+      title="Задания брига"
       width={500}
       height={500}>
       <Window.Content scrollable>
-        {!is_assistant && (
-          <NoticeBox warning>
-            Эта консоль предназначена только для ассистентов.
-          </NoticeBox>
-        )}
         <Section title="Развешивание плакатов с разыскиваемыми">
           <Table>
             <Table.Row header>
@@ -40,7 +34,7 @@ export const BrigAssistantConsole = (props, context) => {
                 <Table.Cell collapsing>
                   <Button
                     content="Взять задание"
-                    disabled={!w.can_take || !is_assistant}
+                    disabled={!w.can_take}
                     tooltip={!w.has_photo ? "Нет фото в досье" : null}
                     onClick={() => act('take_task', { id: w.id })} />
                 </Table.Cell>
@@ -67,7 +61,7 @@ export const BrigAssistantConsole = (props, context) => {
                 <Table.Cell collapsing>
                   <Button
                     content={r.has_task ? "Задание взято" : "Взять задание"}
-                    disabled={r.has_task || !is_assistant}
+                    disabled={r.has_task}
                     tooltip="Снимите плакаты кусачками. Награда: 75-100 кредитов."
                     onClick={() => act('take_remove_task', { id: r.id })} />
                 </Table.Cell>

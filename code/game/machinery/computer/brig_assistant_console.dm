@@ -12,7 +12,7 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 #define WANTED_POSTER_MAX_PER_AREA 2
 
 /obj/machinery/computer/brig_assistant_console
-	name = "консоль заданий брига"
+	name = "Консоль заданий брига"
 	desc = "Консоль для выдачи заданий. В первую очередь - развешивание плакатов с разыскиваемыми."
 	icon_screen = "security"
 	icon_keyboard = "security_key"
@@ -123,15 +123,7 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 		))
 
 	data["remove"] = remove_list
-	data["is_assistant"] = is_assistant_job(user)
 	return data
-
-/obj/machinery/computer/brig_assistant_console/proc/is_assistant_job(mob/user)
-	if(!ishuman(user))
-		return FALSE
-	var/mob/living/carbon/human/H = user
-	var/datum/job/J = SSjob.GetJob(H.mind?.assigned_role)
-	return istype(J, /datum/job/assistant)
 
 /obj/machinery/computer/brig_assistant_console/ui_act(action, params)
 	. = ..()
