@@ -10,6 +10,7 @@
 	desc = "A prestigious safe with a golden sheen, designated for storing the Captain's spare ID. The combination is known to station heads."
 	icon = 'modular_bluemoon/icons/obj/storage/storage.dmi'
 	icon_state = "spare_safe"
+	density = FALSE
 
 /obj/structure/safe/spare_id/Initialize(mapload)
 	. = ..()
