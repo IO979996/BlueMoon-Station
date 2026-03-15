@@ -86,7 +86,7 @@ GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
 /// Роли глав, которым может выдаваться код от золотого сейфа
 #define SPARE_ID_SAFE_HEAD_ROLES list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director", "Chief Medical Officer")
 
-/// Выдача бумажки с кодом одному случайному главе и аварийный режим шлюзов мостика при отсутствии командования
+/// Выдача бумажки с кодом всем главам и аварийный режим шлюзов мостика при отсутствии командования
 /proc/setup_spare_id_safe_and_bridge_airlocks()
 	if(GLOB.spare_id_safe_setup_done)
 		return
@@ -99,12 +99,12 @@ GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
 		heads += H
 
 	if(length(heads))
-		var/mob/living/carbon/human/chosen_head = pick(heads)
-		var/obj/item/paper/fluff/spare_id_safe_code/paper = new()
-		if(chosen_head.equip_to_slot_if_possible(paper, ITEM_SLOT_BACKPACK, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
-			// Успешно положено в рюкзак
-		else
-			paper.forceMove(get_turf(chosen_head))
+		for(var/mob/living/carbon/human/head in heads)
+			var/obj/item/paper/fluff/spare_id_safe_code/paper = new()
+			if(head.equip_to_slot_if_possible(paper, ITEM_SLOT_BACKPACK, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
+				// Успешно положено в рюкзак
+			else
+				paper.forceMove(get_turf(head))
 	else
 		// Нет глав — шлюзы в области мостика переводим в аварийный режим
 		for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
