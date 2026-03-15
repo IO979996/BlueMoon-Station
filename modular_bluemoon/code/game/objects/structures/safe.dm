@@ -1,9 +1,6 @@
 // Armory redcode safe
 
-#define SPARE_ID_SAFE_CODE_1 47
-#define SPARE_ID_SAFE_CODE_2 23
-
-/// Золотой сейф для запасной карты капитана. Фиксированный код выдается главам на бумажке.
+/// Золотой сейф для запасной карты капитана. Случайный код (6 цифр) выдается главам на бумажке.
 /// Спрайт из tgstation: icons/obj/storage/storage.dmi
 /obj/structure/safe/spare_id
 	name = "golden safe"
@@ -11,12 +8,12 @@
 	icon = 'modular_bluemoon/icons/obj/storage/storage.dmi'
 	icon_state = "spare_safe"
 	density = FALSE
+	number_of_tumblers = 6
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, RAD = 50, FIRE = 50, ACID = 50)
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | ACID_PROOF | UNACIDABLE | FREEZE_PROOF
 
 /obj/structure/safe/spare_id/Initialize(mapload)
 	. = ..()
-	tumblers = list(SPARE_ID_SAFE_CODE_1, SPARE_ID_SAFE_CODE_2)
 	if(mapload && !locate(/obj/item/card/id/captains_spare) in src)
 		var/obj/item/card/id/captains_spare/card = new(src)
 		space += card.w_class
@@ -28,9 +25,6 @@
 		icon_state = "spare_safe"
 	else
 		icon_state = "spare_safe_locked"
-
-#undef SPARE_ID_SAFE_CODE_1
-#undef SPARE_ID_SAFE_CODE_2
 
 /obj/structure/safe
 	/// Список кодов, при которых открывается сейф
@@ -101,8 +95,13 @@ GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
 		heads += H
 
 	if(length(heads))
+		var/obj/structure/safe/spare_id/safe = locate() in world
+		var/code_string = safe ? jointext(safe.tumblers, "-") : "???"
 		for(var/mob/living/carbon/human/head in heads)
-			var/obj/item/paper/fluff/spare_id_safe_code/paper = new()
+			var/obj/item/paper/paper = new()
+			paper.name = "paper- 'Spare ID safe combination'"
+			paper.desc = "Конфиденциальная запись с кодом от золотого сейфа запасной карты капитана."
+			paper.add_raw_text("<b>Комбинация золотого сейфа запасной карты капитана</b><br><br>Код: <b>[code_string]</b><br><br>Сейф расположен на мостике. Используйте код в экстренных случаях для доступа к запасной ID-карте капитана.<br><br>— Nanotrasen Command")
 			if(head.equip_to_slot_if_possible(paper, ITEM_SLOT_BACKPACK, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
 				// Успешно положено в рюкзак
 			else
