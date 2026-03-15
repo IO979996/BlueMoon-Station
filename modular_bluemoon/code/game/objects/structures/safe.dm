@@ -14,6 +14,9 @@
 /obj/structure/safe/spare_id/Initialize(mapload)
 	. = ..()
 	tumblers = list(SPARE_ID_SAFE_CODE_1, SPARE_ID_SAFE_CODE_2)
+	if(mapload && !locate(/obj/item/card/id/captains_spare) in src)
+		var/obj/item/card/id/captains_spare/card = new(src)
+		space += card.w_class
 	SSticker.OnRoundstart(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(setup_spare_id_safe_and_bridge_airlocks)))
 
 /obj/structure/safe/spare_id/update_icon_state()

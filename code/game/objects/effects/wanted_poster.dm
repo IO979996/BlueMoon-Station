@@ -10,8 +10,6 @@
 
 /obj/structure/sign/poster/wanted
 	var/wanted_name
-	/// Unique ID for area limit checks. Set when poster is created from brig console.
-	var/poster_id = null
 	poster_item_type = /obj/item/poster/wanted
 
 /obj/structure/sign/poster/wanted/Initialize(mapload, icon/person_icon, person_name, description)

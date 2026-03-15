@@ -14,10 +14,8 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 /obj/machinery/computer/brig_assistant_console
 	name = "консоль заданий брига"
 	desc = "Консоль для выдачи заданий ассистентам. В первую очередь - развешивание плакатов с разыскиваемыми."
-	icon = 'icons/obj/machines/computer.dmi'
-	icon_state = "sec"
+	icon_screen = "security"
 	icon_keyboard = "security_key"
-	icon_screen = "id"
 	circuit = /obj/item/circuitboard/computer/brig_assistant_console
 	req_access = list() // В бриге, доступ для ассистентов (у них обычно нет ACCESS_BRIG)
 	light_color = LIGHT_COLOR_RED
