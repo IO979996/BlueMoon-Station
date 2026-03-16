@@ -454,33 +454,31 @@
 			continue
 		step_towards(alive_mob, loc)
 
-/// Сливает в output отфильтрованные газы модератора и часть He/Antinoblium из fusion. Вызывается при waste_remove и уровне < 6.
+/// Сливает в output отфильтрованные газы модератора и выбранные газы из internal_fusion. Вызывается при waste_remove и уровне < 6.
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/remove_waste(seconds_per_tick)
 	if(!waste_remove)
 		return
 	// Forcibly disabled at fusion power level 6
 	if(power_level >= 6)
 		return
-	var/filtering_amount = moderator_scrubbing.len
-	if(filtering_amount <= 0)
-		return
-	for(var/gas_id in moderator_internal.get_gases() & moderator_scrubbing)
-		var/datum/gas_mixture/removed = moderator_internal.remove_specific(gas_id, (moderator_filtering_rate / filtering_amount) * seconds_per_tick, hfr_removed_waste)
-		if(removed)
-			linked_output.airs[1].merge(removed)
-			hfr_removed_waste.clear()
+	var/moderator_filtering_amount = moderator_scrubbing.len
+	if(moderator_filtering_amount > 0)
+		for(var/gas_id in moderator_internal.get_gases() & moderator_scrubbing)
+			var/datum/gas_mixture/removed = moderator_internal.remove_specific(gas_id, (moderator_filtering_rate / moderator_filtering_amount) * seconds_per_tick, hfr_removed_waste)
+			if(removed)
+				linked_output.airs[1].merge(removed)
+				hfr_removed_waste.clear()
 
-	// 50% of Fusion Mix Helium per second, 5% of Fusion Mix Anti-Noblium per second
-	if(internal_fusion.get_moles(GAS_HELIUM) > 0)
-		var/datum/gas_mixture/removed = internal_fusion.remove_specific(GAS_HELIUM, internal_fusion.get_moles(GAS_HELIUM) * (1 - (1 - 0.5) ** seconds_per_tick), hfr_removed_waste)
-		if(removed)
-			linked_output.airs[1].merge(removed)
-			hfr_removed_waste.clear()
-	if(internal_fusion.get_moles(GAS_ANTINOBLIUM) > 0)
-		var/datum/gas_mixture/removed = internal_fusion.remove_specific(GAS_ANTINOBLIUM, internal_fusion.get_moles(GAS_ANTINOBLIUM) * (1 - (1 - 0.05) ** seconds_per_tick), hfr_removed_waste)
-		if(removed)
-			linked_output.airs[1].merge(removed)
-			hfr_removed_waste.clear()
+	// Output selected fusion gases through waste removal
+	var/fusion_filtering_amount = fusion_scrubbing.len
+	if(fusion_filtering_amount > 0)
+		for(var/gas_id in internal_fusion.get_gases() & fusion_scrubbing)
+			if(internal_fusion.get_moles(gas_id) <= 0)
+				continue
+			var/datum/gas_mixture/removed = internal_fusion.remove_specific(gas_id, (fusion_filtering_rate / fusion_filtering_amount) * seconds_per_tick, hfr_removed_waste)
+			if(removed)
+				linked_output.airs[1].merge(removed)
+				hfr_removed_waste.clear()
 
 /obj/machinery/atmospherics/components/unary/hypertorus/core/proc/process_internal_cooling(seconds_per_tick)
 	if(moderator_internal.total_moles() > 0 && internal_fusion.total_moles() > 0)

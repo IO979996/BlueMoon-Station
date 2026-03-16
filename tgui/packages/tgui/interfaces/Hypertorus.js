@@ -329,6 +329,17 @@ export const Hypertorus = (props, context) => {
                   })} />
               ))}
             </LabeledList.Item>
+            <LabeledList.Item label="Filter from fusion mix">
+              {(data.fusion_filter_types || []).map(filter => (
+                <Button
+                  key={filter.gas_id}
+                  selected={filter.enabled}
+                  content={getGasLabel(filter.gas_id, filter.gas_name)}
+                  onClick={() => act('fusion_filter', {
+                    mode: filter.gas_id,
+                  })} />
+              ))}
+            </LabeledList.Item>
           </LabeledList>
         </Section>
       </Window.Content>

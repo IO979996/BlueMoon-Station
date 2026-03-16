@@ -307,9 +307,13 @@
 	data["filter_types"] = list()
 	for(var/id in GLOB.gas_data.ids)
 		data["filter_types"] += list(list("gas_id" = id, "gas_name" = GLOB.gas_data.names[id], "enabled" = (id in connected_core.moderator_scrubbing)))
+	data["fusion_filter_types"] = list()
+	for(var/id in GLOB.gas_data.ids)
+		data["fusion_filter_types"] += list(list("gas_id" = id, "gas_name" = GLOB.gas_data.names[id], "enabled" = (id in connected_core.fusion_scrubbing)))
 
 	data["cooling_volume"] = connected_core.airs[1].return_volume()
 	data["mod_filtering_rate"] = connected_core.moderator_filtering_rate
+	data["fusion_filtering_rate"] = connected_core.fusion_filtering_rate
 
 	return data
 
@@ -364,6 +368,9 @@
 		if("filter")
 			connected_core.moderator_scrubbing ^= params["mode"]
 			. = TRUE
+		if("fusion_filter")
+			connected_core.fusion_scrubbing ^= params["mode"]
+			. = TRUE
 		if("mod_filtering_rate")
 			var/mod_filtering_rate = text2num(params["mod_filtering_rate"])
 			if(mod_filtering_rate != null)
@@ -416,7 +423,7 @@
 	-You cannot dismantle the machine if the power level is over 0<BR>\
 	-You cannot power of the machine if the power level is over 0<BR>\
 	-You cannot dispose of waste gases if power level is over 5<BR>\
-	-You cannot remove gases from the fusion mix if they are not helium and antinoblium<BR>\
+	-Select gases in "Filter from fusion mix" to output them through waste removal when waste remove is on<BR>\
 	-Hypernoblium will decrease the power of the mix by a lot<BR>\
 	-Antinoblium will INCREASE the power of the mix by a lot more<BR>\
 	-High heat capacity gases are harder to heat/cool<BR>\
