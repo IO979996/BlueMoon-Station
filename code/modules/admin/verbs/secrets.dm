@@ -46,7 +46,7 @@
 	. = ..()
 	if(.)
 		return
-	if((action != "admin_log" || action != "show_admins" || action != "mentor_log") && !check_rights(R_ADMIN))
+	if((action != "admin_log" && action != "show_admins" && action != "mentor_log") && !check_rights(R_ADMIN))
 		return
 	var/datum/round_event/E
 	var/ok = FALSE
@@ -54,9 +54,9 @@
 		//Generic Buttons anyone can use.
 		if("admin_log")
 			var/dat = "<B>Admin Log<HR></B>"
-			for(var/l in GLOB.admin_log)
+			for(var/l in GLOB.admin_log_entries)
 				dat += "<li>[l]</li>"
-			if(!GLOB.admin_log.len)
+			if(!GLOB.admin_log_entries.len)
 				dat += "No-one has done anything this round!"
 			var/datum/browser/popup = new(holder, "admin_log", "Admin Log")
 			popup.set_content(dat)
@@ -368,6 +368,16 @@
 						SSevents.toggleWizardmode()
 						SSevents.resetFrequency()
 						SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Summon Events", "Disable"))
+		if("space_cleaner_spill")
+			if(!is_funmin)
+				return
+			var/event_type = text2path("/datum/round_event_control/space_cleaner_spill")
+			var/datum/round_event_control/EC = locate(event_type) in SSevents.control
+			if(EC)
+				EC.runEvent(announce_chance_override = 100, admin_forced = TRUE)
+				message_admins("[key_name_admin(holder)] запустил ивент: Аварийная очистка космической станции.")
+				log_admin("[key_name(holder)] запустил ивент: Аварийная очистка космической станции.")
+			SSblackbox.record_feedback("nested tally", "admin_secrets_fun_used", 1, list("Аварийная очистка станции"))
 		if("eagles")
 			if(!is_funmin)
 				return

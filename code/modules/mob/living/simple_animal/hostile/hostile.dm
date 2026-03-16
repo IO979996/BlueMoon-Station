@@ -50,7 +50,7 @@
 	var/attack_all_objects = FALSE //if true, equivalent to having a wanted_objects list containing ALL objects.
 
 	var/lose_patience_timer_id //id for a timer to call LoseTarget(), used to stop mobs fixating on a target they can't reach
-	var/lose_patience_timeout = 300 //30 seconds by default, so there's no major changes to AI behaviour, beyond actually bailing if stuck forever
+	var/lose_patience_timeout = 1200 //120 seconds by default, so there's no major changes to AI behaviour, beyond actually bailing if stuck forever
 
 	///When a target is found, will the mob attempt to charge at it's target?
 	var/charger = FALSE
@@ -585,6 +585,8 @@
 //These two procs handle losing our target if we've failed to attack them for
 //more than lose_patience_timeout deciseconds, which probably means we're stuck
 /mob/living/simple_animal/hostile/proc/GainPatience()
+	if(QDELETED(src))
+		return
 	if(lose_patience_timeout)
 		LosePatience()
 		lose_patience_timer_id = addtimer(CALLBACK(src, PROC_REF(LoseTarget)), lose_patience_timeout, TIMER_STOPPABLE)
@@ -596,6 +598,8 @@
 
 //These two procs handle losing and regaining search_objects when attacked by a mob
 /mob/living/simple_animal/hostile/proc/LoseSearchObjects()
+	if(QDELETED(src))
+		return
 	search_objects = 0
 	deltimer(search_objects_timer_id)
 	search_objects_timer_id = addtimer(CALLBACK(src, PROC_REF(RegainSearchObjects)), search_objects_regain_time, TIMER_STOPPABLE)

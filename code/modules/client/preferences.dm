@@ -105,8 +105,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/allow_midround_antag = 1
 	var/preferred_map = null
 	var/be_victim = null
-	var/use_new_playerpanel = TRUE // BLUEMOON - ENABELING-MODERN-PLAYER-PANEL-AS-DEFAULT
 	var/disable_combat_cursor = FALSE
+	var/disable_combat_mouse_lock = FALSE
 	var/tg_playerpanel = "TG"
 	var/pda_style = MONO
 	var/pda_color = "#808000"
@@ -1976,7 +1976,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 									dat += "<span style='border: 1px solid #161616; background-color: [SKINTONE2HEX(skin_tone)];'><font color='[color_hex2num(SKINTONE2HEX(skin_tone)) < 200 ? "FFFFFF" : "000000"]'>[SKINTONE2HEX(skin_tone)]</font></span>(Skin tone overriding)<br>"
 								else
 									dat += "<span style='border: 1px solid #161616; background-color: #[features["anus_color"]];'><font color='[color_hex2num(features["anus_color"]) < 200 ? "FFFFFF" : "000000"]'>#[features["anus_color"]]</font></span> <a href='?_src_=prefs;preference=anus_color;task=input'>Change</a><br>"
-									dat += "<b>[anus_shape_label]:</b> <a style='display:block;width:120px' href='?_src_=prefs;preference=anus_shape;task=input'>[features["anus_shape"]]</a>"
+								dat += "<b>[anus_shape_label]:</b> <a style='display:block;width:120px' href='?_src_=prefs;preference=anus_shape;task=input'>[features["anus_shape"]]</a>"
 								dat += "<b>[anus_visibility_label]:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=anus_visibility;task=input'>[features["anus_visibility"]]</a>"
 								dat += "<b>[anus_accessible_label]:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=anus_accessible'>[features["anus_accessible"] ? "Yes" : "No"]</a>"
 								dat += "<b>[anus_stuffing_label]:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=anus_stuffing'>[features["anus_stuffing"] == TRUE ? "Yes" : "No"]</a>"
@@ -2432,6 +2432,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 											extra_loadout_data += "<BR><a class='linkOn' href='?_src_=prefs;preference=gear;loadout_removeheirloom=1;loadout_gear_name=[url_encode(gear.name)];'>Select as Heirloom</a><BR>"
 										else
 											extra_loadout_data += "<BR><a href='?_src_=prefs;preference=gear;loadout_addheirloom=1;loadout_gear_name=[url_encode(gear.name)];'>Select as Heirloom</a><BR>"
+										if(ispath(gear.path, /obj/item/clothing))
+											extra_loadout_data += "<BR><a [loadout_item["loadout_examtooltip"] ? "class='linkOn' " : ""]href='?_src_=prefs;preference=gear;loadout_examtooltip=1;loadout_gear_name=[url_encode(gear.name)];'>Examine tooltip: [loadout_item["loadout_examtooltip"] ? "Set!" : "None"]</a>"
 										if(ispath(gear.path, /obj/item/clothing/neck/petcollar)) //"name tag" sounds better for me, but in petcollar code "tagname" is used so let it be.
 											extra_loadout_data += "<BR><a href='?_src_=prefs;preference=gear;loadout_tagname=1;loadout_gear_name=[url_encode(gear.name)];'>Name tag</a> [loadout_item["loadout_custom_tagname"] ? loadout_item["loadout_custom_tagname"] : "Name tag is visible for everyone looking at wearer."]"
 								  // BLUEMOON ADD END
@@ -2652,7 +2654,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					var/combo_hud_lighting_label = src.use_modern_translations ? get_modern_text("combo_hud_lighting", src) : "Combo HUD Lighting"
 					var/full_bright_label = src.use_modern_translations ? get_modern_text("full_bright", src) : "Full-bright"
 					var/no_change_label = src.use_modern_translations ? get_modern_text("no_change", src) : "No Change"
-					var/use_modern_player_panel_label = src.use_modern_translations ? get_modern_text("use_modern_player_panel", src) : "Use Modern Player Panel"
 					var/deadmin_while_playing_label = src.use_modern_translations ? get_modern_text("deadmin_while_playing", src) : "Deadmin While Playing"
 					var/onlogin_deadmin_label = src.use_modern_translations ? get_modern_text("onlogin_deadmin", src) : "Deadmin On Login"
 					var/onspawn_deadmin_label = src.use_modern_translations ? get_modern_text("onspawn_deadmin", src) : "Deadmin On Spawn"
@@ -2688,7 +2689,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						dat += "<b>[announce_login_label]:</b> <a href='?_src_=prefs;preference=announce_login'>[(toggles & ANNOUNCE_LOGIN)? enabled_label : disabled_label]</a><br>"
 						dat += "<br>"
 						dat += "<b>[combo_hud_lighting_label]:</b> <a href = '?_src_=prefs;preference=combohud_lighting'>[(toggles & COMBOHUD_LIGHTING)? full_bright_label : no_change_label]</a><br>"
-						dat += "<b>[use_modern_player_panel_label]:</b> <a href='?_src_=prefs;preference=use_new_playerpanel'>[use_new_playerpanel ? yes_label : no_label]</a><br>" //SPLURT Edit
 
 						//deadmin
 						dat += "<h2>[deadmin_while_playing_label]</h2>"
@@ -2745,6 +2745,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					var/splurt_prefs_label = src.use_modern_translations ? get_modern_text("splurt_prefs", src) : "S.P.L.U.R.T. Preferences"
 					var/be_victim_label = src.use_modern_translations ? get_modern_text("be_victim", src) : "Be Antagonist Victim"
 					var/disable_combat_cursor_label = src.use_modern_translations ? get_modern_text("disable_combat_cursor", src) : "Disable combat mode cursor"
+					var/disable_combat_mouse_lock_label = src.use_modern_translations ? get_modern_text("disable_combat_mouse_lock", src) : "Disable combat mode mouse lock"
 					var/playerpanel_style_label = src.use_modern_translations ? get_modern_text("playerpanel_style", src) : "Splashscreen Player Panel Style"
 					var/tg_label = src.use_modern_translations ? get_modern_text("tg_label", src) : "TG"
 					var/old_label = src.use_modern_translations ? get_modern_text("old_label", src) : "Old"
@@ -2801,13 +2802,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "<b>[recoil_screen_push_label]:</b> <a href='?_src_=prefs;preference=recoil_screenshake'>[(recoil_screenshake==100) ? full_label : ((recoil_screenshake==0) ? none_label : recoil_screenshake)]</a><br>"
 
 					//SPLURT Edit
-					var/be_victim_value = be_victim ? be_victim : BEVICTIM_ASK
-					var/disable_combat_cursor_value = disable_combat_cursor ? yes_label : no_label
-					var/playerpanel_style_value = (toggles & TG_PLAYER_PANEL) ? tg_label : old_label
 					dat += "<h2>[splurt_prefs_label]</h2>"
-					dat += "<b>[be_victim_label]:</b> <a href='?_src_=prefs;preference=be_victim;task=input'>[be_victim_value]</a><br>"
-					dat += "<b>[disable_combat_cursor_label]:</b> <a href='?_src_=prefs;preference=disable_combat_cursor'>[disable_combat_cursor_value]</a><br>"
-					dat += "<b>[playerpanel_style_label]:</b> <a href='?_src_=prefs;preference=tg_playerpanel'>[playerpanel_style_value]</a><br>"
+					dat += "<b>[be_victim_label]:</b> <a href='?_src_=prefs;preference=be_victim;task=input'>[be_victim ? be_victim : BEVICTIM_ASK]</a><br>"
+					dat += "<b>[disable_combat_cursor_label]:</b> <a href='?_src_=prefs;preference=disable_combat_cursor'>[disable_combat_cursor ? yes_label : no_label]</a><br>"
+					dat += "<b>[disable_combat_mouse_lock_label]:</b> <a href='?_src_=prefs;preference=disable_combat_mouse_lock'>[disable_combat_mouse_lock ? yes_label : no_label]</a><br>"
+					dat += "<b>[playerpanel_style_label]:</b> <a href='?_src_=prefs;preference=tg_playerpanel'>[(toggles & TG_PLAYER_PANEL) ? tg_label : old_label]</a><br>"
 					//SPLURT Edit end
 
 					dat += "<br>"
@@ -5559,6 +5558,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			switch(href_list["preference"])
 				if("disable_combat_cursor")
 					disable_combat_cursor = !disable_combat_cursor
+				if("disable_combat_mouse_lock")
+					disable_combat_mouse_lock = !disable_combat_mouse_lock
 				if("tg_playerpanel")
 					toggles ^= TG_PLAYER_PANEL
 					to_chat(user, span_warning("Please relog in order to apply the changes"))
@@ -5912,8 +5913,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					toggles ^= ANNOUNCE_LOGIN
 				if("combohud_lighting")
 					toggles ^= COMBOHUD_LIGHTING
-				if("use_new_playerpanel")
-					use_new_playerpanel = !use_new_playerpanel
 
 				// Colors pref
 				if("custom_color_ooc")
@@ -6368,7 +6367,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					sanitize_current_slot.Remove(list(entry))
 					break
 
-		if(href_list["loadout_color"] || href_list["loadout_color_polychromic"] || href_list["loadout_color_HSV"] || href_list["loadout_rename"] || href_list["loadout_redescribe"] || href_list["loadout_addheirloom"] || href_list["loadout_removeheirloom"] || href_list["loadout_tagname"])
+		if(href_list["loadout_color"] || href_list["loadout_color_polychromic"] || href_list["loadout_color_HSV"] || href_list["loadout_rename"] || href_list["loadout_redescribe"] || href_list["loadout_addheirloom"] || href_list["loadout_removeheirloom"] || href_list["loadout_tagname"] || href_list["loadout_examtooltip"])
 
 			//if the gear doesn't exist, or they don't have it, ignore the request
 			var/name = url_decode(href_list["loadout_gear_name"])
@@ -6391,6 +6390,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if(!length(user_gear[LOADOUT_COLOR]))
 					user_gear[LOADOUT_COLOR] = list("#FFFFFF")
 				var/current_color = user_gear[LOADOUT_COLOR][1]
+				if(!istext(current_color))
+					current_color = "#FFFFFF"
 				var/new_color = input(user, "Polychromic options", "Choose Color", current_color) as color|null
 				user_gear[LOADOUT_COLOR][1] = sanitize_hexcolor(new_color, 6, TRUE, current_color)
 
@@ -6414,6 +6415,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if(color_to_change)
 					var/color_index = text2num(copytext(color_to_change, 7))
 					var/current_color = user_gear[LOADOUT_COLOR][color_index]
+					if(!istext(current_color))
+						current_color = "#FFFFFF"
 					var/new_color = input(user, "Polychromic options", "Choose [color_to_change] Color", current_color) as color|null
 					if(new_color)
 						user_gear[LOADOUT_COLOR][color_index] = sanitize_hexcolor(new_color, 6, TRUE, current_color)
@@ -6463,6 +6466,16 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				var/new_tagname = stripped_input(user, "Would you like to change the name on the tag?", "Name your new pet", null, MAX_NAME_LEN)
 				if(new_tagname)
 					user_gear["loadout_custom_tagname"] = new_tagname
+			if(href_list["loadout_examtooltip"])
+				var/defaultinput = (islist(user_gear["loadout_examtooltip"])) ? user_gear["loadout_examtooltip"][1] : null
+				var/examtooltip_usrinput = stripped_input(user, "Это описание предмета будет видно при осмотре персонажа, носящего предмет. Cancel - очистить.", "Дополнительное описание", defaultinput, MAX_MESSAGE_LEN)
+				if(examtooltip_usrinput)
+					user_gear["loadout_examtooltip"] = list(examtooltip_usrinput, TRUE)
+					examtooltip_usrinput = alert(usr, "Оставлять описание даже после снятия предмета с персонажа?", "Постоянное описание", "Да", "Нет")
+					if(examtooltip_usrinput == "Да")
+						user_gear["loadout_examtooltip"][2] = FALSE
+				else
+					user_gear -= "loadout_examtooltip"
 
 	ShowChoices(user)
 	return TRUE
@@ -6582,6 +6595,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		character.type_of_meat = GLOB.meat_types[features["meat_type"]]
 
 	if((parent?.can_have_part("legs") || pref_species.mutant_bodyparts["legs"])  && (character.dna.features["legs"] == "Digitigrade" || character.dna.features["legs"] == "Avian"))
+		pref_species.species_traits |= DIGITIGRADE
+	else if(character.dna.species.mutant_bodyparts["limbs_id"] == "sergal")
 		pref_species.species_traits |= DIGITIGRADE
 	else
 		pref_species.species_traits -= DIGITIGRADE

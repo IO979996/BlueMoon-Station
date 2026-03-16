@@ -413,7 +413,7 @@
 	if(!is_centcom_level(T.z))//if not, don't bother
 		return FALSE
 
-	if(istype(T.loc, /area/shuttle/syndicate) || istype(T.loc, /area/syndicate_mothership) || istype(T.loc, /area/shuttle/assault_pod))
+	if(istype(T.loc, /area/shuttle/syndicate) || istype(T.loc, /area/shuttle/inteq) || istype(T.loc, /area/syndicate_mothership) || istype(T.loc, /area/shuttle/assault_pod))
 		return TRUE
 
 	return FALSE
@@ -584,8 +584,8 @@
 	if(desc)
 		. += desc
 
+	. += "<hr>"
 	if(custom_materials)
-		. += "<hr>"
 		var/list/materials_list = list()
 		for(var/i in custom_materials)
 			var/datum/material/M = i
