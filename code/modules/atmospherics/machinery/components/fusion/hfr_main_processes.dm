@@ -469,13 +469,15 @@
 				linked_output.airs[1].merge(removed)
 				hfr_removed_waste.clear()
 
-	// Output selected fusion gases through waste removal
-	var/fusion_filtering_amount = fusion_scrubbing.len
-	if(fusion_filtering_amount > 0)
-		for(var/gas_id in internal_fusion.get_gases() & fusion_scrubbing)
+	// Output all internal_fusion gases through waste removal
+	var/list/fusion_gases = internal_fusion.get_gases()
+	var/fusion_gas_count = length(fusion_gases)
+	if(fusion_gas_count > 0)
+		var/rate_per_gas = (fusion_filtering_rate / fusion_gas_count) * seconds_per_tick
+		for(var/gas_id in fusion_gases)
 			if(internal_fusion.get_moles(gas_id) <= 0)
 				continue
-			var/datum/gas_mixture/removed = internal_fusion.remove_specific(gas_id, (fusion_filtering_rate / fusion_filtering_amount) * seconds_per_tick, hfr_removed_waste)
+			var/datum/gas_mixture/removed = internal_fusion.remove_specific(gas_id, rate_per_gas, hfr_removed_waste)
 			if(removed)
 				linked_output.airs[1].merge(removed)
 				hfr_removed_waste.clear()

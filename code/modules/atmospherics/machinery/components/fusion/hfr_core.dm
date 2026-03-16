@@ -28,9 +28,8 @@
 	var/datum/gas_mixture/internal_fusion
 	var/datum/gas_mixture/moderator_internal
 	var/list/moderator_scrubbing = list(GAS_HELIUM)
-	var/list/fusion_scrubbing = list(GAS_HELIUM, GAS_ANTINOBLIUM) /// Gases from internal_fusion to output via waste removal when selected
 	var/moderator_filtering_rate = 20
-	var/fusion_filtering_rate = 20
+	var/fusion_filtering_rate = 20 /// Rate for outputting all internal_fusion gases via waste removal
 	var/datum/hfr_fuel/selected_fuel
 
 	var/energy = 0
