@@ -310,6 +310,7 @@
 
 	data["cooling_volume"] = connected_core.airs[1].return_volume()
 	data["mod_filtering_rate"] = connected_core.moderator_filtering_rate
+	data["fusion_filtering_rate"] = connected_core.fusion_filtering_rate
 
 	return data
 
@@ -368,6 +369,11 @@
 			var/mod_filtering_rate = text2num(params["mod_filtering_rate"])
 			if(mod_filtering_rate != null)
 				connected_core.moderator_filtering_rate = clamp(mod_filtering_rate, 5, 200)
+				. = TRUE
+		if("fusion_filtering_rate")
+			var/fusion_filtering_rate = text2num(params["fusion_filtering_rate"])
+			if(fusion_filtering_rate != null)
+				connected_core.fusion_filtering_rate = clamp(fusion_filtering_rate, 5, 200)
 				. = TRUE
 		if("fuel")
 			connected_core.selected_fuel = null

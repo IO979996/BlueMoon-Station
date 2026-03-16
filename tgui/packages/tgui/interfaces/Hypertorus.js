@@ -3,7 +3,7 @@ import { flow } from 'common/fp';
 import { toFixed } from 'common/math';
 
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, NumberInput, ProgressBar, Section, Stack } from '../components';
+import { Box, Button, LabeledList, NumberInput, ProgressBar, Section, Slider, Stack } from '../components';
 import { getGasColor, getGasLabel } from '../constants';
 import { formatSiBaseTenUnit, formatSiUnit } from '../format';
 import { Window } from '../layouts';
@@ -317,6 +317,19 @@ export const Hypertorus = (props, context) => {
                 content={data.waste_remove ? 'On' : 'Off'}
                 selected={data.waste_remove}
                 onClick={() => act('waste_remove')} />
+            </LabeledList.Item>
+            <LabeledList.Item label="Waste output">
+              <Slider
+                value={data.fusion_filtering_rate}
+                minValue={5}
+                maxValue={200}
+                step={1}
+                stepPixelSize={6}
+                onDrag={(e, value) => act('fusion_filtering_rate', {
+                  fusion_filtering_rate: value,
+                })}>
+                {data.fusion_filtering_rate + ' mol/s'}
+              </Slider>
             </LabeledList.Item>
             <LabeledList.Item label="Filter from moderator mix">
               {filterTypes.map(filter => (
