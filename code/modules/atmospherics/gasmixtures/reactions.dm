@@ -397,7 +397,7 @@
 		radiation_pulse(location,rad_power)
 
 /datum/gas_reaction/fusion
-	exclude = FALSE
+	exclude = TRUE // Disabled: reaction removed from active atmospheric gas reactions
 	priority = 2
 	name = "Plasmic Fusion"
 	id = "fusion"
