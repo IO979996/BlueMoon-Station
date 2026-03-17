@@ -93868,6 +93868,10 @@
 /obj/machinery/atmospherics/pipe/manifold4w/scrubbers/hidden/layer3,
 /turf/open/floor/plasteel,
 /area/security/prison/upper)
+"nEI" = (
+/obj/machinery/atmospherics/components/binary/crystallizer,
+/turf/open/floor/plasteel,
+/area/engineering/atmos)
 "nEK" = (
 /obj/structure/table/reinforced,
 /obj/structure/cable/white{
@@ -100881,6 +100885,7 @@
 /obj/effect/turf_decal/tile/dark{
 	dir = 1
 	},
+/obj/machinery/electrolyzer,
 /turf/open/floor/plasteel,
 /area/engineering/atmos)
 "pCY" = (
@@ -105541,6 +105546,7 @@
 /obj/effect/turf_decal/stripes/yellow/line{
 	dir = 10
 	},
+/obj/machinery/electrolyzer,
 /turf/open/floor/plasteel,
 /area/engineering/atmos)
 "qWK" = (
@@ -123491,6 +123497,7 @@
 /obj/machinery/atmospherics/pipe/simple/scrubbers/visible{
 	dir = 4
 	},
+/obj/structure/closet/crate/engineering/hfr,
 /turf/open/floor/plasteel,
 /area/engineering/atmos)
 "vVy" = (
@@ -155373,7 +155380,7 @@ oUP
 izE
 lXg
 lXg
-lXg
+nEI
 lXg
 gJo
 lXg

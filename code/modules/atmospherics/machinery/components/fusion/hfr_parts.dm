@@ -535,3 +535,19 @@
 
 	new/obj/machinery/atmospherics/components/unary/hypertorus/core(loc, TRUE)
 	qdel(src)
+
+/obj/structure/closet/crate/engineering/hfr
+	name = "HFR crate"
+	desc = "A crate with all components required to assemble a Hypertorus Fusion Reactor."
+
+/obj/structure/closet/crate/engineering/hfr/PopulateContents()
+	. = ..()
+	new /obj/item/hfr_box/core(src)
+	new /obj/item/hfr_box/corner(src)
+	new /obj/item/hfr_box/corner(src)
+	new /obj/item/hfr_box/corner(src)
+	new /obj/item/hfr_box/corner(src)
+	new /obj/item/hfr_box/body/fuel_input(src)
+	new /obj/item/hfr_box/body/moderator_input(src)
+	new /obj/item/hfr_box/body/waste_output(src)
+	new /obj/item/hfr_box/body/interface(src)
