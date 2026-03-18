@@ -80536,10 +80536,6 @@
 /area/command/bridge)
 "vEF" = (
 /obj/effect/turf_decal/tile/neutral/half,
-/obj/structure/safe/spare_id{
-	pixel_x = 64;
-	pixel_y = 64
-	},
 /turf/open/floor/plasteel/dark/textured/edge,
 /area/command/bridge)
 "vFb" = (
@@ -81677,6 +81673,10 @@
 	},
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer3{
 	dir = 9
+	},
+/obj/structure/safe/spare_id{
+	pixel_x = 96;
+	pixel_y = 96
 	},
 /turf/open/floor/plasteel/dark/textured/half,
 /area/command/bridge)
