@@ -7541,6 +7541,10 @@
 	icon_state = "4-8"
 	},
 /obj/machinery/light,
+/obj/structure/safe/spare_id{
+	pixel_x = 0;
+	pixel_y = -32
+	},
 /turf/open/floor/plasteel/dark/textured/edge,
 /area/command/bridge)
 "aPV" = (
@@ -34939,13 +34943,6 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
 /area/security/prison/workout)
-"cZI" = (
-/obj/structure/safe/spare_id{
-	pixel_x = 96;
-	pixel_y = 64
-	},
-/turf/closed/wall/r_wall,
-/area/command/heads_quarters/captain)
 "cZZ" = (
 /obj/effect/turf_decal/siding/dark_red{
 	dir = 4
@@ -116295,7 +116292,7 @@ oog
 qrF
 aZV
 aZV
-cZI
+aZV
 aZV
 aZV
 aZV

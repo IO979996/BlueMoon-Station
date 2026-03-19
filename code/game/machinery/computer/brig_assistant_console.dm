@@ -10,6 +10,8 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 #define WANTED_POSTER_COOLDOWN (5 MINUTES)
 #define WANTED_POSTER_MAX_PER_ASSISTANT 3
 #define WANTED_POSTER_MAX_PER_AREA 2
+/// Только статусы «обработан в СБ» — иначе в списке окажется весь экипаж с «Ничего» раундстартом
+#define BRIG_ASSISTANT_REMOVE_POSTER_STATUSES list(SEC_RECORD_STATUS_INCARCERATED, SEC_RECORD_STATUS_RELEASED, SEC_RECORD_STATUS_PAROLLED, SEC_RECORD_STATUS_DISCHARGED, SEC_RECORD_STATUS_DEMOTE)
 
 /obj/machinery/computer/brig_assistant_console
 	name = "Консоль заданий брига"
@@ -101,13 +103,12 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 
 	data["wanted"] = wanted_list
 
-	// Снятие плакатов - для пойманных (статус изменён с розыска)
+	// Снятие плакатов — только после смены статуса в консоли СБ (не «Ничего» и не «Наблюдать»)
 	var/list/remove_list = list()
 	for(var/datum/data/record/S in GLOB.data_core.security)
 		var/status = S.fields["criminal"]
-		if(status in list(SEC_RECORD_STATUS_ARREST, SEC_RECORD_STATUS_SEARCH, SEC_RECORD_STATUS_EXECUTE))
+		if(!(status in BRIG_ASSISTANT_REMOVE_POSTER_STATUSES))
 			continue
-		// INCARCERATED, RELEASED, PAROLLED, DISCHARGED, DEMOTE, NONE и т.д.
 		var/criminal_id = S.fields["id"]
 		var/ckey = user?.ckey
 		var/has_remove_task = FALSE
@@ -222,6 +223,9 @@ GLOBAL_LIST_EMPTY(brig_assistant_remove_tasks) // ckey -> list of criminal_ids (
 				return
 			if(S.fields["criminal"] in list(SEC_RECORD_STATUS_ARREST, SEC_RECORD_STATUS_SEARCH, SEC_RECORD_STATUS_EXECUTE))
 				to_chat(user, span_warning("Этот человек ещё в розыске - снимайте плакаты только после поимки."))
+				return
+			if(!(S.fields["criminal"] in BRIG_ASSISTANT_REMOVE_POSTER_STATUSES))
+				to_chat(user, span_warning("Задание на снятие доступно только после смены статуса в консоли СБ (тюрьма, выпуск, УДО и т.п.)."))
 				return
 
 			var/ckey = user.ckey

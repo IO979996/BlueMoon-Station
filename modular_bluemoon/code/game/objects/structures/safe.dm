@@ -80,7 +80,23 @@
 GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
 
 /// Роли глав, которым может выдаваться код от золотого сейфа
-#define SPARE_ID_SAFE_HEAD_ROLES list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director", "Chief Medical Officer")
+GLOBAL_LIST_INIT(spare_id_safe_head_roles, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Research Director", "Chief Medical Officer"))
+
+/// Одна бумажка с кодом золотого сейфа (раундстарт и latejoin)
+/proc/give_spare_id_safe_paper(mob/living/carbon/human/H)
+	if(!istype(H) || !H.mind)
+		return
+	if(!(H.mind.assigned_role in GLOB.spare_id_safe_head_roles))
+		return
+	var/obj/structure/safe/spare_id/safe = locate() in world
+	var/code_string = safe ? jointext(safe.tumblers, "-") : "???"
+	var/obj/item/paper/paper = new()
+	paper.name = "paper- 'Spare ID safe combination'"
+	paper.desc = "Конфиденциальная запись с кодом от золотого сейфа запасной карты капитана."
+	paper.add_raw_text("<b>Комбинация золотого сейфа запасной карты капитана</b><br><br>Код: <b>[code_string]</b><br><br>Сейф расположен на мостике. Используйте код в экстренных случаях для доступа к запасной ID-карте капитана.<br><br>— Nanotrasen Command")
+	if(H.equip_to_slot_if_possible(paper, ITEM_SLOT_BACKPACK, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
+		return
+	paper.forceMove(get_turf(H))
 
 /// Выдача бумажки с кодом всем главам и аварийный режим шлюзов мостика при отсутствии командования
 /proc/setup_spare_id_safe_and_bridge_airlocks()
@@ -90,22 +106,13 @@ GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
 
 	var/list/mob/living/carbon/human/heads = list()
 	for(var/mob/living/carbon/human/H in GLOB.human_list)
-		if(H.stat == DEAD || !H.mind || !(H.mind.assigned_role in SPARE_ID_SAFE_HEAD_ROLES))
+		if(H.stat == DEAD || !H.mind || !(H.mind.assigned_role in GLOB.spare_id_safe_head_roles))
 			continue
 		heads += H
 
 	if(length(heads))
-		var/obj/structure/safe/spare_id/safe = locate() in world
-		var/code_string = safe ? jointext(safe.tumblers, "-") : "???"
 		for(var/mob/living/carbon/human/head in heads)
-			var/obj/item/paper/paper = new()
-			paper.name = "paper- 'Spare ID safe combination'"
-			paper.desc = "Конфиденциальная запись с кодом от золотого сейфа запасной карты капитана."
-			paper.add_raw_text("<b>Комбинация золотого сейфа запасной карты капитана</b><br><br>Код: <b>[code_string]</b><br><br>Сейф расположен на мостике. Используйте код в экстренных случаях для доступа к запасной ID-карте капитана.<br><br>— Nanotrasen Command")
-			if(head.equip_to_slot_if_possible(paper, ITEM_SLOT_BACKPACK, disable_warning = TRUE, bypass_equip_delay_self = TRUE))
-				// Успешно положено в рюкзак
-			else
-				paper.forceMove(get_turf(head))
+			give_spare_id_safe_paper(head)
 	else
 		// Нет глав — шлюзы в области мостика переводим в аварийный режим
 		for(var/obj/machinery/door/airlock/A in GLOB.airlocks)
@@ -113,6 +120,4 @@ GLOBAL_VAR_INIT(spare_id_safe_setup_done, FALSE)
 			if(!istype(airlock_area, /area/command/bridge))
 				continue
 			A.set_emergency_exit(TRUE)
-
-#undef SPARE_ID_SAFE_HEAD_ROLES
 
