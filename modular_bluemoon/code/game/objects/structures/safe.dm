@@ -1,6 +1,6 @@
 // Armory redcode safe
 
-/// Золотой сейф для запасной карты капитана. Случайный код (6 цифр) выдается главам на бумажке.
+/// Золотой сейф для запасной карты капитана. Случайный код (3 числа по диапазону 0–99) выдается главам на бумажке.
 /// Спрайт из tgstation: icons/obj/storage/storage.dmi
 /obj/structure/safe/spare_id
 	name = "golden safe"
@@ -8,7 +8,7 @@
 	icon = 'modular_bluemoon/icons/obj/storage/storage.dmi'
 	icon_state = "spare_safe"
 	density = FALSE
-	number_of_tumblers = 6
+	number_of_tumblers = 3
 	armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, RAD = 50, FIRE = 50, ACID = 50)
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF | UNACIDABLE | FREEZE_PROOF
 
