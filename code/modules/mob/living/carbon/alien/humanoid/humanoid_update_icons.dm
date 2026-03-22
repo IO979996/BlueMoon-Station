@@ -1,8 +1,8 @@
 
 // TGMC caste icon_state mapping: Hunter Walking, Drone Dead, etc.
 /mob/living/carbon/alien/humanoid/proc/get_tgmc_state(state_suffix)
-	/// m = /drone/maid — в TGMC только Drone / Drone rouny (отдельных Maid-стейтов в drone.dmi нет) - пасхальный спрайт для мейд ксено
-	var/static/list/caste_names = list("h" = "Hunter", "d" = "Drone", "s" = "Sentinel", "p" = "Praetorian", "q" = "Queen", "m" = "Drone rouny")
+	/// Каста m (xeno maid) использует отдельные спрайты в modular_bluemoon (SPLURT), не TGMC drone.dmi
+	var/static/list/caste_names = list("h" = "Hunter", "d" = "Drone", "s" = "Sentinel", "p" = "Praetorian", "q" = "Queen")
 	var/static/list/state_map = list(
 		"_husked" = " Dead", "_dead" = " Dead", "_unconscious" = " Knocked Down",
 		"_pounce" = " Walking", "_sleep" = " Sleeping", "_s" = " Walking", "_running" = " Running"
