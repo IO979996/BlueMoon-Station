@@ -15,6 +15,29 @@ $bg-map: colors.$bg-map !default;
   );
 }
 
+// Весь фрейм окна (включая TitleBar с полем имени), пока включён LGBTK+ режим.
+.Layout.Window:has([data-ic-rainbow]) {
+  animation: IntegratedCircuit__rainbowHue 4.5s linear infinite;
+  will-change: filter;
+}
+
+@keyframes IntegratedCircuit__rainbowHue {
+  from {
+    filter: hue-rotate(0deg) saturate(1.14) brightness(1.03);
+  }
+
+  to {
+    filter: hue-rotate(360deg) saturate(1.14) brightness(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Layout.Window:has([data-ic-rainbow]) {
+    animation: none;
+    filter: none;
+  }
+}
+
 .IntegratedCircuit__frame {
   flex: 1;
   display: flex;
@@ -47,9 +70,10 @@ $bg-map: colors.$bg-map !default;
 }
 
 .IntegratedCircuit__chip--on {
-  color: #b8ffc8;
-  border-color: rgba(100, 220, 140, 0.35);
-  background: rgba(30, 80, 50, 0.35);
+  color: #cfffdb;
+  border-color: rgba(80, 255, 140, 0.45);
+  background: rgba(25, 110, 55, 0.42);
+  box-shadow: 0 0 0 1px rgba(60, 220, 120, 0.12);
 }
 
 .IntegratedCircuit__chip--off {
@@ -94,9 +118,56 @@ $bg-map: colors.$bg-map !default;
   box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.45);
 }
 
-.IntegratedCircuit__connections path {
+.IntegratedCircuit__connections--base .IntegratedCircuit__wire {
   stroke-linecap: round;
   filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.65));
+}
+
+.IntegratedCircuit__connections--base .IntegratedCircuit__wire--hot {
+  filter:
+    drop-shadow(0 0 3px rgba(255, 255, 255, 0.9))
+    drop-shadow(0 0 10px rgba(120, 200, 255, 0.85));
+}
+
+.IntegratedCircuit__connections--base .IntegratedCircuit__wire--pulse {
+  animation: IntegratedCircuit-wirePulse 0.5s ease-in-out 2 alternate;
+}
+
+@keyframes IntegratedCircuit-wirePulse {
+  from {
+    opacity: 0.78;
+    filter: drop-shadow(0 0 4px rgba(150, 220, 255, 0.95));
+  }
+
+  to {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px rgba(100, 255, 200, 1));
+  }
+}
+
+.ObjectComponent--recentPulse {
+  animation: ObjectComponent-recentPulse 0.5s ease-in-out 2 alternate;
+}
+
+@keyframes ObjectComponent-recentPulse {
+  from {
+    box-shadow:
+      0 0 0 1px rgba(120, 200, 255, 0.35),
+      0 0 8px rgba(80, 160, 255, 0.25);
+  }
+
+  to {
+    box-shadow:
+      0 0 0 3px rgba(160, 230, 255, 0.7),
+      0 0 22px rgba(100, 200, 255, 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .IntegratedCircuit__connections--base .IntegratedCircuit__wire--pulse,
+  .ObjectComponent--recentPulse {
+    animation: none !important;
+  }
 }
 
 .CircuitInfo__Examined {
@@ -258,6 +329,11 @@ $bg-map: colors.$bg-map !default;
 .PortConnectionOrder {
   gap: 0.1rem 0.15rem;
   margin-top: 0.15rem;
+  max-width: 12rem;
+}
+
+.PortConnectionOrder__caption {
+  line-height: 1.28;
   max-width: 12rem;
 }
 

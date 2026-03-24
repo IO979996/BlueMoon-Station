@@ -142,6 +142,7 @@ export class ObjectComponent extends Component {
         className={classes([
           'ObjectComponent__root',
           !powered && 'ObjectComponent--poweroff',
+          recent_pulse && powered && 'ObjectComponent--recentPulse',
         ])}
         onMouseDown={this.handleStartDrag}
         onMouseUp={this.handleStopDrag}

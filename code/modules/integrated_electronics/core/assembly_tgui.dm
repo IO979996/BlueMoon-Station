@@ -141,14 +141,14 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			out += REF(other)
 	return out
 
-/proc/ie_ic_build_port_entry(datum/integrated_io/io)
+/proc/ie_ic_build_port_entry(datum/integrated_io/io, chip_accent)
 	return list(
 		"name" = io.name,
 		"type" = ie_ic_fundamental_type(io),
 		/// Same human labels as old HTML (\<TEXT\>, \<LIST\>, …); TGUI still uses `type` for widgets.
 		"pin_type_label" = io.display_pin_type(),
 		"ref" = REF(io),
-		"color" = "blue",
+		"color" = chip_accent,
 		"current_data" = ie_ic_serialize_data(io),
 		"datatype_data" = null,
 		"connected_to" = ie_ic_input_connected_refs(io),
@@ -156,21 +156,31 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 
 /proc/ie_ic_component_payload(obj/item/integrated_circuit/chip)
 	var/list/component_data = list()
+	var/chip_accent = ic_tgui_ie_chip_accent_hex(chip)
 	/// Append with `+= list(entry)` so json_encode emits JSON arrays (numeric `[i]=` can become objects on the wire).
 	var/list/input_ports = list()
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_input_ios(chip))
-		input_ports += list(ie_ic_build_port_entry(io))
+		input_ports += list(ie_ic_build_port_entry(io, chip_accent))
 	component_data["input_ports"] = input_ports
 	var/list/output_ports = list()
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_output_ios(chip))
-		var/list/out_entry = ie_ic_build_port_entry(io)
+		var/list/out_entry = ie_ic_build_port_entry(io, chip_accent)
 		out_entry["connected_to"] = list()
 		output_ports += list(out_entry)
 	component_data["output_ports"] = output_ports
+	component_data["color"] = chip_accent
 	component_data["name"] = chip.displayed_name || chip.name
 	component_data["x"] = chip.ie_ui_rel_x
 	component_data["y"] = chip.ie_ui_rel_y
 	component_data["removable"] = chip.removable
+	var/pulsing = FALSE
+	var/obj/item/electronic_assembly/ea = chip.assembly
+	if(ea)
+		if(world.time < ea.ie_tgui_pulse_until && ea.ie_tgui_pulse_chip_weak?.resolve() == chip)
+			pulsing = TRUE
+	else if(world.time < chip.ie_tgui_solo_pulse_until)
+		pulsing = TRUE
+	component_data["recent_pulse"] = pulsing
 	return component_data
 
 /proc/ie_ic_get_input_io(obj/item/integrated_circuit/chip, port_id)
@@ -184,6 +194,23 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	if(port_id < 1 || port_id > length(L))
 		return null
 	return L[port_id]
+
+/obj/item/electronic_assembly/proc/ie_tgui_register_data_pulse(datum/integrated_io/out_io, datum/integrated_io/in_io)
+	if(!out_io || !in_io)
+		return
+	ie_tgui_pulse_until = world.time + 0.35 SECONDS
+	ie_tgui_pulse_output_ref = REF(out_io)
+	ie_tgui_pulse_input_ref = REF(in_io)
+	ie_tgui_pulse_chip_weak = WEAKREF(in_io.holder)
+	SStgui.update_uis(src)
+
+/obj/item/integrated_circuit/proc/ie_tgui_register_solo_data_pulse(datum/integrated_io/out_io, datum/integrated_io/in_io)
+	if(!out_io || !in_io)
+		return
+	ie_tgui_solo_pulse_until = world.time + 0.35 SECONDS
+	ie_tgui_solo_pulse_out_ref = REF(out_io)
+	ie_tgui_solo_pulse_in_ref = REF(in_io)
+	SStgui.update_uis(src)
 
 /proc/ie_ic_chip_from_index(atom/movable/host, component_id)
 	if(istype(host, /obj/item/electronic_assembly))
@@ -254,12 +281,24 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	.["examined_notices"] = examined ? ie_ic_ui_examine_notices(examined) : list()
 	.["examined_rel_x"] = ie_gui_examined_x
 	.["examined_rel_y"] = ie_gui_examined_y
+	var/pulse_live = world.time < ie_tgui_pulse_until
+	.["circuit_pulse_out_ref"] = pulse_live ? ie_tgui_pulse_output_ref : null
+	.["circuit_pulse_in_ref"] = pulse_live ? ie_tgui_pulse_input_ref : null
 
 /obj/item/electronic_assembly/ui_act(action, list/params)
 	. = ..()
 	if(.)
 		return
 	switch(action)
+		if("ie_eject_battery")
+			if(!battery || !usr)
+				return
+			playsound(src, 'sound/items/Crowbar.ogg', 50, TRUE)
+			if(!usr.put_in_hands(battery))
+				battery.forceMove(drop_location())
+			battery = null
+			diag_hud_set_circuitstat()
+			. = TRUE
 		if("add_connection")
 			var/ocid = text2num(params["output_component_id"])
 			var/icid = text2num(params["input_component_id"])
@@ -467,6 +506,9 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	.["examined_notices"] = examined ? ie_ic_ui_examine_notices(examined) : list()
 	.["examined_rel_x"] = ie_gui_examined_x
 	.["examined_rel_y"] = ie_gui_examined_y
+	var/solo_pulse = world.time < ie_tgui_solo_pulse_until
+	.["circuit_pulse_out_ref"] = solo_pulse ? ie_tgui_solo_pulse_out_ref : null
+	.["circuit_pulse_in_ref"] = solo_pulse ? ie_tgui_solo_pulse_in_ref : null
 
 /obj/item/integrated_circuit/ui_act(action, list/params)
 	if(assembly)

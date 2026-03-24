@@ -2,6 +2,7 @@ import { Fragment } from 'inferno';
 
 import { useBackend } from '../../backend';
 import { Box, Button, Flex } from '../../components';
+import { connectedToRefList } from './byondPayload';
 import { DATATYPE_DISPLAY_HANDLERS, FUNDAMENTAL_DATA_TYPES } from './FundamentalTypes';
 import { formatPortLiveValue } from './portValueFormat';
 
@@ -13,13 +14,15 @@ export const DisplayName = (props, context) => {
   const InputComponent = FUNDAMENTAL_DATA_TYPES[fundamentalType];
   const TypeDisplayHandler = DATATYPE_DISPLAY_HANDLERS[fundamentalType];
 
+  const connectionRefs = connectedToRefList(port.connected_to);
+
   const hasInput = !isOutput
-    && !port.connected_to?.length
+    && !connectionRefs.length
     && InputComponent;
 
   const displayType = port.pin_type_label
     || (TypeDisplayHandler ? TypeDisplayHandler(port) : fundamentalType);
-  const showLive = isOutput || (!!port.connected_to?.length);
+  const showLive = isOutput || !!connectionRefs.length;
   const liveText = showLive
     ? formatPortLiveValue(port.current_data, fundamentalType)
     : null;
@@ -75,27 +78,37 @@ export const DisplayName = (props, context) => {
             {displayType || 'unknown'}
           </Box>
         </Flex.Item>
-        {!isOutput && port.connected_to?.length > 1 && (
+        {!isOutput && connectionRefs.length >= 1 && (
           <Flex.Item>
+            <Box
+              fontSize={0.68}
+              opacity={0.55}
+              mb={0.2}
+              textAlign="left"
+              className="PortConnectionOrder__caption">
+              Порядок связей (как на схеме сверху вниз){connectionRefs.length > 1 ? ' — ⇄ меняет с соседней' : ''}
+            </Box>
             <Flex
               align="center"
               wrap="wrap"
               className="PortConnectionOrder">
-              {port.connected_to.map((ref, idx) => (
+              {connectionRefs.map((ref, idx) => (
                 <Fragment key={ref}>
                   <Box
-                    fontSize="0.65rem"
-                    opacity={0.45}
+                    fontSize="0.7rem"
+                    opacity={0.72}
                     mx={0.25}
-                    unselectable="on">
+                    unselectable="on"
+                    className="PortConnectionOrder__index"
+                    title={ref}>
                     #{idx + 1}
                   </Box>
-                  {idx < port.connected_to.length - 1 && (
+                  {idx < connectionRefs.length - 1 && (
                     <Button
                       compact
                       color="transparent"
                       icon="exchange-alt"
-                      tooltip="Поменять порядок со следующей связью (линии и приоритет)"
+                      tooltip={`Поменять местами #${idx + 1} и #${idx + 2} (линии на поле и порядок на входе)`}
                       mb={0.25}
                       onClick={() =>
                         act('swap_input_connection_order', {

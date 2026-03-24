@@ -14,14 +14,27 @@ import { CircuitInfo } from './CircuitInfo';
 import { CircuitToolbar } from './CircuitToolbar';
 import { Connections } from './Connections';
 import { ABSOLUTE_Y_OFFSET, MOUSE_BUTTON_LEFT } from './constants';
-import { byondListToArray, normalizeCircuitComponent } from './byondPayload';
+import {
+  byondListToArray,
+  connectedToRefList,
+  normalizeCircuitComponent,
+} from './byondPayload';
 import { ObjectComponent } from './ObjectComponent';
 import { VariableMenu } from './VariableMenu';
+import type {
+  CircuitPortPayload,
+  IntegratedCircuitData,
+  IntegratedCircuitState,
+  WireConnection,
+} from './types';
 
-export class IntegratedCircuit extends Component {
+export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState> {
+  connectionsSvgRef = createRef<SVGSVGElement>();
+  /** Смещали ли поле мышью с прошлого сохранённого screen_x/y (не слать move_screen на каждый mouseup). */
+  planePanDirty = false;
+
   constructor() {
     super();
-    this.connectionsSvgRef = createRef();
     this.state = {
       locations: {},
       selectedPort: null,
@@ -31,6 +44,9 @@ export class IntegratedCircuit extends Component {
       backgroundX: 0,
       backgroundY: 0,
       menuOpen: false,
+      lgbtqRainbowMode: false,
+      screenPanOverride: null,
+      planeHomeNonce: 0,
     };
     this.handlePortLocation = this.handlePortLocation.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -43,6 +59,7 @@ export class IntegratedCircuit extends Component {
     this.handlePortRelease = this.handlePortRelease.bind(this);
     this.handleZoomChange = this.handleZoomChange.bind(this);
     this.handleBackgroundMoved = this.handleBackgroundMoved.bind(this);
+    this.handlePanToOrigin = this.handlePanToOrigin.bind(this);
   }
 
   /**
@@ -50,7 +67,7 @@ export class IntegratedCircuit extends Component {
    * (inside InfinitePlane’s translate+scale). offsetLeft/offsetTop ignores parent
    * scale, so we use bounding rects and divide by zoom.
    */
-  getPosition(el) {
+  getPosition(el: HTMLElement | null) {
     if (!el) {
       return { x: 0, y: 0 };
     }
@@ -67,11 +84,11 @@ export class IntegratedCircuit extends Component {
 
     let xPos = 0;
     let yPos = 0;
-    let node = el;
+    let node: HTMLElement | null = el;
     while (node) {
       xPos += node.offsetLeft;
       yPos += node.offsetTop;
-      node = node.offsetParent;
+      node = node.offsetParent as HTMLElement | null;
     }
     const w = el.offsetWidth || 0;
     const h = el.offsetHeight || 0;
@@ -81,7 +98,7 @@ export class IntegratedCircuit extends Component {
     };
   }
 
-  handlePortLocation(port, dom) {
+  handlePortLocation(port: CircuitPortPayload, dom: HTMLElement | null) {
     const { locations } = this.state;
 
     if (!dom) {
@@ -90,22 +107,28 @@ export class IntegratedCircuit extends Component {
 
     const lastPosition = locations[port.ref];
     const position = this.getPosition(dom);
-    position.color = port.color;
+    const withColor = { ...position, color: port.color };
 
     if (
-      isNaN(position.x)
-      || isNaN(position.y)
+      Number.isNaN(withColor.x)
+      || Number.isNaN(withColor.y)
       || (lastPosition
-        && lastPosition.x === position.x
-        && lastPosition.y === position.y)
+        && lastPosition.x === withColor.x
+        && lastPosition.y === withColor.y)
     ) {
       return;
     }
-    locations[port.ref] = position;
+    locations[port.ref] = withColor;
     this.setState({ locations: locations });
   }
 
-  handlePortClick(portIndex, componentId, port, isOutput, event) {
+  handlePortClick(
+    portIndex: number,
+    componentId: number,
+    port: CircuitPortPayload,
+    isOutput: boolean,
+    event: MouseEvent,
+  ) {
     if (event.button !== MOUSE_BUTTON_LEFT) {
       return;
     }
@@ -128,8 +151,14 @@ export class IntegratedCircuit extends Component {
 
   // mouse up called whilst over a port. This means we can check if selectedPort
   // exists and do perform some actions if it does.
-  handlePortUp(portIndex, componentId, port, isOutput, event) {
-    const { act } = useBackend(this.context);
+  handlePortUp(
+    portIndex: number,
+    componentId: number,
+    port: CircuitPortPayload,
+    isOutput: boolean,
+    event: MouseEvent,
+  ) {
+    const { act } = useBackend<IntegratedCircuitData>(this.context);
     const {
       selectedPort,
     } = this.state;
@@ -158,14 +187,14 @@ export class IntegratedCircuit extends Component {
     act("add_connection", data);
   }
 
-  handlePortDrag(event) {
+  handlePortDrag(event: MouseEvent) {
     this.setState({
       dragClientX: event.clientX,
       dragClientY: event.clientY,
     });
   }
 
-  handlePortRelease(event) {
+  handlePortRelease(_event: MouseEvent) {
     this.setState({
       selectedPort: null,
       dragClientX: null,
@@ -176,8 +205,14 @@ export class IntegratedCircuit extends Component {
     window.removeEventListener('mouseup', this.handlePortRelease);
   }
 
-  handlePortRightClick(portIndex, componentId, port, isOutput, event) {
-    const { act } = useBackend(this.context);
+  handlePortRightClick(
+    portIndex: number,
+    componentId: number,
+    port: CircuitPortPayload,
+    isOutput: boolean,
+    event: MouseEvent,
+  ) {
+    const { act } = useBackend<IntegratedCircuitData>(this.context);
 
     event.preventDefault();
     act('remove_connection', {
@@ -187,13 +222,14 @@ export class IntegratedCircuit extends Component {
     });
   }
 
-  handleZoomChange(newZoom) {
+  handleZoomChange(newZoom: number) {
     this.setState({
       zoom: newZoom,
     });
   }
 
-  handleBackgroundMoved(newX, newY) {
+  handleBackgroundMoved(newX: number, newY: number) {
+    this.planePanDirty = true;
     this.setState({
       backgroundX: newX,
       backgroundY: newY,
@@ -202,6 +238,31 @@ export class IntegratedCircuit extends Component {
       this.setState({
         menuOpen: false,
       });
+    }
+  }
+
+  /** Поле схемы к началу координат (0, 0) — сервер и локальный якорь. */
+  handlePanToOrigin() {
+    const { act } = useBackend<IntegratedCircuitData>(this.context);
+    this.planePanDirty = false;
+    this.setState((s) => ({
+      screenPanOverride: { x: 0, y: 0 },
+      backgroundX: 0,
+      backgroundY: 0,
+      planeHomeNonce: s.planeHomeNonce + 1,
+    }));
+    act('move_screen', { screen_x: 0, screen_y: 0 });
+  }
+
+  componentDidUpdate(_prevProps: unknown, _prevState: IntegratedCircuitState) {
+    const { data } = useBackend<IntegratedCircuitData>(this.context);
+    if (!this.state.screenPanOverride) {
+      return;
+    }
+    const sx = data.screen_x;
+    const sy = data.screen_y;
+    if (typeof sx === 'number' && sx === 0 && typeof sy === 'number' && sy === 0) {
+      this.setState({ screenPanOverride: null });
     }
   }
 
@@ -215,27 +276,29 @@ export class IntegratedCircuit extends Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  handleMouseDown(event) {
-    const { act, data } = useBackend(this.context);
+  handleMouseDown(_event: MouseEvent) {
+    const { act, data } = useBackend<IntegratedCircuitData>(this.context);
     const { examined_name } = data;
     if (examined_name) {
       act('remove_examined_component');
     }
   }
 
-  handleMouseUp(event) {
-    const { act } = useBackend(this.context);
-    const { backgroundX, backgroundY } = this.state;
-    if (backgroundX && backgroundY) {
-      act("move_screen", {
-        screen_x: backgroundX,
-        screen_y: backgroundY,
-      });
+  handleMouseUp(_event: MouseEvent) {
+    if (!this.planePanDirty) {
+      return;
     }
+    this.planePanDirty = false;
+    const { act } = useBackend<IntegratedCircuitData>(this.context);
+    const { backgroundX, backgroundY } = this.state;
+    act("move_screen", {
+      screen_x: backgroundX,
+      screen_y: backgroundY,
+    });
   }
 
   render() {
-    const { act, data } = useBackend(this.context);
+    const { act, data } = useBackend<IntegratedCircuitData>(this.context);
     const {
       circuit_on,
       display_name,
@@ -252,6 +315,8 @@ export class IntegratedCircuit extends Component {
       ie_circuit,
       ie_clone_copy_mode,
       ie_debug_copy_ref,
+      circuit_pulse_out_ref,
+      circuit_pulse_in_ref,
     } = data;
     const components = byondListToArray(data.components).map(
       normalizeCircuitComponent,
@@ -259,8 +324,11 @@ export class IntegratedCircuit extends Component {
     const ieBatteryPercent = ie_circuit && data.ie_battery_percent !== undefined
       ? data.ie_battery_percent
       : undefined;
+    const circuitCellPercent = !ie_circuit ? data.circuit_cell_percent : undefined;
+    const panX = this.state.screenPanOverride?.x ?? screen_x ?? 0;
+    const panY = this.state.screenPanOverride?.y ?? screen_y ?? 0;
     const { locations, selectedPort, menuOpen, zoom } = this.state;
-    const connections = [];
+    const connections: WireConnection[] = [];
     const componentCount = components.reduce((n, c) => n + (c ? 1 : 0), 0);
     const variableCount = variables?.length ?? 0;
     const zoomPercent = Math.round((zoom || 1) * 100);
@@ -270,23 +338,25 @@ export class IntegratedCircuit extends Component {
         continue;
       }
 
-      const inputPorts = byondListToArray(comp.input_ports);
+      const inputPorts = comp.input_ports;
       for (const input of inputPorts) {
-        const linked = byondListToArray(input?.connected_to);
-        for (const output of linked) {
-          const output_port = locations[output];
+        const linked = connectedToRefList(input?.connected_to);
+        for (const outputRef of linked) {
+          const output_port = locations[outputRef];
           connections.push({
             color: (output_port && output_port.color) || 'blue',
             from: output_port,
             to: locations[input.ref],
+            outRef: outputRef,
+            inRef: input.ref,
           });
         }
       }
     }
 
     if (selectedPort) {
-      const { dragClientX, dragClientY, zoom } = this.state;
-      const z = Math.max(zoom || 1, 0.01);
+      const { dragClientX, dragClientY, zoom: zState } = this.state;
+      const z = Math.max(zState || 1, 0.01);
       const isOutput = selectedPort.is_output;
       const portLocation = locations[selectedPort.ref];
       const svg = this.connectionsSvgRef?.current;
@@ -305,6 +375,7 @@ export class IntegratedCircuit extends Component {
           color: (portLocation && portLocation.color) || 'blue',
           from: isOutput ? portLocation : mouseCoords,
           to: isOutput ? mouseCoords : portLocation,
+          isPreview: true,
         });
       }
     }
@@ -362,6 +433,7 @@ export class IntegratedCircuit extends Component {
         <Window.Content
           fitted
           className="IntegratedCircuit__content"
+          data-ic-rainbow={this.state.lgbtqRainbowMode ? '' : undefined}
           style={{
             'background-image': 'none',
           }}>
@@ -372,7 +444,18 @@ export class IntegratedCircuit extends Component {
               variableCount={variableCount}
               zoomPercent={zoomPercent}
               showVariableChip={!ie_circuit}
+              lgbtqRainbowMode={this.state.lgbtqRainbowMode}
+              onLgbtqRainbowToggle={() => this.setState((s) => ({
+                lgbtqRainbowMode: !s.lgbtqRainbowMode,
+              }))}
               ieBatteryPercent={ieBatteryPercent}
+              circuitCellPercent={circuitCellPercent}
+              onEjectPowerCell={
+                (ie_circuit && ieBatteryPercent !== null)
+                || (!ie_circuit && circuitCellPercent !== null && circuitCellPercent !== undefined)
+                  ? () => act(ie_circuit ? 'ie_eject_battery' : 'eject_circuit_cell')
+                  : undefined
+              }
               ieCloneCopyMode={ie_circuit ? ie_clone_copy_mode : null}
               onIeCloneCopy={
                 ie_circuit
@@ -394,31 +477,34 @@ export class IntegratedCircuit extends Component {
                 imageWidth={1200}
                 onZoomChange={this.handleZoomChange}
                 onBackgroundMoved={this.handleBackgroundMoved}
-                initialLeft={screen_x}
-                initialTop={screen_y}
+                initialLeft={panX}
+                initialTop={panY}
+                resetPanNonce={this.state.planeHomeNonce}
               >
                 <Connections
                   connections={connections}
                   svgRef={this.connectionsSvgRef}
-                />
-                {components.map(
-                  (comp, index) =>
-                    comp && (
-                      <ObjectComponent
-                        key={index}
-                        {...comp}
-                        index={index + 1}
-                        circuitOn={circuit_on ?? true}
-                        portLayoutKey={`${zoom}|${this.state.backgroundX}|${this.state.backgroundY}`}
-                        onPortUpdated={this.handlePortLocation}
-                        onPortLoaded={this.handlePortLocation}
-                        onPortMouseDown={this.handlePortClick}
-                        onPortRightClick={this.handlePortRightClick}
-                        onPortMouseUp={this.handlePortUp}
-                        debugCopyRef={!!ie_circuit && !!ie_debug_copy_ref}
-                      />
-                    )
-                )}
+                  pulseOutRef={circuit_pulse_out_ref ?? null}
+                  pulseInRef={circuit_pulse_in_ref ?? null}>
+                  {components.map(
+                    (comp, index) =>
+                      comp && (
+                        <ObjectComponent
+                          key={index}
+                          {...comp}
+                          index={index + 1}
+                          circuitOn={circuit_on ?? true}
+                          portLayoutKey={`${zoom}|${this.state.backgroundX}|${this.state.backgroundY}`}
+                          onPortUpdated={this.handlePortLocation}
+                          onPortLoaded={this.handlePortLocation}
+                          onPortMouseDown={this.handlePortClick}
+                          onPortRightClick={this.handlePortRightClick}
+                          onPortMouseUp={this.handlePortUp}
+                          debugCopyRef={!!ie_circuit && !!ie_debug_copy_ref}
+                        />
+                      )
+                  )}
+                </Connections>
               </InfinitePlane>
             </Box>
           </Box>
@@ -467,4 +553,3 @@ export class IntegratedCircuit extends Component {
     );
   }
 }
-

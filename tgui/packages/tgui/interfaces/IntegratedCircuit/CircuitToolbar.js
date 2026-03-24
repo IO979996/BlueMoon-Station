@@ -10,6 +10,12 @@ export const CircuitToolbar = (props) => {
     variableCount,
     zoomPercent,
     showVariableChip = true,
+    lgbtqRainbowMode = false,
+    onLgbtqRainbowToggle,
+    onPanToOrigin,
+    onEjectPowerCell,
+    /** Wiremod: null = нет ячейки, число = % (поле есть в ui_data). */
+    circuitCellPercent,
     /** IE assembly only: null = no cell, number = charge % */
     ieBatteryPercent,
     /** IE: "assembly" | "chip" — показать кнопку копирования JSON для принтера / одного чипа */
@@ -38,19 +44,58 @@ export const CircuitToolbar = (props) => {
               ? 'Считаются только микросхемы (чипы с интегрального принтера). Батарея — отдельно.'
               : undefined}>
             <Icon name="microchip" style={{ 'margin-right': '0.35em' }} />
-            {ieBatteryPercent !== undefined ? 'Чипов (принтер)' : 'Компонентов'}
+            {ieBatteryPercent !== undefined ? (
+              <Box as="span" color="#ff79c6">
+                Чипов (принтер)
+              </Box>
+            ) : (
+              'Компонентов'
+            )}
             : <b>{componentCount}</b>
           </Box>
         </Stack.Item>
         {ieBatteryPercent !== undefined && (
           <Stack.Item>
-            <Box
-              className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
-              title="Элемент питания в отсеке батареи, не логический чип.">
-              <Icon name="battery-half" style={{ 'margin-right': '0.35em' }} />
-              Батарея:{' '}
-              <b>{ieBatteryPercent === null ? 'нет' : `${ieBatteryPercent}%`}</b>
-            </Box>
+            <Stack align="center">
+              <Box
+                className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
+                title="Элемент питания в отсеке батареи, не логический чип.">
+                <Icon name="battery-half" style={{ 'margin-right': '0.35em' }} />
+                Батарея:{' '}
+                <b>{ieBatteryPercent === null ? 'нет' : `${ieBatteryPercent}%`}</b>
+              </Box>
+              {ieBatteryPercent !== null && typeof onEjectPowerCell === 'function' && (
+                <Button
+                  color="transparent"
+                  icon="eject"
+                  compact
+                  tooltip="Достать батарею (в руки или на пол под сборкой)"
+                  onClick={onEjectPowerCell}
+                />
+              )}
+            </Stack>
+          </Stack.Item>
+        )}
+        {circuitCellPercent !== undefined && (
+          <Stack.Item>
+            <Stack align="center">
+              <Box
+                className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
+                title="Элемент питания платы (wiremod).">
+                <Icon name="battery-half" style={{ 'margin-right': '0.35em' }} />
+                Ячейка:{' '}
+                <b>{circuitCellPercent === null ? 'нет' : `${circuitCellPercent}%`}</b>
+              </Box>
+              {circuitCellPercent !== null && typeof onEjectPowerCell === 'function' && (
+                <Button
+                  color="transparent"
+                  icon="eject"
+                  compact
+                  tooltip="Извлечь ячейку (как отвёрткой по плате)"
+                  onClick={onEjectPowerCell}
+                />
+              )}
+            </Stack>
           </Stack.Item>
         )}
         {!!showVariableChip && (
@@ -81,6 +126,35 @@ export const CircuitToolbar = (props) => {
             Масштаб: <b>{zoomPercent}</b>%
           </Box>
         </Stack.Item>
+        {typeof onPanToOrigin === 'function' && (
+          <Stack.Item>
+            <Button
+              color="transparent"
+              icon="home"
+              compact
+              tooltip="Сдвинуть поле к координатам (0, 0)"
+              onClick={onPanToOrigin}>
+              0,0
+            </Button>
+          </Stack.Item>
+        )}
+        {typeof onLgbtqRainbowToggle === 'function' && (
+          <Stack.Item>
+            <Button
+              color="transparent"
+              icon="palette"
+              compact
+              selected={lgbtqRainbowMode}
+              tooltip={
+                lgbtqRainbowMode
+                  ? 'Выключить LGBTK+ режим'
+                  : 'LGBTK+ режим: всё окно переливается радужными цветами'
+              }
+              onClick={onLgbtqRainbowToggle}>
+              LGBTK+
+            </Button>
+          </Stack.Item>
+        )}
         <Stack.Item grow className="IntegratedCircuit__legendWrap">
           <Box
             className="IntegratedCircuit__legend"

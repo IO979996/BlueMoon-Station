@@ -168,6 +168,26 @@ export class InfinitePlane extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    /// Когда сервер присылает новый якорь панорамы или запрошен сброс к origin,
+    /// обнуляем локальный drag-offset. Иначе left/top суммируются с initial* — поле «прыгает».
+    if (this.state.mouseDown) {
+      return;
+    }
+    const anchorChanged =
+      prevProps.initialLeft !== this.props.initialLeft
+      || prevProps.initialTop !== this.props.initialTop;
+    const panReset =
+      prevProps.resetPanNonce !== this.props.resetPanNonce;
+
+    if (anchorChanged || panReset) {
+      this.setState({
+        left: 0,
+        top: 0,
+      });
+    }
+  }
+
   render() {
     const {
       children,
@@ -175,6 +195,7 @@ export class InfinitePlane extends Component {
       imageWidth,
       initialLeft = 0,
       initialTop = 0,
+      resetPanNonce = 0,
       ...rest
     } = this.props;
     const {

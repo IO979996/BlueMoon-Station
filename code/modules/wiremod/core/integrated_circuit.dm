@@ -69,6 +69,12 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	/// The Y position of the screen. Used for adding components.
 	var/screen_y = 0
 
+	/// TGUI: краткая подсветка ноды и связи при срабатывании входа (wiremod).
+	var/circuit_ui_pulse_until = 0
+	var/datum/weakref/circuit_ui_pulse_weak_component
+	var/circuit_ui_pulse_input_ref
+	var/circuit_ui_pulse_output_ref
+
 /obj/item/integrated_circuit/Initialize(mapload)
 	. = ..()
 
@@ -103,6 +109,16 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 /obj/item/integrated_circuit/proc/set_cell(obj/item/stock_parts/cell_to_set)
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_CELL, cell_to_set)
 	cell = cell_to_set
+
+/// Подсветка в TGUI IntegratedCircuit: какой компонент сработал и какая связь привела сигнал.
+/obj/item/integrated_circuit/proc/register_circuit_ui_visual_pulse(obj/item/circuit_component/comp, datum/port/input/in_port, datum/port/output/out_port)
+	if(!comp || !in_port)
+		return
+	circuit_ui_pulse_until = world.time + 0.35 SECONDS
+	circuit_ui_pulse_weak_component = WEAKREF(comp)
+	circuit_ui_pulse_input_ref = REF(in_port)
+	circuit_ui_pulse_output_ref = out_port ? REF(out_port) : null
+	SStgui.update_uis(src)
 
 /obj/item/integrated_circuit/attackby(obj/item/I, mob/living/user, params)
 	. = ..()
@@ -293,6 +309,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		component_data["x"] = component.rel_x
 		component_data["y"] = component.rel_y
 		component_data["removable"] = component.removable
+		component_data["color"] = ic_tgui_chip_accent_hex(component)
+		component_data["recent_pulse"] = (world.time < circuit_ui_pulse_until && circuit_ui_pulse_weak_component?.resolve() == component)
 		.["components"] += list(component_data)
 
 	.["variables"] = list()
@@ -318,6 +336,14 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	.["examined_rel_y"] = examined_rel_y
 
 	.["is_admin"] = check_rights_for(user.client, R_VAREDIT)
+
+	var/pulse_live = world.time < circuit_ui_pulse_until
+	.["circuit_pulse_out_ref"] = pulse_live ? circuit_ui_pulse_output_ref : null
+	.["circuit_pulse_in_ref"] = pulse_live ? circuit_ui_pulse_input_ref : null
+
+	.["circuit_cell_percent"] = null
+	if(cell)
+		.["circuit_cell_percent"] = round(100 * cell.charge / max(cell.maxcharge, 1), 0.1)
 
 /obj/item/integrated_circuit/ui_host(mob/user)
 	if(shell)
@@ -550,6 +576,29 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		if("move_screen")
 			screen_x = text2num(params["screen_x"])
 			screen_y = text2num(params["screen_y"])
+		if("eject_circuit_cell")
+			if(!cell || !usr)
+				return
+			playsound(src, 'sound/items/Crowbar.ogg', 50, TRUE)
+			if(!usr.put_in_hands(cell))
+				cell.forceMove(drop_location())
+			set_cell(null)
+			balloon_alert(usr, "cell removed")
+			. = TRUE
+		if("swap_input_connection_order")
+			var/component_id = text2num(params["component_id"])
+			var/port_id = text2num(params["port_id"])
+			var/lower = text2num(params["lower_index"])
+			if(!WITHIN_RANGE(component_id, attached_components))
+				return
+			var/obj/item/circuit_component/component = attached_components[component_id]
+			if(!WITHIN_RANGE(port_id, component.input_ports))
+				return
+			var/datum/port/input/input_port = component.input_ports[port_id]
+			if(length(input_port.connected_ports) < lower + 1 || lower < 1)
+				return
+			input_port.connected_ports.Swap(lower, lower + 1)
+			. = TRUE
 
 /obj/item/integrated_circuit/proc/clear_setter_or_getter(datum/source)
 	SIGNAL_HANDLER
