@@ -35,7 +35,11 @@ export const CircuitInfo = (props, context) => {
             {noticeList.map((val, index) => (
               <Stack.Item key={index}>
                 <Button
-                  content={val.content != null ? String(val.content) : ''}
+                  content={
+                    val.content === null || val.content === undefined
+                      ? ''
+                      : String(val.content)
+                  }
                   color={val.color}
                   icon={val.icon}
                   fluid
