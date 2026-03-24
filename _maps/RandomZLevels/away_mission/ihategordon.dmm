@@ -3824,7 +3824,7 @@
 /area/awaymission/ihategordon/opposing/comlpex)
 "buq" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/wirer,
+/obj/item/usb_cable,
 /obj/machinery/light{
 	dir = 8
 	},
@@ -60880,7 +60880,7 @@
 /area/awaymission/ihategordon/hyperlaser_chamber)
 "uix" = (
 /obj/structure/table/reinforced,
-/obj/item/electronic_assembly/medium/radio,
+/obj/item/integrated_circuit,
 /obj/structure/noticeboard{
 	pixel_y = 32
 	},

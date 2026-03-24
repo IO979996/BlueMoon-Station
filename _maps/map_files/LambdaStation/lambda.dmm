@@ -1533,8 +1533,8 @@
 	dir = 8
 	},
 /obj/structure/table,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/analyzer,
+/obj/machinery/component_printer,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/dark,
 /area/science/circuit)
 "adY" = (
@@ -1549,10 +1549,10 @@
 	dir = 8
 	},
 /obj/structure/table,
-/obj/item/integrated_electronics/debugger{
+/obj/item/usb_cable{
 	pixel_x = -1
 	},
-/obj/item/integrated_electronics/wirer{
+/obj/item/usb_cable{
 	pixel_x = -8;
 	pixel_y = 2
 	},
@@ -4115,8 +4115,8 @@
 	dir = 8
 	},
 /obj/structure/table,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/analyzer,
+/obj/machinery/component_printer,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/dark,
 /area/science/circuit)
 "aje" = (
@@ -4139,11 +4139,11 @@
 	pixel_x = 7;
 	pixel_y = -2
 	},
-/obj/item/integrated_electronics/wirer{
+/obj/item/usb_cable{
 	pixel_x = -8;
 	pixel_y = 2
 	},
-/obj/item/integrated_electronics/debugger{
+/obj/item/usb_cable{
 	pixel_x = -1
 	},
 /turf/open/floor/plasteel/dark,

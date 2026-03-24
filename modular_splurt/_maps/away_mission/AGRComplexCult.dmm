@@ -2864,7 +2864,7 @@
 /area/awaymission/complex/cultfacility)
 "cIk" = (
 /obj/structure/table,
-/obj/item/integrated_circuit/output/sound/vox,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/grimy,
 /area/awaymission/complex/facilityresearch)
 "cIE" = (
@@ -8823,7 +8823,7 @@
 /turf/open/floor/plating,
 /area/awaymission/complex/research)
 "hEj" = (
-/obj/item/integrated_electronics/wirer,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/grimy,
 /area/awaymission/complex/facilityresearch)
 "hEt" = (
@@ -9158,7 +9158,7 @@
 /area/awaymission/complex/engineering)
 "hPP" = (
 /obj/structure/table,
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white,
 /area/awaymission/complex/facilityresearch)
 "hQl" = (
@@ -12560,7 +12560,7 @@
 /area/awaymission/complex/thewall)
 "kMo" = (
 /obj/structure/table,
-/obj/item/electronic_assembly/drone/arms,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/grimy,
 /area/awaymission/complex/facilityresearch)
 "kMT" = (
@@ -13533,7 +13533,7 @@
 /turf/open/floor/plasteel/white,
 /area/awaymission/complex/medical)
 "lMM" = (
-/obj/item/integrated_circuit/smart/advanced_pathfinder,
+/obj/item/integrated_circuit,
 /obj/effect/decal/cleanable/dirt/dust,
 /turf/open/floor/plasteel/grimy,
 /area/awaymission/complex/facilityresearch)
@@ -14278,8 +14278,8 @@
 /area/awaymission/complex/engineering)
 "myf" = (
 /obj/structure/table,
-/obj/item/integrated_circuit_printer/upgraded,
-/obj/item/integrated_circuit/manipulation/locomotion,
+/obj/machinery/component_printer,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/grimy,
 /area/awaymission/complex/facilityresearch)
 "myg" = (
@@ -21173,7 +21173,7 @@
 	},
 /area/awaymission/complex/prison)
 "sjN" = (
-/obj/item/integrated_circuit/output/screen/extralarge,
+/obj/item/integrated_circuit,
 /obj/structure/cable{
 	icon_state = "1-2"
 	},
@@ -25988,7 +25988,7 @@
 /area/awaymission/complex/janitorial)
 "wrd" = (
 /obj/structure/table,
-/obj/item/integrated_circuit/weaponized/grenade,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/white,
 /area/awaymission/complex/facilityresearch)
 "wrE" = (

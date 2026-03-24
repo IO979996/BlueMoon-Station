@@ -9,9 +9,11 @@
  */
 /obj/item/circuit_component
 	name = COMPONENT_DEFAULT_NAME
-	icon = 'icons/obj/module.dmi'
+	icon = 'icons/obj/devices/circuitry_n_data.dmi'
 	icon_state = "component"
 	item_state = "electronic"
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 	/// The name of the component shown on the UI
 	var/display_name = "Generic"
@@ -45,8 +47,21 @@
 	// Whether the component is removable or not. Only affects user UI
 	var/removable = TRUE
 
+	/// Space taken inside a shell / modular board (shell capacity)
+	var/circuit_size = 1
+
 	// Defines which shells support this component. Only used as an informational guide, does not restrict placing these components in circuits.
 	var/required_shells = null
+
+	/// world.time of last circuit trigger (for TGUI activity lamp)
+	var/last_circuit_ui_pulse = 0
+
+/// Marks this component as recently active for the integrated circuit editor UI.
+/obj/item/circuit_component/proc/mark_circuit_ui_pulse()
+	last_circuit_ui_pulse = world.time
+
+/obj/item/circuit_component/proc/set_circuit_size(new_size)
+	circuit_size = new_size
 
 /// Called when the option ports should be set up
 /obj/item/circuit_component/proc/populate_options()

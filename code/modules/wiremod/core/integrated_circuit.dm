@@ -1,6 +1,9 @@
 /// A list of all integrated circuits
 GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
+/// How long (deciseconds) the TGUI activity lamp stays "hot" after a component trigger
+#define CIRCUIT_UI_PULSE_DECISECONDS 25
+
 /**
  * # Integrated Circuitboard
  *
@@ -11,9 +14,11 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 /obj/item/integrated_circuit
 	name = "integrated circuit"
 	desc = "By inserting components and a cell into this, wiring them up, and putting them into a shell, anyone can pretend to be a programmer."
-	icon = 'icons/obj/module.dmi'
+	icon = 'icons/obj/devices/circuitry_n_data.dmi'
 	icon_state = "integrated_circuit"
 	item_state = "electronic"
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 	/// The name that appears on the shell.
 	var/display_name = ""
@@ -68,6 +73,9 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 	/// The Y position of the screen. Used for adding components.
 	var/screen_y = 0
+
+	/// Used by shells to enforce capacity limits
+	var/current_size = 0
 
 /obj/item/integrated_circuit/Initialize(mapload)
 	. = ..()
@@ -154,6 +162,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		// Their input ports may be updated with user values, but the outputs haven't updated
 		// because on is FALSE
 		TRIGGER_CIRCUIT_COMPONENT(attached_component, null)
+		attached_component.mark_circuit_ui_pulse()
 
 /**
  * Unregisters the current shell attached to this circuit.
@@ -173,6 +182,11 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 /obj/item/integrated_circuit/proc/set_on(new_value)
 	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_ON, new_value)
 	on = new_value
+	SStgui.update_uis(src)
+
+/obj/item/integrated_circuit/proc/set_locked(new_value)
+	locked = new_value
+	SEND_SIGNAL(src, COMSIG_CIRCUIT_SET_LOCKED, new_value)
 
 /**
  * Adds a component to the circuitboard
@@ -202,6 +216,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	to_add.rel_y = rand(COMPONENT_MIN_RANDOM_POS, COMPONENT_MAX_RANDOM_POS) - screen_y
 	to_add.parent = src
 	attached_components += to_add
+	current_size += to_add.circuit_size
 	RegisterSignal(to_add, COMSIG_MOVABLE_MOVED, PROC_REF(component_move_handler))
 	SStgui.update_uis(src)
 
@@ -234,6 +249,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 	UnregisterSignal(to_remove, COMSIG_MOVABLE_MOVED)
 	attached_components -= to_remove
+	current_size -= to_remove.circuit_size
 	to_remove.disconnect()
 	to_remove.parent = null
 	SEND_SIGNAL(to_remove, COMSIG_CIRCUIT_COMPONENT_REMOVED, src)
@@ -256,6 +272,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 
 /obj/item/integrated_circuit/ui_data(mob/user)
 	. = list()
+	.["circuit_on"] = on
 	.["components"] = list()
 	for(var/obj/item/circuit_component/component as anything in attached_components)
 		if (component.circuit_flags & CIRCUIT_FLAG_HIDDEN)
@@ -282,17 +299,23 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			))
 		component_data["output_ports"] = list()
 		for(var/datum/port/output/port as anything in component.output_ports)
+			var/out_current = port.value
+			if(isatom(out_current))
+				out_current = null
 			component_data["output_ports"] += list(list(
 				"name" = port.name,
 				"type" = port.datatype,
 				"ref" = REF(port),
 				"color" = port.color,
+				"current_data" = out_current,
+				"datatype_data" = port.datatype_ui_data(user),
 			))
 
 		component_data["name"] = component.display_name
 		component_data["x"] = component.rel_x
 		component_data["y"] = component.rel_y
 		component_data["removable"] = component.removable
+		component_data["recent_pulse"] = (world.time - component.last_circuit_ui_pulse) <= CIRCUIT_UI_PULSE_DECISECONDS
 		.["components"] += list(component_data)
 
 	.["variables"] = list()
@@ -353,7 +376,8 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	if(!ui)
 		ui = new(user, src, "IntegratedCircuit", name)
 		ui.open()
-		ui.set_autoupdate(FALSE)
+		// Live port values rely on periodic ui_data refresh while the UI is open.
+		ui.set_autoupdate(TRUE)
 
 #define WITHIN_RANGE(id, table) (id >= 1 && id <= length(table))
 
@@ -403,6 +427,20 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			var/datum/port/port = port_table[port_id]
 			port.disconnect_all()
 			. = TRUE
+		if("swap_input_connection_order")
+			var/component_id = text2num(params["component_id"])
+			var/port_id = text2num(params["port_id"])
+			var/lower_index = text2num(params["lower_index"])
+			if(!WITHIN_RANGE(component_id, attached_components))
+				return
+			var/obj/item/circuit_component/component = attached_components[component_id]
+			if(!WITHIN_RANGE(port_id, component.input_ports))
+				return
+			var/datum/port/input/input_port = component.input_ports[port_id]
+			if(!istype(input_port))
+				return
+			if(input_port.swap_connected_priority(lower_index))
+				. = TRUE
 		if("detach_component")
 			var/component_id = text2num(params["component_id"])
 			if(!WITHIN_RANGE(component_id, attached_components))
@@ -564,6 +602,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	return COMSIG_CANCEL_USB_CABLE_ATTACK
 
 #undef WITHIN_RANGE
+#undef CIRCUIT_UI_PULSE_DECISECONDS
 
 /// Sets the display name that appears on the shell.
 /obj/item/integrated_circuit/proc/set_display_name(new_name)

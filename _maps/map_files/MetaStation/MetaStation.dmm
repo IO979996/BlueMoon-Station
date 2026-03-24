@@ -54700,8 +54700,8 @@
 /area/security/office)
 "gRS" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_circuit_printer,
+/obj/item/integrated_circuit,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "gSK" = (
@@ -64207,7 +64207,7 @@
 /area/command/heads_quarters/ce)
 "llb" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "llh" = (
@@ -70677,9 +70677,9 @@
 /turf/open/floor/plasteel,
 /area/security/prison/cells)
 "ohj" = (
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/usb_cable,
 /obj/structure/table/reinforced,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
@@ -71883,7 +71883,7 @@
 	pixel_y = 30;
 	receive_ore_updates = 1
 	},
-/obj/item/integrated_electronics/debugger,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "oMe" = (
@@ -90656,7 +90656,7 @@
 /turf/open/floor/plasteel/white,
 /area/science/xenobiology)
 "xkG" = (
-/obj/item/integrated_electronics/wirer,
+/obj/item/usb_cable,
 /obj/structure/table/reinforced,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)

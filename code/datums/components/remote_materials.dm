@@ -115,6 +115,13 @@ handles linking back and forth.
 	if(silo)
 		silo.silo_log(M || parent, action, amount, noun, mats)
 
+/// Used by wiremod component printer UI (eject materials as sheets)
+/datum/component/remote_materials/proc/eject_sheets(datum/material/mat, amount)
+	if(!mat_container || !mat)
+		return
+	var/atom/P = parent
+	mat_container.retrieve_sheets(amount, mat, P?.drop_location())
+
 /datum/component/remote_materials/proc/format_amount()
 	if(mat_container)
 		if(silo && mat_container.max_amount == INFINITY)

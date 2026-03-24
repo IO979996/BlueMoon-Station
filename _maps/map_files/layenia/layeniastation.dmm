@@ -50177,9 +50177,9 @@
 /area/ai_monitored/security/armory)
 "hve" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "hvf" = (
@@ -62635,8 +62635,8 @@
 /area/commons/dorms)
 "jiR" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_circuit_printer{
+/obj/machinery/component_printer,
+/obj/machinery/component_printer{
 	pixel_y = 6
 	},
 /obj/machinery/light{

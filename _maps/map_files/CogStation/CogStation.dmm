@@ -25944,8 +25944,8 @@
 /area/service/library)
 "buC" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/wirer,
+/obj/machinery/component_printer,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "buD" = (
@@ -33460,7 +33460,7 @@
 /area/science/lab)
 "bTo" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/debugger,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "bTp" = (
@@ -55347,7 +55347,7 @@
 /area/commons/dorms)
 "eOb" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
+/obj/item/integrated_circuit,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "eOP" = (

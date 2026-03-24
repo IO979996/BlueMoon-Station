@@ -5,12 +5,10 @@
  */
 /obj/structure/money_bot
 	name = "money bot"
-	icon = 'icons/obj/wiremod.dmi'
+	icon = 'icons/obj/science/circuits.dmi'
 	icon_state = "setup_large"
 
 	density = FALSE
-	light_system = MOVABLE_LIGHT
-	light_on = FALSE
 
 	var/stored_money = 0
 

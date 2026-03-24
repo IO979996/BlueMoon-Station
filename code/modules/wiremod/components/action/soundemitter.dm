@@ -34,14 +34,7 @@
 
 /obj/item/circuit_component/soundemitter/populate_options()
 	var/static/component_options = list(
-		"Buzz" = 'sound/machines/buzz-sigh.ogg',
-		"Buzz Twice" = 'sound/machines/buzz-two.ogg',
-		"Chime" = 'sound/machines/chime.ogg',
-		"Honk" = 'sound/items/bikehorn.ogg',
-		"Ping" = 'sound/machines/ping.ogg',
-		"Sad Trombone" = 'sound/misc/sadtrombone.ogg',
-		"Warn" = 'sound/machines/warning-buzzer.ogg',
-		"Slow Clap" = 'sound/machines/slowclap.ogg',
+		"Pop" = 'sound/effects/chipbagpop.ogg',
 	)
 	sound_file = add_option_port("Sound Option", component_options)
 	options_map = component_options

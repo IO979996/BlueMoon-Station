@@ -66,12 +66,6 @@
 	set_list_size(min(length + 1, max_size))
 	balloon_alert(user, "new size is now [length]")
 
-// Decreases list length
-/obj/item/circuit_component/list_literal/attack_self_secondary(mob/user, list/modifiers)
-	. = ..()
-	set_list_size(max(length - 1, min_size))
-	balloon_alert(user, "new size is now [length]")
-
 /obj/item/circuit_component/list_literal/input_received(datum/port/input/port)
 	. = ..()
 	if(.)

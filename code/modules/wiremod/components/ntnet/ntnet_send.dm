@@ -10,8 +10,6 @@
 
 	circuit_flags = CIRCUIT_FLAG_INPUT_SIGNAL
 
-	network_id = __NETWORK_CIRCUITS
-
 	var/datum/port/input/data_package
 	var/datum/port/input/secondary_package
 	var/datum/port/input/enc_key

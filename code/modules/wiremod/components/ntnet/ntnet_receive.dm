@@ -10,8 +10,6 @@
 
 	circuit_flags = CIRCUIT_FLAG_OUTPUT_SIGNAL //trigger_output
 
-	network_id = __NETWORK_CIRCUITS
-
 	var/datum/port/input/push_hid
 	var/datum/port/output/hid
 	var/datum/port/output/data_package
@@ -25,7 +23,7 @@
 	data_package = add_output_port("Data Package", PORT_TYPE_ANY)
 	secondary_package = add_output_port("Secondary Package", PORT_TYPE_ANY)
 	enc_key = add_input_port("Encryption Key", PORT_TYPE_STRING)
-	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, PROC_REF(ntnet_receive))
+	RegisterSignal(src, COMSIG_COMPONENT_NTNET_RECEIVE, PROC_REF(on_wiremod_ntnet_packet))
 
 /obj/item/circuit_component/ntnet_receive/populate_options()
 	var/static/component_options = list(
@@ -51,7 +49,7 @@
 
 	return TRUE
 
-/obj/item/circuit_component/ntnet_receive/proc/ntnet_receive(datum/source, datum/netdata/data)
+/obj/item/circuit_component/ntnet_receive/proc/on_wiremod_ntnet_packet(datum/source, datum/netdata/data)
 	SIGNAL_HANDLER
 
 	if(data.data["enc_key"] != enc_key.value)

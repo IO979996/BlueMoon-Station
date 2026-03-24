@@ -74,8 +74,16 @@ export class Port extends Component {
       ...rest
     } = this.props;
 
+    const portHint = isOutput
+      ? 'Выход: ЛКМ — тянуть провод к входу · ПКМ — снять связи'
+      : 'Вход: ЛКМ — принять провод от выхода · ПКМ — снять связи';
+
     return (
-      <Stack {...rest} justify={isOutput ? 'flex-end' : 'flex-start'}>
+      <Stack
+        {...rest}
+        className="IntegratedCircuit__portRow"
+        justify={isOutput ? 'flex-end' : 'flex-start'}
+        title={portHint}>
         {!!isOutput && (
           <Stack.Item>
             <DisplayName
@@ -90,6 +98,7 @@ export class Port extends Component {
             color={port.color || 'blue'}
             name={'circle'}
             position="relative"
+            title={portHint}
             onMouseDown={this.handlePortMouseDown}
             onContextMenu={this.handlePortRightClick}
             onMouseUp={this.handlePortMouseUp}

@@ -31917,7 +31917,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/item/integrated_electronics/analyzer,
+/obj/item/integrated_circuit,
 /obj/machinery/computer/security/telescreen/circuitry{
 	pixel_y = 30
 	},
@@ -33908,7 +33908,7 @@
 /area/science/research)
 "beE" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/debugger,
+/obj/item/usb_cable,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -82311,8 +82311,8 @@
 /area/maintenance/aft)
 "dMc" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/wirer,
+/obj/machinery/component_printer,
+/obj/item/usb_cable,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},

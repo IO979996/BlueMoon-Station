@@ -36,3 +36,9 @@
 
 /// When [TOOL_ACT_TOOLTYPE_SUCCESS] or [TOOL_ACT_SIGNAL_BLOCKING] are set
 #define TOOL_ACT_MELEE_CHAIN_BLOCKING (TOOL_ACT_TOOLTYPE_SUCCESS | TOOL_ACT_SIGNAL_BLOCKING)
+
+// atom/base_item_interaction + COMSIG_ATOM_ITEM_INTERACTION (shells, etc.)
+/// Interaction succeeded; stop the attack chain (see return_values.dm)
+#define ITEM_INTERACT_SUCCESS (STOP_ATTACK_PROC_CHAIN)
+/// Block further handling the same way as success (used by shells to consume tool clicks)
+#define ITEM_INTERACT_BLOCKING (STOP_ATTACK_PROC_CHAIN)

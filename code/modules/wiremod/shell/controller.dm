@@ -6,14 +6,11 @@
  */
 /obj/item/controller
 	name = "controller"
-	icon = 'icons/obj/wiremod.dmi'
+	icon = 'icons/obj/science/circuits.dmi'
 	icon_state = "setup_small_calc"
 	item_state = "electronic"
-	icon_state = "electronic"
-	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_on = FALSE
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 /obj/item/controller/Initialize(mapload)
 	. = ..()
@@ -23,7 +20,7 @@
 
 /obj/item/circuit_component/controller
 	display_name = "Controller"
-	desc = "Used to receive inputs from the controller shell. Use the shell in hand to trigger the output signal. Alt-click for the alternate signal. Right click for the extra signal."
+	desc = "Used to receive inputs from the controller shell. Use the shell in hand to trigger the output signal. Alt-click for the alternate signal."
 
 	/// The three separate buttons that are called in attack_hand on the shell.
 	var/datum/port/output/signal
@@ -43,12 +40,10 @@
 /obj/item/circuit_component/controller/register_shell(atom/movable/shell)
 	RegisterSignal(shell, COMSIG_ITEM_ATTACK_SELF, PROC_REF(send_trigger))
 	RegisterSignal(shell, COMSIG_CLICK_ALT, PROC_REF(send_alternate_signal))
-	RegisterSignal(shell, COMSIG_ITEM_ATTACK_SELF_SECONDARY, PROC_REF(send_right_signal))
 
 /obj/item/circuit_component/controller/unregister_shell(atom/movable/shell)
 	UnregisterSignal(shell, list(
 		COMSIG_ITEM_ATTACK_SELF,
-		COMSIG_ITEM_ATTACK_SELF_SECONDARY,
 		COMSIG_CLICK_ALT,
 	))
 
@@ -75,15 +70,3 @@
 	playsound(source, get_sfx("terminal_type"), 25, FALSE)
 	entity.set_output(user)
 	alt.set_output(COMPONENT_SIGNAL)
-
-/**
- * Called when the shell item is right-clicked in active hand
- */
-/obj/item/circuit_component/controller/proc/send_right_signal(atom/source, mob/user)
-	SIGNAL_HANDLER
-	if(!user.Adjacent(source))
-		return
-	source.balloon_alert(user, "clicked extra button")
-	playsound(source, get_sfx("terminal_type"), 25, FALSE)
-	entity.set_output(user)
-	right.set_output(COMPONENT_SIGNAL)

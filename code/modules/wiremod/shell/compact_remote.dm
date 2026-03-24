@@ -5,14 +5,11 @@
  */
 /obj/item/compact_remote
 	name = "compact remote"
-	icon = 'icons/obj/wiremod.dmi'
+	icon = 'icons/obj/science/circuits.dmi'
 	icon_state = "setup_small_simple"
 	item_state = "electronic"
-	icon_state = "electronic"
-	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_on = FALSE
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 /obj/item/compact_remote/Initialize(mapload)
 	. = ..()

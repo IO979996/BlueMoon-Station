@@ -211,9 +211,10 @@ GLOBAL_LIST_INIT(circuit_dupe_whitelisted_types, list(
 	var/txt
 	switch(option)
 		if("File")
-			txt = file2text(tgui_input_num(usr, "Input File") as file|null)
+			var/chosen = input(usr, "Pick a JSON file", "Load Circuit") as file|null
+			txt = isfile(chosen) ? file2text(chosen) : null
 		if("Direct Input")
-			txt = tgui_input_num(usr, "Input JSON", "Input JSON") as text|null
+			txt = input(usr, "Paste circuit JSON", "Load Circuit", "") as message|null
 
 	if(!txt)
 		return

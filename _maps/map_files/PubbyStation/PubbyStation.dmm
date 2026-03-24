@@ -25367,8 +25367,8 @@
 /area/science/explab)
 "blT" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/wirer,
+/obj/machinery/component_printer,
+/obj/item/usb_cable,
 /obj/structure/sign/warning/securearea{
 	pixel_y = 32
 	},
@@ -25389,7 +25389,7 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/obj/item/integrated_electronics/debugger,
+/obj/item/usb_cable,
 /obj/machinery/computer/security/telescreen/circuitry{
 	pixel_y = 30
 	},
@@ -25424,7 +25424,7 @@
 /area/science/explab)
 "blW" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/wirer,
+/obj/item/usb_cable,
 /obj/machinery/light{
 	dir = 1
 	},
@@ -25835,7 +25835,7 @@
 /area/science/explab)
 "bmZ" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
+/obj/item/integrated_circuit,
 /obj/machinery/magnetic_controller{
 	autolink = 1;
 	pixel_x = -28;
@@ -60430,8 +60430,8 @@
 /area/space/nearstation)
 "qDJ" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/debugger,
+/obj/machinery/component_printer,
+/obj/item/usb_cable,
 /obj/structure/sign/warning/securearea{
 	pixel_y = 32
 	},
@@ -63803,7 +63803,7 @@
 /area/maintenance/department/crew_quarters/dorms)
 "vmG" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
+/obj/item/integrated_circuit,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},

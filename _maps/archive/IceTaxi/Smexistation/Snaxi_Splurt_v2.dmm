@@ -16685,10 +16685,10 @@
 /area/security/execution/education)
 "fDC" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/detailer,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
 /obj/item/multitool,
 /obj/item/screwdriver,
 /obj/machinery/computer/security/telescreen/circuitry{
@@ -51168,7 +51168,7 @@
 /area/icemoon/surface/outdoors)
 "rps" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "rpv" = (
@@ -71739,10 +71739,10 @@
 /area/medical/paramedic)
 "ylr" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/detailer,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
 /obj/item/multitool,
 /obj/item/screwdriver,
 /obj/machinery/computer/security/telescreen/circuitry{

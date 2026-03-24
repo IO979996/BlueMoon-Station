@@ -3,7 +3,6 @@
 	desc = "A gate able to perform mid-depth scans on any organisms who pass under it."
 	icon = 'icons/obj/machines/scangate.dmi'
 	icon_state = "scangate_black"
-	var/scanline_timer
 
 /obj/structure/scanner_gate_shell/Initialize(mapload)
 	. = ..()
@@ -30,10 +29,9 @@
 
 /obj/structure/scanner_gate_shell/proc/set_scanline(type, duration)
 	cut_overlays()
-	deltimer(scanline_timer)
 	add_overlay(type)
 	if(duration)
-		scanline_timer = addtimer(CALLBACK(src, PROC_REF(set_scanline), "passive"), duration, TIMER_STOPPABLE)
+		addtimer(CALLBACK(src, PROC_REF(set_scanline), "passive"), duration, TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE)
 
 /obj/item/circuit_component/scanner_gate
 	display_name = "Scanner Gate"

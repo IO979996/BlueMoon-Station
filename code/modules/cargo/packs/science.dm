@@ -64,12 +64,12 @@
 
 /datum/supply_pack/science/circuitry
 	name = "Circuitry Starter Pack Crate"
-	desc = "Отправьтесь в таинственный мир схемотехники с этим стартовым пакетом. Содержит принтер схем, анализатор, отладчик и провод. Элементы питания в комплект не входят."
+	desc = "Стартовый набор модульных схем (wiremod): пустая плата и USB-кабель. Батарейки в комплект не входят."
 	cost = 1000
-	contains = list(/obj/item/integrated_electronics/analyzer,
-					/obj/item/integrated_circuit_printer,
-					/obj/item/integrated_electronics/debugger,
-					/obj/item/integrated_electronics/wirer)
+	contains = list(/obj/item/integrated_circuit,
+					/obj/item/integrated_circuit,
+					/obj/item/usb_cable,
+					/obj/item/usb_cable)
 	crate_name = "circuitry starter pack crate"
 
 /datum/supply_pack/science/glasswork

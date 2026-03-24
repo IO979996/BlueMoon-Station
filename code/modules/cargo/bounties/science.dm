@@ -143,19 +143,12 @@
 	required_count = 13
 	wanted_types = list(/obj/item/anomaly_neutralizer)
 
-/datum/bounty/item/science/integrated_circuit_printer
-	name = "Integrated Circuit Printer"
-	description = "Due to a paperwork error, a newly made integrated circuit manufacturer line is missing three of its printers needed to operate. Until the paper work is corrected we are outsourcing this problem, so please send us three integrated circuit printers."
+/datum/bounty/item/science/component_printer_boards
+	name = "Circuit Fabricator Boards"
+	description = "Central Command needs three machine boards for modular circuit component fabricators (wiremod)."
 	reward = 3000
 	required_count = 3
-	wanted_types = list(/obj/item/integrated_circuit_printer)
-
-/datum/bounty/item/science/integrated_circuit_disks
-	name = "Integrated Circuit Printer Upgrade Disks"
-	description = "HR has requested ten more integrated circuit printer upgrade disks, please send them to CC as soon as possible."
-	reward = 4000
-	required_count = 10 //Its just metal
-	wanted_types = list(/obj/item/disk/integrated_circuit/upgrade)
+	wanted_types = list(/obj/item/circuitboard/machine/component_printer)
 
 /datum/bounty/item/science/nanite_trash
 	name = "Nanite Based Gear"

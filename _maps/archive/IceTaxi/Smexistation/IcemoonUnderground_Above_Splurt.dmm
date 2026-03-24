@@ -2152,10 +2152,10 @@
 /area/science)
 "jH" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/detailer,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
 /obj/item/multitool,
 /obj/item/screwdriver,
 /obj/machinery/computer/security/telescreen/circuitry{
@@ -5400,7 +5400,7 @@
 /area/maintenance/department/science)
 "ym" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white,
 /area/science/circuit)
 "yq" = (
@@ -7258,10 +7258,10 @@
 /area/service/chapel/main/monastery)
 "Gh" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/detailer,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
 /obj/item/multitool,
 /obj/item/screwdriver,
 /obj/machinery/computer/security/telescreen/circuitry{

@@ -13917,7 +13917,7 @@
 /area/science/xenobiology)
 "cBH" = (
 /obj/structure/table,
-/obj/item/integrated_circuit_printer{
+/obj/machinery/component_printer{
 	pixel_y = 4
 	},
 /obj/effect/turf_decal/trimline/purple/filled/line{
@@ -24079,15 +24079,15 @@
 /area/icemoon/surface/outdoors)
 "eqb" = (
 /obj/structure/table,
-/obj/item/integrated_electronics/wirer{
+/obj/item/usb_cable{
 	pixel_y = 5;
 	pixel_x = 5
 	},
-/obj/item/integrated_electronics/debugger{
+/obj/item/usb_cable{
 	pixel_y = 6;
 	pixel_x = -6
 	},
-/obj/item/integrated_electronics/detailer,
+/obj/item/integrated_circuit,
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 5
 	},
@@ -78574,7 +78574,7 @@
 /area/science/misc_lab)
 "ohU" = (
 /obj/structure/table,
-/obj/item/integrated_circuit_printer{
+/obj/machinery/component_printer{
 	pixel_y = 4
 	},
 /obj/effect/turf_decal/trimline/purple/filled/line,
@@ -104054,15 +104054,15 @@
 /area/engineering/atmos/upper)
 "sPU" = (
 /obj/structure/table,
-/obj/item/integrated_electronics/debugger{
+/obj/item/usb_cable{
 	pixel_y = 6;
 	pixel_x = -6
 	},
-/obj/item/integrated_electronics/wirer{
+/obj/item/usb_cable{
 	pixel_y = 5;
 	pixel_x = 5
 	},
-/obj/item/integrated_electronics/detailer,
+/obj/item/integrated_circuit,
 /obj/effect/turf_decal/trimline/purple/filled/line{
 	dir = 6
 	},

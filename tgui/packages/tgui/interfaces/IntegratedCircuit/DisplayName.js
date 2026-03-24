@@ -1,6 +1,9 @@
+import { Fragment } from 'inferno';
+
 import { useBackend } from '../../backend';
 import { Box, Button, Flex } from '../../components';
 import { DATATYPE_DISPLAY_HANDLERS, FUNDAMENTAL_DATA_TYPES } from './FundamentalTypes';
+import { formatPortLiveValue } from './portValueFormat';
 
 export const DisplayName = (props, context) => {
   const { act } = useBackend(context);
@@ -14,6 +17,10 @@ export const DisplayName = (props, context) => {
     && InputComponent;
 
   const displayType = TypeDisplayHandler? TypeDisplayHandler(port) : port.type;
+  const showLive = isOutput || (!!port.connected_to?.length);
+  const liveText = showLive
+    ? formatPortLiveValue(port.current_data, port.type)
+    : null;
 
   return (
     <Box {...rest}>
@@ -35,16 +42,23 @@ export const DisplayName = (props, context) => {
             />
           ))
             || (isOutput && (
-              <Button
-                compact
-                color="transparent"
-                onClick={() =>
-                  act('get_component_value', {
-                    component_id: componentId,
-                    port_id: portIndex,
-                  })}>
-                <Box color="white">{port.name}</Box>
-              </Button>
+              <Flex align="center" direction="row">
+                <Flex.Item>
+                  <Button
+                    compact
+                    color="transparent"
+                    icon="comment-dots"
+                    tooltip="Показать значение (balloon)"
+                    onClick={() =>
+                      act('get_component_value', {
+                        component_id: componentId,
+                        port_id: portIndex,
+                      })} />
+                </Flex.Item>
+                <Flex.Item grow>
+                  <Box color="white">{port.name}</Box>
+                </Flex.Item>
+              </Flex>
             ))
             || port.name}
         </Flex.Item>
@@ -56,6 +70,55 @@ export const DisplayName = (props, context) => {
             {displayType || 'unknown'}
           </Box>
         </Flex.Item>
+        {!isOutput && port.connected_to?.length > 1 && (
+          <Flex.Item>
+            <Flex
+              align="center"
+              wrap="wrap"
+              className="PortConnectionOrder">
+              {port.connected_to.map((ref, idx) => (
+                <Fragment key={ref}>
+                  <Box
+                    fontSize="0.65rem"
+                    opacity={0.45}
+                    mx={0.25}
+                    unselectable="on">
+                    #{idx + 1}
+                  </Box>
+                  {idx < port.connected_to.length - 1 && (
+                    <Button
+                      compact
+                      color="transparent"
+                      icon="exchange-alt"
+                      tooltip="Поменять порядок со следующей связью (линии и приоритет)"
+                      mb={0.25}
+                      onClick={() =>
+                        act('swap_input_connection_order', {
+                          component_id: componentId,
+                          port_id: portIndex,
+                          lower_index: idx + 1,
+                        })} />
+                  )}
+                </Fragment>
+              ))}
+            </Flex>
+          </Flex.Item>
+        )}
+        {!!showLive && (
+          <Flex.Item>
+            <Box
+              className="PortLiveValue__label"
+              textAlign={isOutput ? 'right' : 'left'}>
+              значение
+            </Box>
+            <Box
+              className="PortLiveValue"
+              textAlign={isOutput ? 'right' : 'left'}
+              title={liveText}>
+              {liveText}
+            </Box>
+          </Flex.Item>
+        )}
       </Flex>
     </Box>
   );

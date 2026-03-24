@@ -6,7 +6,7 @@
 /obj/item/shell
 	name = "assembly"
 	desc = "A shell assembly that can be completed by screwdrivering it."
-	icon = 'icons/obj/wiremod.dmi'
+	icon = 'icons/obj/science/circuits.dmi'
 	var/shell_to_spawn
 	var/screw_delay = 3 SECONDS
 
@@ -32,13 +32,8 @@
 
 /obj/item/shell/money_bot
 	name = "money bot assembly"
-	icon_state = "setup_large-open"
+	icon_state = "blank_mod"
 	shell_to_spawn = /obj/structure/money_bot
-
-/obj/item/shell/drone
-	name = "drone assembly"
-	icon_state = "setup_medium_med-open"
-	shell_to_spawn = /mob/living/circuit_drone
 
 /obj/item/shell/server
 	name = "server assembly"
@@ -52,11 +47,6 @@
 	icon_state = "construction"
 	shell_to_spawn = /obj/machinery/door/airlock/shell
 	screw_delay = 10 SECONDS
-
-/obj/item/shell/bci
-	name = "brain-computer interface assembly"
-	icon_state = "bci-open"
-	shell_to_spawn = /obj/item/organ/cyberimp/bci
 
 /obj/item/shell/scanner_gate
 	name = "scanner gate assembly"

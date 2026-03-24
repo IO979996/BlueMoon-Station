@@ -1383,11 +1383,11 @@
 /area/hallway/primary/aft)
 "aSn" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer{
+/obj/item/integrated_circuit{
 	pixel_x = 10
 	},
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/detailer{
+/obj/item/usb_cable,
+/obj/item/integrated_circuit{
 	pixel_x = -9
 	},
 /obj/effect/turf_decal/stripes{
@@ -27793,10 +27793,10 @@
 /area/science/lab)
 "uDW" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer{
+/obj/machinery/component_printer{
 	pixel_x = -5
 	},
-/obj/item/integrated_electronics/wirer{
+/obj/item/usb_cable{
 	pixel_x = 10
 	},
 /obj/effect/turf_decal/stripes{

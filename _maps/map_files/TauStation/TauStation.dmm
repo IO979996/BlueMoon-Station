@@ -57678,7 +57678,7 @@
 /area/hallway/secondary/service)
 "tRJ" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/wirer,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white,
 /area/science/explab)
 "tRK" = (
@@ -60813,10 +60813,10 @@
 /obj/item/circuitboard/machine/thermomachine/freezer,
 /obj/item/stack/cable_coil,
 /obj/item/multitool,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/wirer,
-/obj/item/integrated_circuit_printer,
+/obj/item/usb_cable,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white,
 /area/science/explab)
 "uVX" = (
@@ -69108,7 +69108,7 @@
 /area/security/prison/cells)
 "xBV" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/debugger,
+/obj/item/usb_cable,
 /obj/machinery/computer/security/telescreen/circuitry{
 	pixel_y = 30
 	},
@@ -71144,8 +71144,8 @@
 /area/security/prison)
 "ygb" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_circuit_printer,
+/obj/item/integrated_circuit,
+/obj/machinery/component_printer,
 /obj/machinery/light{
 	dir = 4
 	},

@@ -39,6 +39,7 @@
 	value = new_value
 	for(var/obj/item/circuit_component/component as anything in listeners)
 		TRIGGER_CIRCUIT_COMPONENT(component, null)
+		component.mark_circuit_ui_pulse()
 
 /// Adds a listener to receive inputs when the variable has a value that is set.
 /datum/circuit_variable/proc/add_listener(obj/item/circuit_component/to_add)

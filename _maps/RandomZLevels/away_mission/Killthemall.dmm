@@ -950,9 +950,7 @@
 /area/awaymission/Killthemall/Level)
 "qu" = (
 /obj/structure/table,
-/obj/item/disk/integrated_circuit/upgrade{
-	pixel_y = -5
-	},
+/obj/item/disk/design_disk,
 /obj/item/disk/nanite_program{
 	pixel_x = 4;
 	pixel_y = 11

@@ -2,7 +2,7 @@
 /obj/machinery/component_printer
 	name = "component printer"
 	desc = "Produces components for the creation of integrated circuits."
-	icon = 'icons/obj/wiremod_fab.dmi'
+	icon = 'icons/obj/machines/wiremod_fab.dmi'
 	icon_state = "fab-idle"
 	circuit = /obj/item/circuitboard/machine/component_printer
 
@@ -19,12 +19,7 @@
 
 	techweb = SSresearch.science_tech
 
-	materials = AddComponent( \
-		/datum/component/remote_materials, \
-		"component_printer", \
-		mapload, \
-		mat_container_flags = BREAKDOWN_FLAGS_LATHE, \
-	)
+	materials = AddComponent(/datum/component/remote_materials, "component_printer", mapload, TRUE, FALSE)
 
 /obj/machinery/component_printer/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -125,7 +120,6 @@
 
 /obj/item/circuitboard/machine/component_printer
 	name = "\improper Component Printer (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/component_printer
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 2,
@@ -136,7 +130,7 @@
 /obj/machinery/debug_component_printer
 	name = "debug component printer"
 	desc = "Produces components for the creation of integrated circuits."
-	icon = 'icons/obj/wiremod_fab.dmi'
+	icon = 'icons/obj/machines/wiremod_fab.dmi'
 	icon_state = "fab-idle"
 
 	/// All of the possible circuit designs stored by this debug printer
@@ -215,7 +209,7 @@
 /obj/machinery/module_duplicator
 	name = "module duplicator"
 	desc = "Allows you to duplicate module components so that you don't have to recreate them. Scan a module component over this machine to add it as an entry."
-	icon = 'icons/obj/wiremod_fab.dmi'
+	icon = 'icons/obj/machines/wiremod_fab.dmi'
 	icon_state = "module-fab-idle"
 	circuit = /obj/item/circuitboard/machine/module_duplicator
 
@@ -231,12 +225,7 @@
 /obj/machinery/module_duplicator/Initialize(mapload)
 	. = ..()
 
-	materials = AddComponent( \
-		/datum/component/remote_materials, \
-		"module_duplicator", \
-		mapload, \
-		mat_container_flags = BREAKDOWN_FLAGS_LATHE, \
-	)
+	materials = AddComponent(/datum/component/remote_materials, "module_duplicator", mapload, TRUE, FALSE)
 
 /obj/machinery/module_duplicator/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -385,7 +374,6 @@
 
 /obj/item/circuitboard/machine/module_duplicator
 	name = "\improper Module Duplicator (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SCIENCE
 	build_path = /obj/machinery/module_duplicator
 	req_components = list(
 		/obj/item/stock_parts/matter_bin = 2,

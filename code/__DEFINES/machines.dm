@@ -34,6 +34,7 @@
 #define NANITE_COMPILER (1<<9) //Prints nanite disks
 #define AUTOBOTTLER  	(1<<10) //Uses booze, for printing
 #define BIOAEGIS 		(1<<11) //BLUEMOON ADD. Organs and Co
+#define COMPONENT_PRINTER	(1<<12) //Wiremod / component fabricator
 //Note: More then one of these can be added to a design but imprinter and lathe designs are incompatable.
 
 //Modular computer/NTNet defines

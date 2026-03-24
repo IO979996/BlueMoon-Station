@@ -7,15 +7,25 @@ export const CircuitInfo = (props, context) => {
     notices,
     ...rest
   } = props;
+  const noticeList = notices || [];
   return (
     <Box {...rest}>
       <Stack fill vertical justify="space-around">
-        <Stack.Item maxWidth="200px">
-          {desc}
+        {!!name && (
+          <Stack.Item>
+            <Box className="CircuitInfo__name">
+              {name}
+            </Box>
+          </Stack.Item>
+        )}
+        <Stack.Item maxWidth="240px">
+          <Box className="CircuitInfo__desc">
+            {desc}
+          </Box>
         </Stack.Item>
         <Stack.Item>
           <Stack vertical>
-            {notices.map((val, index) => (
+            {noticeList.map((val, index) => (
               <Stack.Item key={index}>
                 <Button
                   content={val.content}

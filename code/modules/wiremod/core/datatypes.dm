@@ -1,6 +1,21 @@
 // An assoc list of all the possible datatypes.
 GLOBAL_LIST_INIT(circuit_datatypes, generate_circuit_datatypes())
 
+/// Types allowed for circuit variables in the modular UI
+GLOBAL_LIST_INIT(wiremod_basic_types, list(
+	PORT_TYPE_STRING,
+	PORT_TYPE_NUMBER,
+	PORT_TYPE_SIGNAL,
+	PORT_TYPE_LIST,
+	PORT_TYPE_TABLE,
+	PORT_TYPE_OPTION,
+	PORT_TYPE_BOOLEAN,
+	PORT_TYPE_ATOM,
+	PORT_TYPE_DATUM,
+	PORT_TYPE_USER,
+	PORT_TYPE_ANY,
+))
+
 /proc/generate_circuit_datatypes()
 	var/list/datatypes_by_key = list()
 	for(var/datum/circuit_datatype/type as anything in subtypesof(/datum/circuit_datatype))

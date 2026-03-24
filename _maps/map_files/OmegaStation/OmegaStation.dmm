@@ -24692,10 +24692,10 @@
 /obj/effect/turf_decal/stripes/yellow/line{
 	dir = 8
 	},
-/obj/item/integrated_circuit_printer,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/wirer,
+/obj/machinery/component_printer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/dark,
 /area/science/lab)
 "aVy" = (

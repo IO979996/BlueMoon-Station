@@ -11,6 +11,7 @@ import {
 } from '../../components';
 import { Window } from '../../layouts';
 import { CircuitInfo } from './CircuitInfo';
+import { CircuitToolbar } from './CircuitToolbar';
 import { Connections } from './Connections';
 import { ABSOLUTE_Y_OFFSET, MOUSE_BUTTON_LEFT } from './constants';
 import { ObjectComponent } from './ObjectComponent';
@@ -215,6 +216,7 @@ export class IntegratedCircuit extends Component {
     const { act, data } = useBackend(this.context);
     const {
       components,
+      circuit_on,
       display_name,
       examined_name,
       examined_desc,
@@ -227,8 +229,11 @@ export class IntegratedCircuit extends Component {
       variables,
       global_basic_types,
     } = data;
-    const { locations, selectedPort, menuOpen } = this.state;
+    const { locations, selectedPort, menuOpen, zoom } = this.state;
     const connections = [];
+    const componentCount = components.reduce((n, c) => n + (c ? 1 : 0), 0);
+    const variableCount = variables?.length ?? 0;
+    const zoomPercent = Math.round((zoom || 1) * 100);
 
     for (const comp of components) {
       if (comp === null) {
@@ -264,30 +269,30 @@ export class IntegratedCircuit extends Component {
 
     return (
       <Window
-        width={600}
-        height={600}
+        width={920}
+        height={720}
         buttons={(
           <Box
-            width="160px"
+            minWidth="280px"
+            maxWidth="420px"
             position="absolute"
-            top="5px"
-            height="22px"
+            top="4px"
+            height="24px"
           >
             <Stack>
               <Stack.Item grow>
                 <Input
                   fluid
-                  placeholder="Circuit Name"
+                  placeholder="Имя схемы"
                   value={display_name}
                   onChange={(e, value) => act("set_display_name", { display_name: value })}
                 />
               </Stack.Item>
-              <Stack.Item basis="24px">
+              <Stack.Item>
                 <Button
-                  position="absolute"
-                  top={0}
                   color="transparent"
                   icon="cog"
+                  tooltip="Переменные и сеттеры/геттеры"
                   selected={menuOpen}
                   onClick={() => this.setState((state) => ({
                     menuOpen: !state.menuOpen,
@@ -297,9 +302,8 @@ export class IntegratedCircuit extends Component {
               {!!is_admin && (
                 <Stack.Item>
                   <Button
-                    position="absolute"
-                    top={0}
                     color="transparent"
+                    tooltip="Сохранить схему (JSON)"
                     onClick={() => act("save_circuit")}
                     icon="save"
                   />
@@ -310,36 +314,49 @@ export class IntegratedCircuit extends Component {
         )}
       >
         <Window.Content
+          fitted
+          className="IntegratedCircuit__content"
           style={{
             'background-image': 'none',
           }}>
-          <InfinitePlane
-            width="100%"
-            height="100%"
-            backgroundImage={resolveAsset('grid_background.png')}
-            imageWidth={900}
-            onZoomChange={this.handleZoomChange}
-            onBackgroundMoved={this.handleBackgroundMoved}
-            initialLeft={screen_x}
-            initialTop={screen_y}
-          >
-            {components.map(
-              (comp, index) =>
-                comp && (
-                  <ObjectComponent
-                    key={index}
-                    {...comp}
-                    index={index + 1}
-                    onPortUpdated={this.handlePortLocation}
-                    onPortLoaded={this.handlePortLocation}
-                    onPortMouseDown={this.handlePortClick}
-                    onPortRightClick={this.handlePortRightClick}
-                    onPortMouseUp={this.handlePortUp}
-                  />
-                )
-            )}
-            <Connections connections={connections} />
-          </InfinitePlane>
+          <Box className="IntegratedCircuit__frame">
+            <CircuitToolbar
+              circuitOn={circuit_on}
+              componentCount={componentCount}
+              variableCount={variableCount}
+              zoomPercent={zoomPercent}
+            />
+            <Box className="IntegratedCircuit__planeHost">
+              <InfinitePlane
+                width="100%"
+                height="100%"
+                backgroundImage={resolveAsset('grid_background.png')}
+                imageWidth={1200}
+                onZoomChange={this.handleZoomChange}
+                onBackgroundMoved={this.handleBackgroundMoved}
+                initialLeft={screen_x}
+                initialTop={screen_y}
+              >
+                {components.map(
+                  (comp, index) =>
+                    comp && (
+                      <ObjectComponent
+                        key={index}
+                        {...comp}
+                        index={index + 1}
+                        circuitOn={circuit_on ?? true}
+                        onPortUpdated={this.handlePortLocation}
+                        onPortLoaded={this.handlePortLocation}
+                        onPortMouseDown={this.handlePortClick}
+                        onPortRightClick={this.handlePortRightClick}
+                        onPortMouseUp={this.handlePortUp}
+                      />
+                    )
+                )}
+                <Connections connections={connections} />
+              </InfinitePlane>
+            </Box>
+          </Box>
           {!!examined_name && (
             <CircuitInfo
               position="absolute"
@@ -353,13 +370,13 @@ export class IntegratedCircuit extends Component {
           )}
           {!!menuOpen && (
             <Box
+              className="IntegratedCircuit__variableDock"
               position="absolute"
               bottom={0}
               left={0}
               height="50%"
               minHeight="300px"
               width="100%"
-              backgroundColor="#202020"
             >
               <VariableMenu
                 variables={variables}

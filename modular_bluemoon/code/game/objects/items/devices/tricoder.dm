@@ -55,10 +55,7 @@
 
 //Gas Analyzer Turf Scan
 /obj/item/multitool/tricorder/attack_self(mob/user)
-	if(selected_io)
-		selected_io = null
-		to_chat(user, "<span class='notice'>You clear the wired connection from the multitool.</span>")
-	else if(buffer)
+	if(buffer)
 		buffer = null
 		to_chat(user, "<span class='notice'>You clear the multitool's buffer.</span>")
 	else

@@ -59,6 +59,8 @@
 	set_value(value)
 	if(trigger)
 		TRIGGER_CIRCUIT_COMPONENT(connected_component, src)
+		if(connected_component)
+			connected_component.mark_circuit_ui_pulse()
 
 /datum/port/output/proc/set_output(value)
 	set_value(value)
@@ -173,6 +175,26 @@
 	// For signals, we don't update the input to prevent sending a signal when connecting ports.
 	if(!(datatype_handler.datatype_flags & DATATYPE_FLAG_AVOID_VALUE_UPDATE))
 		set_input(output.value)
+
+/**
+ * Swaps two adjacent entries in connected_ports (1-based lower_index swaps with lower_index+1).
+ * Order affects wire draw order in the UI and the order callbacks are queued from multiple outputs.
+ *
+ * Returns TRUE if a swap was performed.
+ */
+/datum/port/input/proc/swap_connected_priority(lower_index)
+	if(lower_index < 1)
+		return FALSE
+	var/len = length(connected_ports)
+	if(len < 2 || lower_index >= len)
+		return FALSE
+	var/datum/port/output/first = connected_ports[lower_index]
+	var/datum/port/output/second = connected_ports[lower_index + 1]
+	connected_ports[lower_index] = second
+	connected_ports[lower_index + 1] = first
+	if(connected_component?.parent)
+		SStgui.update_uis(connected_component.parent)
+	return TRUE
 
 /**
  * Determines if a datatype is compatible with another port of a different type.

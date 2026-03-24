@@ -186,10 +186,8 @@
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
 
-	//get the user's location
-	if(!istype(user.loc, /obj/item/integrated_circuit/manipulation))
-		if(!isturf(user.loc))
-			return	//can't do this stuff whilst inside objects and such
+	if(!isturf(user.loc))
+		return
 
 	user.DelayNextAction()
 	add_fingerprint(user)
@@ -232,12 +230,6 @@
 	else if(istype(W, /obj/item/poster))
 		place_poster(W,user)
 		return TRUE
-	//wall mounted IC assembly stuff
-	else if(istype(W, /obj/item/electronic_assembly/wallmount))
-		var/obj/item/electronic_assembly/wallmount/A = W
-		A.mount_assembly(src, user)
-		return TRUE
-
 	return FALSE
 
 /turf/closed/wall/proc/try_decon(obj/item/I, mob/user, turf/T)

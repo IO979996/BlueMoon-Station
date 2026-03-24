@@ -688,6 +688,19 @@
 		r += ascii2text(c)
 	return r
 
+/// XOR each character of [text] with [key] (key repeats). Used by NTNet passkeys with [SScircuit.cipherkey].
+/proc/XorEncrypt(text, key)
+	if(!istext(text) || !text)
+		return text
+	if(!istext(key) || !key)
+		return text
+	var/tlen = length(text)
+	var/klen = length(key)
+	. = ""
+	for(var/i = 1 to tlen)
+		. += ascii2text(text2ascii(text, i) ^ text2ascii(key, ((i - 1) % klen) + 1))
+	return .
+
 /proc/slot_to_string(slot)
 	switch(slot)
 		if(ITEM_SLOT_BACK)

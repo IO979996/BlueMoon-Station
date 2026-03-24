@@ -70266,9 +70266,9 @@
 /area/cargo/storage)
 "hic" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white/side{
 	dir = 10
 	},
@@ -78065,7 +78065,7 @@
 	pixel_y = 32;
 	receive_ore_updates = 1
 	},
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white/side,
 /area/science/circuit)
 "jjS" = (
@@ -99780,7 +99780,7 @@
 /obj/machinery/newscaster{
 	pixel_y = -32
 	},
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /turf/open/floor/plasteel/white/side{
 	dir = 1
 	},
@@ -103027,9 +103027,9 @@
 /area/space/nearstation)
 "qhc" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/usb_cable,
 /turf/open/floor/plasteel/white/side{
 	dir = 9
 	},

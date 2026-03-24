@@ -13,12 +13,13 @@ export const Connections = (props, context) => {
 
   return (
     <svg
+      className="IntegratedCircuit__connections"
       width="100%"
       height="100%"
       style={{
         'position': 'absolute',
         'pointer-events': 'none',
-        'z-index': -1,
+        'z-index': 0,
       }}>
       {connections.map((val, index) => {
         const from = val.from;

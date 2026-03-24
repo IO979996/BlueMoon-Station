@@ -3285,7 +3285,7 @@
 /area/maintenance/aft)
 "Nl" = (
 /obj/structure/table,
-/obj/item/integrated_circuit_printer/debug,
+/obj/machinery/debug_component_printer,
 /turf/open/floor/plasteel/dark,
 /area/science/circuit)
 "Nw" = (

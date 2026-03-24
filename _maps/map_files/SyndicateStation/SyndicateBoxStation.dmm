@@ -35855,9 +35855,9 @@
 /area/science/misc_lab)
 "cbe" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/analyzer,
-/obj/item/integrated_electronics/debugger,
-/obj/item/integrated_electronics/wirer,
+/obj/item/integrated_circuit,
+/obj/item/usb_cable,
+/obj/item/usb_cable,
 /turf/open/floor/mineral/plastitanium,
 /area/science/circuit)
 "cbg" = (
@@ -36233,7 +36233,7 @@
 /area/science/circuit)
 "cbZ" = (
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /obj/item/stock_parts/cell/high,
 /obj/item/stock_parts/cell/high,
 /obj/machinery/computer/security/telescreen/circuitry{
@@ -57776,7 +57776,7 @@
 	dir = 4
 	},
 /obj/structure/table/reinforced,
-/obj/item/integrated_electronics/wirer,
+/obj/item/usb_cable,
 /turf/open/floor/mineral/plastitanium,
 /area/science/circuit)
 "lMw" = (
@@ -59392,7 +59392,7 @@
 	pixel_x = -20
 	},
 /obj/structure/table/reinforced,
-/obj/item/integrated_circuit_printer,
+/obj/machinery/component_printer,
 /obj/item/stock_parts/cell/high,
 /obj/item/stock_parts/cell/high,
 /turf/open/floor/mineral/plastitanium,

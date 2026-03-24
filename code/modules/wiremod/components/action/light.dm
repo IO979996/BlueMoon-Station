@@ -38,9 +38,10 @@
 /obj/item/circuit_component/light/register_shell(atom/movable/shell)
 	. = ..()
 	TRIGGER_CIRCUIT_COMPONENT(src, null)
+	mark_circuit_ui_pulse()
 
 /obj/item/circuit_component/light/unregister_shell(atom/movable/shell)
-	shell.set_light_on(FALSE)
+	shell.set_light(0, 0)
 	return ..()
 
 /obj/item/circuit_component/light/input_received(datum/port/input/port)
@@ -62,7 +63,7 @@
 	// Clamp anyways just for safety
 	var/bright_val = min(max(brightness.value || 0, 0), max_power)
 
-	target_atom.set_light_power(bright_val)
-	target_atom.set_light_range(bright_val)
-	target_atom.set_light_color(shell_light_color)
-	target_atom.set_light_on(!!on.value)
+	if(on.value)
+		target_atom.set_light(bright_val, bright_val, shell_light_color)
+	else
+		target_atom.set_light(0, 0)

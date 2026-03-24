@@ -5,14 +5,11 @@
  */
 /obj/item/wiremod_scanner
 	name = "scanner"
-	icon = 'icons/obj/wiremod.dmi'
+	icon = 'icons/obj/science/circuits.dmi'
 	icon_state = "setup_small"
 	item_state = "electronic"
-	icon_state = "electronic"
-	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	light_system = MOVABLE_LIGHT_DIRECTIONAL
-	light_on = FALSE
+	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 
 /obj/item/wiremod_scanner/Initialize(mapload)
 	. = ..()
