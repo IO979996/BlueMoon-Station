@@ -1,4 +1,4 @@
-import { Box, Icon, Stack } from '../../components';
+import { Box, Button, Icon, Stack } from '../../components';
 
 /**
  * Верхняя панель: состояние платы, счётчики, масштаб, краткая легенда управления.
@@ -12,6 +12,9 @@ export const CircuitToolbar = (props) => {
     showVariableChip = true,
     /** IE assembly only: null = no cell, number = charge % */
     ieBatteryPercent,
+    /** IE: "assembly" | "chip" — показать кнопку копирования JSON для принтера / одного чипа */
+    ieCloneCopyMode,
+    onIeCloneCopy,
   } = props;
 
   const powered = circuitOn !== false && circuitOn !== 0;
@@ -56,6 +59,20 @@ export const CircuitToolbar = (props) => {
               <Icon name="database" style={{ 'margin-right': '0.35em' }} />
               Переменных: <b>{variableCount}</b>
             </Box>
+          </Stack.Item>
+        )}
+        {(ieCloneCopyMode === 'assembly' || ieCloneCopyMode === 'chip') && !!onIeCloneCopy && (
+          <Stack.Item>
+            <Button
+              color="transparent"
+              icon="copy"
+              compact
+              tooltip={ieCloneCopyMode === 'assembly'
+                ? 'Код сборки (JSON) для принтера — как ghost scan / анализатор'
+                : 'JSON одного чипа (имя, входы) — открыть и скопировать из окна'}
+              onClick={onIeCloneCopy}>
+              {ieCloneCopyMode === 'assembly' ? 'Код сборки' : 'Код чипа'}
+            </Button>
           </Stack.Item>
         )}
         <Stack.Item>

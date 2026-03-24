@@ -250,6 +250,8 @@ export class IntegratedCircuit extends Component {
       variables,
       global_basic_types,
       ie_circuit,
+      ie_clone_copy_mode,
+      ie_debug_copy_ref,
     } = data;
     const components = byondListToArray(data.components).map(
       normalizeCircuitComponent,
@@ -371,6 +373,18 @@ export class IntegratedCircuit extends Component {
               zoomPercent={zoomPercent}
               showVariableChip={!ie_circuit}
               ieBatteryPercent={ieBatteryPercent}
+              ieCloneCopyMode={ie_circuit ? ie_clone_copy_mode : null}
+              onIeCloneCopy={
+                ie_circuit
+                && (ie_clone_copy_mode === 'assembly' || ie_clone_copy_mode === 'chip')
+                  ? () =>
+                    act(
+                      ie_clone_copy_mode === 'assembly'
+                        ? 'ie_copy_assembly_code'
+                        : 'ie_copy_component_code',
+                    )
+                  : undefined
+              }
             />
             <Box className="IntegratedCircuit__planeHost">
               <InfinitePlane
@@ -401,6 +415,7 @@ export class IntegratedCircuit extends Component {
                         onPortMouseDown={this.handlePortClick}
                         onPortRightClick={this.handlePortRightClick}
                         onPortMouseUp={this.handlePortUp}
+                        debugCopyRef={!!ie_circuit && !!ie_debug_copy_ref}
                       />
                     )
                 )}

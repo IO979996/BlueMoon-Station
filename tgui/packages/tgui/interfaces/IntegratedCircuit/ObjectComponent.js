@@ -109,6 +109,7 @@ export class ObjectComponent extends Component {
       onPortRightClick,
       onPortMouseUp,
       portLayoutKey: _portLayoutKey,
+      debugCopyRef,
       ...rest
     } = this.props;
     const input_ports = byondListToArray(rawInputPorts);
@@ -192,6 +193,18 @@ export class ObjectComponent extends Component {
                   y: e.pageY + ABSOLUTE_Y_OFFSET,
                 })} />
             </Stack.Item>
+            {!!debugCopyRef && (
+              <Stack.Item>
+                <Button
+                  color="transparent"
+                  icon="hashtag"
+                  compact
+                  tooltip="Ref чипа в чат (только R_DEBUG)"
+                  onClick={() => act('ie_copy_component_ref', {
+                    component_id: index,
+                  })} />
+              </Stack.Item>
+            )}
             {!!removable && (
               <Stack.Item>
                 <Button

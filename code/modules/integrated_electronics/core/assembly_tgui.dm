@@ -231,6 +231,9 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 /obj/item/electronic_assembly/ui_data(mob/user)
 	. = list()
 	.["ie_circuit"] = TRUE
+	/// "assembly" = копировать JSON всей сборки для принтера; см. `ie_copy_assembly_code`.
+	.["ie_clone_copy_mode"] = "assembly"
+	.["ie_debug_copy_ref"] = user.client && check_rights_for(user.client, R_DEBUG)
 	.["circuit_on"] = TRUE
 	.["is_admin"] = FALSE
 	.["variables"] = list()
@@ -397,6 +400,27 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 				return
 			io.linked.Swap(lower, lower + 1)
 			. = TRUE
+		if("ie_copy_assembly_code")
+			if(!usr)
+				return
+			var/json = SScircuit.save_electronic_assembly(src)
+			if(!json)
+				to_chat(usr, "<span class='warning'>В корпусе нет микросхем — нечего сохранить для принтера.</span>")
+				. = TRUE
+				return
+			var/datum/browser/popup = new(usr, "ie_asm_clone", "Код сборки для принтера", 720, 540)
+			popup.set_content("Полный JSON этой сборки. Вставь в интегральный принтер при включённом клонировании (как при ghost scan или анализаторе).<br><br><code style='word-break:break-all;white-space:pre-wrap;font-size:11px'>[json]</code>")
+			popup.open()
+			. = TRUE
+		if("ie_copy_component_ref")
+			if(!usr || !check_rights_for(usr.client, R_DEBUG))
+				return
+			var/cid = text2num(params["component_id"])
+			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
+			if(!chip || !(chip in assembly_components))
+				return
+			to_chat(usr, "<span class='notice'>Ref чипа: [REF(chip)] — [chip.type]</span>")
+			. = TRUE
 	if(action in list("add_variable", "remove_variable", "add_setter_or_getter", "save_circuit"))
 		return TRUE
 
@@ -425,6 +449,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		return assembly.ui_data(user)
 	. = list()
 	.["ie_circuit"] = TRUE
+	.["ie_clone_copy_mode"] = "chip"
+	.["ie_debug_copy_ref"] = FALSE
 	.["circuit_on"] = TRUE
 	.["is_admin"] = FALSE
 	.["variables"] = list()
@@ -535,6 +561,15 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			if(!io || length(io.linked) < lower + 1 || lower < 1)
 				return
 			io.linked.Swap(lower, lower + 1)
+			. = TRUE
+		if("ie_copy_component_code")
+			if(!usr)
+				return
+			var/list/chip_data = save()
+			var/json = json_encode(chip_data)
+			var/datum/browser/popup = new(usr, "ie_chip_save", "Параметры чипа (JSON)", 640, 440)
+			popup.set_content("JSON одного чипа (имя, закреплённые входы и т.д.):<br><br><code style='word-break:break-all;white-space:pre-wrap;font-size:11px'>[json]</code>")
+			popup.open()
 			. = TRUE
 	if(action in list("add_variable", "remove_variable", "add_setter_or_getter", "save_circuit"))
 		return TRUE
