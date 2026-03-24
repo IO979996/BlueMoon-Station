@@ -4,7 +4,7 @@
  * zero components. Wiremod builds lists with `+=` and usually yields arrays.
  */
 export function byondListToArray(raw) {
-  if (raw == null) {
+  if (raw === null || raw === undefined) {
     return [];
   }
   if (Array.isArray(raw)) {

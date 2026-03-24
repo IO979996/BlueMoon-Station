@@ -115,7 +115,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
     const { value, setValue, name } = props;
     const labels = IE_DIR_OPTIONS.map(([, label]) => label);
     const match = IE_DIR_OPTIONS.find(([v]) => v === value);
-    const displayText = match ? match[1] : (value == null ? '—' : String(value));
+    const displayText = match ? match[1] : (value === null || value === undefined ? '—' : String(value));
     return (
       <Dropdown
         width="9rem"
@@ -134,7 +134,8 @@ export const FUNDAMENTAL_DATA_TYPES = {
   },
   'list': (props, context) => {
     const { act, componentId, portId, name } = props;
-    if (!act || componentId == null || portId == null) {
+    if (!act || componentId === null || componentId === undefined
+      || portId === null || portId === undefined) {
       return null;
     }
     return (
