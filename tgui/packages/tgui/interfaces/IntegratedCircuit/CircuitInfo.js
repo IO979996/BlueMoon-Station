@@ -1,4 +1,5 @@
 import { Box, Button, Stack } from '../../components';
+import { byondListToArray } from './byondPayload';
 
 export const CircuitInfo = (props, context) => {
   const {
@@ -7,20 +8,26 @@ export const CircuitInfo = (props, context) => {
     notices,
     ...rest
   } = props;
-  const noticeList = Array.isArray(notices) ? notices : [];
+  const noticeList = byondListToArray(notices).filter(
+    (val) => val && typeof val === 'object',
+  );
+  const nameText = name === null || name === undefined ? '' : String(name);
+  const descText = desc === null || desc === undefined ? '' : String(desc);
   return (
     <Box {...rest}>
       <Stack fill vertical justify="space-around">
-        {!!name && (
+        {!!nameText && (
           <Stack.Item>
             <Box className="CircuitInfo__name">
-              {name}
+              {nameText}
             </Box>
           </Stack.Item>
         )}
         <Stack.Item maxWidth="240px">
-          <Box className="CircuitInfo__desc">
-            {desc}
+          <Box
+            className="CircuitInfo__desc"
+            style={{ 'white-space': 'pre-wrap' }}>
+            {descText}
           </Box>
         </Stack.Item>
         <Stack.Item>
@@ -28,7 +35,7 @@ export const CircuitInfo = (props, context) => {
             {noticeList.map((val, index) => (
               <Stack.Item key={index}>
                 <Button
-                  content={val.content}
+                  content={val.content != null ? String(val.content) : ''}
                   color={val.color}
                   icon={val.icon}
                   fluid

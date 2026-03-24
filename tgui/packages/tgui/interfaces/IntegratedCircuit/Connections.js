@@ -3,7 +3,7 @@ import { CSS_COLORS } from '../../constants';
 import { SVG_CURVE_INTENSITY } from './constants';
 
 export const Connections = (props, context) => {
-  const { connections } = props;
+  const { connections, svgRef } = props;
 
   const isColorClass = (str) => {
     if (typeof str === 'string') {
@@ -13,6 +13,7 @@ export const Connections = (props, context) => {
 
   return (
     <svg
+      ref={svgRef}
       className="IntegratedCircuit__connections"
       width="100%"
       height="100%"
@@ -20,6 +21,7 @@ export const Connections = (props, context) => {
         'position': 'absolute',
         'pointer-events': 'none',
         'z-index': 0,
+        'overflow': 'visible',
       }}>
       {connections.map((val, index) => {
         const from = val.from;

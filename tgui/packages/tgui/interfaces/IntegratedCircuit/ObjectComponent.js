@@ -108,6 +108,7 @@ export class ObjectComponent extends Component {
       onPortMouseDown,
       onPortRightClick,
       onPortMouseUp,
+      portLayoutKey: _portLayoutKey,
       ...rest
     } = this.props;
     const input_ports = byondListToArray(rawInputPorts);

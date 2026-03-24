@@ -68,6 +68,40 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		return "entity"
 	return "any"
 
+/proc/ie_ic_ui_examine_title(obj/item/integrated_circuit/C)
+	if(!C)
+		return null
+	var/nn = C.displayed_name
+	if(!istext(nn) || !length_char(nn))
+		nn = C.name
+	if(!istext(nn))
+		nn = "circuit"
+	return nn
+
+/proc/ie_ic_ui_examine_desc(obj/item/integrated_circuit/C)
+	if(!C)
+		return null
+	var/dd = C.desc
+	var/ed = C.extended_desc
+	if(!istext(dd))
+		dd = ""
+	if(!istext(ed))
+		ed = ""
+	return "[dd]\n[ed]"
+
+/proc/ie_ic_ui_examine_notices(obj/item/integrated_circuit/C)
+	var/list/out = list()
+	if(!C)
+		return out
+	var/cx = isnum(C.complexity) ? C.complexity : 0
+	var/cd = isnum(C.cooldown_per_use) ? C.cooldown_per_use : 0
+	out += list(list(
+		"content" = "Сложность: [cx] | КД: [cd / 10] с",
+		"color" = "transparent",
+		"icon" = "info",
+	))
+	return out
+
 /proc/ie_ic_serialize_data(datum/integrated_io/io)
 	var/data = io.data
 	if(isnull(data))
@@ -210,15 +244,11 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	if(battery)
 		.["ie_battery_percent"] = round(100 * battery.charge / max(battery.maxcharge, 1), 0.1)
 	var/obj/item/integrated_circuit/examined = ie_gui_examined_circuit?.resolve()
-	.["examined_name"] = examined?.displayed_name
-	.["examined_desc"] = examined ? "[examined.desc]\n[examined.extended_desc || ""]" : null
-	.["examined_notices"] = list()
-	if(examined)
-		.["examined_notices"][1] = list(
-			"content" = "Сложность: [examined.complexity] | КД: [examined.cooldown_per_use / 10] с",
-			"color" = "transparent",
-			"icon" = "info",
-		)
+	if(examined && !(examined in assembly_components))
+		examined = null
+	.["examined_name"] = examined ? ie_ic_ui_examine_title(examined) : null
+	.["examined_desc"] = examined ? ie_ic_ui_examine_desc(examined) : null
+	.["examined_notices"] = examined ? ie_ic_ui_examine_notices(examined) : list()
 	.["examined_rel_x"] = ie_gui_examined_x
 	.["examined_rel_y"] = ie_gui_examined_y
 
@@ -270,8 +300,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
 			if(!chip)
 				return
-			chip.ie_ui_rel_x = clamp(text2num(params["rel_x"]), -500, 500)
-			chip.ie_ui_rel_y = clamp(text2num(params["rel_y"]), -500, 500)
+			chip.ie_ui_rel_x = clamp(text2num(params["rel_x"]), -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
+			chip.ie_ui_rel_y = clamp(text2num(params["rel_y"]), -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
 			. = TRUE
 		if("set_component_input")
 			var/cid = text2num(params["component_id"])
@@ -336,11 +366,17 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		if("set_examined_component")
 			var/cid = text2num(params["component_id"])
 			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
-			if(!chip)
+			if(!chip || !(chip in assembly_components))
 				return
 			ie_gui_examined_circuit = WEAKREF(chip)
-			ie_gui_examined_x = text2num(params["x"])
-			ie_gui_examined_y = text2num(params["y"])
+			var/px = text2num(params["x"])
+			var/py = text2num(params["y"])
+			if(!isnum(px))
+				px = 0
+			if(!isnum(py))
+				py = 0
+			ie_gui_examined_x = clamp(px, 0, 4000)
+			ie_gui_examined_y = clamp(py, 0, 4000)
 			. = TRUE
 		if("remove_examined_component")
 			ie_gui_examined_circuit = null
@@ -400,15 +436,9 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	var/obj/item/integrated_circuit/examined = ie_gui_examined_circuit?.resolve()
 	if(examined != src)
 		examined = null
-	.["examined_name"] = examined?.displayed_name
-	.["examined_desc"] = examined ? "[examined.desc]\n[examined.extended_desc || ""]" : null
-	.["examined_notices"] = list()
-	if(examined)
-		.["examined_notices"][1] = list(
-			"content" = "Сложность: [examined.complexity] | КД: [examined.cooldown_per_use / 10] с",
-			"color" = "transparent",
-			"icon" = "info",
-		)
+	.["examined_name"] = examined ? ie_ic_ui_examine_title(examined) : null
+	.["examined_desc"] = examined ? ie_ic_ui_examine_desc(examined) : null
+	.["examined_notices"] = examined ? ie_ic_ui_examine_notices(examined) : list()
 	.["examined_rel_x"] = ie_gui_examined_x
 	.["examined_rel_y"] = ie_gui_examined_y
 
@@ -431,8 +461,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		if("detach_component")
 			. = TRUE
 		if("set_component_coordinates")
-			ie_ui_rel_x = clamp(text2num(params["rel_x"]), -500, 500)
-			ie_ui_rel_y = clamp(text2num(params["rel_y"]), -500, 500)
+			ie_ui_rel_x = clamp(text2num(params["rel_x"]), -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
+			ie_ui_rel_y = clamp(text2num(params["rel_y"]), -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
 			. = TRUE
 		if("set_component_input")
 			var/pid = text2num(params["port_id"])
@@ -482,8 +512,14 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			. = TRUE
 		if("set_examined_component")
 			ie_gui_examined_circuit = WEAKREF(src)
-			ie_gui_examined_x = text2num(params["x"])
-			ie_gui_examined_y = text2num(params["y"])
+			var/px = text2num(params["x"])
+			var/py = text2num(params["y"])
+			if(!isnum(px))
+				px = 0
+			if(!isnum(py))
+				py = 0
+			ie_gui_examined_x = clamp(px, 0, 4000)
+			ie_gui_examined_y = clamp(py, 0, 4000)
 			. = TRUE
 		if("remove_examined_component")
 			ie_gui_examined_circuit = null

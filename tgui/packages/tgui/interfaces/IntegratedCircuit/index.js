@@ -1,4 +1,4 @@
-import { Component } from 'inferno';
+import { Component, createRef } from 'inferno';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
@@ -21,11 +21,12 @@ import { VariableMenu } from './VariableMenu';
 export class IntegratedCircuit extends Component {
   constructor() {
     super();
+    this.connectionsSvgRef = createRef();
     this.state = {
       locations: {},
       selectedPort: null,
-      mouseX: null,
-      mouseY: null,
+      dragClientX: null,
+      dragClientY: null,
       zoom: 1,
       backgroundX: 0,
       backgroundY: 0,
@@ -44,19 +45,39 @@ export class IntegratedCircuit extends Component {
     this.handleBackgroundMoved = this.handleBackgroundMoved.bind(this);
   }
 
-  // Helper function to get an element's exact position
+  /**
+   * Port anchor position in the same coordinate space as the connections SVG
+   * (inside InfinitePlane’s translate+scale). offsetLeft/offsetTop ignores parent
+   * scale, so we use bounding rects and divide by zoom.
+   */
   getPosition(el) {
+    if (!el) {
+      return { x: 0, y: 0 };
+    }
+    const svg = this.connectionsSvgRef?.current;
+    const zoom = Math.max(this.state.zoom || 1, 0.01);
+    const portRect = el.getBoundingClientRect?.();
+    const svgRect = svg?.getBoundingClientRect?.();
+    if (portRect && svgRect && portRect.width >= 0 && svgRect.width >= 0) {
+      return {
+        x: (portRect.left + portRect.width / 2 - svgRect.left) / zoom,
+        y: (portRect.top + portRect.height / 2 - svgRect.top) / zoom,
+      };
+    }
+
     let xPos = 0;
     let yPos = 0;
-
-    while (el) {
-      xPos += el.offsetLeft;
-      yPos += el.offsetTop;
-      el = el.offsetParent;
+    let node = el;
+    while (node) {
+      xPos += node.offsetLeft;
+      yPos += node.offsetTop;
+      node = node.offsetParent;
     }
+    const w = el.offsetWidth || 0;
+    const h = el.offsetHeight || 0;
     return {
-      x: xPos,
-      y: yPos + ABSOLUTE_Y_OFFSET,
+      x: xPos + w / 2,
+      y: yPos + h / 2 + ABSOLUTE_Y_OFFSET,
     };
   }
 
@@ -138,17 +159,17 @@ export class IntegratedCircuit extends Component {
   }
 
   handlePortDrag(event) {
-    const { data } = useBackend(this.context);
-    const { screen_x, screen_y } = data;
-    this.setState((state) => ({
-      mouseX: event.clientX - (state.backgroundX || screen_x),
-      mouseY: event.clientY - (state.backgroundY || screen_y),
-    }));
+    this.setState({
+      dragClientX: event.clientX,
+      dragClientY: event.clientY,
+    });
   }
 
   handlePortRelease(event) {
     this.setState({
       selectedPort: null,
+      dragClientX: null,
+      dragClientY: null,
     });
 
     window.removeEventListener('mousemove', this.handlePortDrag);
@@ -262,18 +283,28 @@ export class IntegratedCircuit extends Component {
     }
 
     if (selectedPort) {
-      const { mouseX, mouseY, zoom } = this.state;
+      const { dragClientX, dragClientY, zoom } = this.state;
+      const z = Math.max(zoom || 1, 0.01);
       const isOutput = selectedPort.is_output;
       const portLocation = locations[selectedPort.ref];
-      const mouseCoords = {
-        x: (mouseX)*Math.pow(zoom, -1),
-        y: (mouseY + ABSOLUTE_Y_OFFSET)*Math.pow(zoom, -1),
-      };
-      connections.push({
-        color: (portLocation && portLocation.color) || 'blue',
-        from: isOutput? portLocation : mouseCoords,
-        to: isOutput? mouseCoords : portLocation,
-      });
+      const svg = this.connectionsSvgRef?.current;
+      if (
+        portLocation
+        && svg
+        && dragClientX !== null
+        && dragClientY !== null
+      ) {
+        const sr = svg.getBoundingClientRect();
+        const mouseCoords = {
+          x: (dragClientX - sr.left) / z,
+          y: (dragClientY - sr.top) / z,
+        };
+        connections.push({
+          color: (portLocation && portLocation.color) || 'blue',
+          from: isOutput ? portLocation : mouseCoords,
+          to: isOutput ? mouseCoords : portLocation,
+        });
+      }
     }
 
     return (
@@ -352,6 +383,10 @@ export class IntegratedCircuit extends Component {
                 initialLeft={screen_x}
                 initialTop={screen_y}
               >
+                <Connections
+                  connections={connections}
+                  svgRef={this.connectionsSvgRef}
+                />
                 {components.map(
                   (comp, index) =>
                     comp && (
@@ -360,6 +395,7 @@ export class IntegratedCircuit extends Component {
                         {...comp}
                         index={index + 1}
                         circuitOn={circuit_on ?? true}
+                        portLayoutKey={`${zoom}|${this.state.backgroundX}|${this.state.backgroundY}`}
                         onPortUpdated={this.handlePortLocation}
                         onPortLoaded={this.handlePortLocation}
                         onPortMouseDown={this.handlePortClick}
@@ -368,7 +404,6 @@ export class IntegratedCircuit extends Component {
                       />
                     )
                 )}
-                <Connections connections={connections} />
               </InfinitePlane>
             </Box>
           </Box>
