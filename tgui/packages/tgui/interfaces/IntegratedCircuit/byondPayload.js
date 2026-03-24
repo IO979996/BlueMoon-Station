@@ -20,6 +20,21 @@ export function byondListToArray(raw) {
   if (!keys.every((k) => /^\d+$/.test(k))) {
     return [];
   }
+  const nums = keys.map((k) => Number(k));
+  const minKey = Math.min(...nums);
+  const maxKey = Math.max(...nums);
+  if (minKey !== 1) {
+    return [];
+  }
+  const keySet = new Set(nums);
+  if (keySet.size !== keys.length) {
+    return [];
+  }
+  for (let i = 1; i <= maxKey; i++) {
+    if (!keySet.has(i)) {
+      return [];
+    }
+  }
   return keys
     .sort((a, b) => Number(a) - Number(b))
     .map((k) => raw[k]);
