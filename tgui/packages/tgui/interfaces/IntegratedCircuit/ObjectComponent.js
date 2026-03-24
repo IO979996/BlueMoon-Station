@@ -1,11 +1,13 @@
 import { Component } from 'inferno';
 
-import { shallowDiffers } from '../../../common/react';
+import { classes, shallowDiffers } from '../../../common/react';
 import { useBackend } from '../../backend';
 import {
   Box,
-Button,
-  Stack } from '../../components';
+  Button,
+  Icon,
+  Stack,
+} from '../../components';
 import { ABSOLUTE_Y_OFFSET } from './constants';
 import { Port } from "./Port";
 
@@ -89,14 +91,16 @@ export class ObjectComponent extends Component {
 
   render() {
     const {
-      input_ports,
-      output_ports,
+      input_ports: rawInputPorts,
+      output_ports: rawOutputPorts,
       name,
       x,
       y,
       index,
       color = 'blue',
       removable,
+      recent_pulse,
+      circuitOn,
       locations,
       onPortUpdated,
       onPortLoaded,
@@ -105,8 +109,11 @@ export class ObjectComponent extends Component {
       onPortMouseUp,
       ...rest
     } = this.props;
+    const input_ports = Array.isArray(rawInputPorts) ? rawInputPorts : [];
+    const output_ports = Array.isArray(rawOutputPorts) ? rawOutputPorts : [];
     const { act } = useBackend(this.context);
     const { startPos, dragPos } = this.state;
+    const powered = !!circuitOn;
 
     let [x_pos, y_pos] = [x, y];
     if (dragPos && startPos && startPos.x === x_pos && startPos.y === y_pos) {
@@ -129,6 +136,10 @@ export class ObjectComponent extends Component {
         position="absolute"
         left={`${x_pos}px`}
         top={`${y_pos}px`}
+        className={classes([
+          'ObjectComponent__root',
+          !powered && 'ObjectComponent--poweroff',
+        ])}
         onMouseDown={this.handleStartDrag}
         onMouseUp={this.handleStopDrag}
         onComponentWillUnmount={this.handleDrag}>
@@ -137,15 +148,42 @@ export class ObjectComponent extends Component {
           py={1}
           px={1}
           className="ObjectComponent__Titlebar">
-          <Stack>
+          <Stack align="center">
+            <Stack.Item>
+              <Box
+                className={classes([
+                  'ObjectComponent__ActivityLamp',
+                  recent_pulse && powered && 'ObjectComponent__ActivityLamp--pulse',
+                  !powered && 'ObjectComponent__ActivityLamp--off',
+                ])}
+                title={
+                  !powered
+                    ? 'Плата выключена'
+                    : recent_pulse
+                      ? 'Компонент недавно выполнялся'
+                      : 'Ожидание'
+                }
+              />
+            </Stack.Item>
+            <Stack.Item>
+              <Icon
+                name="arrows-alt"
+                size={0.85}
+                opacity={0.65}
+                title="Перетащить ноду"
+              />
+            </Stack.Item>
             <Stack.Item grow={1} unselectable="on">
-              {name}
+              <Box className="ObjectComponent__titleText">
+                {name}
+              </Box>
             </Stack.Item>
             <Stack.Item>
               <Button
                 color="transparent"
                 icon="info"
                 compact
+                tooltip="Описание и подсказки"
                 onClick={(e) => act('set_examined_component', {
                   component_id: index,
                   x: e.pageX,
@@ -158,6 +196,7 @@ export class ObjectComponent extends Component {
                   color="transparent"
                   icon="times"
                   compact
+                  tooltip="Снять с платы"
                   onClick={() => act('detach_component', { component_id: index })} />
               </Stack.Item>
             )}
@@ -168,8 +207,11 @@ export class ObjectComponent extends Component {
           unselectable="on"
           py={1}
           px={1}>
-          <Stack>
+          <Stack className="ObjectComponent__portColumns">
             <Stack.Item grow={1}>
+              <Box className="ObjectComponent__colLabel" textAlign="left">
+                Входы
+              </Box>
               <Stack vertical fill>
                 {input_ports.map((port, portIndex) => (
                   <Stack.Item key={portIndex}>
@@ -184,6 +226,9 @@ export class ObjectComponent extends Component {
               </Stack>
             </Stack.Item>
             <Stack.Item ml={5}>
+              <Box className="ObjectComponent__colLabel" textAlign="right">
+                Выходы
+              </Box>
               <Stack vertical>
                 {output_ports.map((port, portIndex) => (
                   <Stack.Item key={portIndex}>
