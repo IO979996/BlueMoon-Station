@@ -38,16 +38,19 @@ export class Connections extends Component {
   constructor(props) {
     super(props);
     this.state = { hoveredKey: null };
-    this.clearHover = this.clearHover.bind(this);
-    this.setHover = this.setHover.bind(this);
+    this.handleClearHover = this.handleClearHover.bind(this);
+    this.handleOverlayWireMouseEnter = this.handleOverlayWireMouseEnter.bind(this);
   }
 
-  clearHover() {
+  handleClearHover() {
     this.setState({ hoveredKey: null });
   }
 
-  setHover(key) {
-    this.setState({ hoveredKey: key });
+  handleOverlayWireMouseEnter(ev) {
+    const key = ev.currentTarget.getAttribute('data-wire-key');
+    if (key != null) {
+      this.setState({ hoveredKey: key });
+    }
   }
 
   render() {
@@ -127,7 +130,7 @@ export class Connections extends Component {
             overflow: 'visible',
             'pointer-events': 'none',
           }}
-          onMouseLeave={this.clearHover}>
+          onMouseLeave={this.handleClearHover}>
           {connections.map((val, index) => {
             const d = renderPathD(val);
             if (!d || val.isPreview) {
@@ -137,13 +140,14 @@ export class Connections extends Component {
             return (
               <path
                 key={`o-${key}`}
+                data-wire-key={key}
                 d={d}
                 fill="none"
                 stroke="rgba(255,255,255,0.001)"
                 strokeWidth="14"
                 vectorEffect="non-scaling-stroke"
                 style={{ 'pointer-events': 'stroke', cursor: 'crosshair' }}
-                onMouseEnter={() => this.setHover(key)}
+                onMouseEnter={this.handleOverlayWireMouseEnter}
               />
             );
           })}
