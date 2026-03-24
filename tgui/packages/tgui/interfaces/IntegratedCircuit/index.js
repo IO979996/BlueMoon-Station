@@ -14,6 +14,7 @@ import { CircuitInfo } from './CircuitInfo';
 import { CircuitToolbar } from './CircuitToolbar';
 import { Connections } from './Connections';
 import { ABSOLUTE_Y_OFFSET, MOUSE_BUTTON_LEFT } from './constants';
+import { byondListToArray, normalizeCircuitComponent } from './byondPayload';
 import { ObjectComponent } from './ObjectComponent';
 import { VariableMenu } from './VariableMenu';
 
@@ -227,8 +228,14 @@ export class IntegratedCircuit extends Component {
       is_admin,
       variables,
       global_basic_types,
+      ie_circuit,
     } = data;
-    const components = Array.isArray(data.components) ? data.components : [];
+    const components = byondListToArray(data.components).map(
+      normalizeCircuitComponent,
+    );
+    const ieBatteryPercent = ie_circuit && data.ie_battery_percent !== undefined
+      ? data.ie_battery_percent
+      : undefined;
     const { locations, selectedPort, menuOpen, zoom } = this.state;
     const connections = [];
     const componentCount = components.reduce((n, c) => n + (c ? 1 : 0), 0);
@@ -240,9 +247,9 @@ export class IntegratedCircuit extends Component {
         continue;
       }
 
-      const inputPorts = Array.isArray(comp.input_ports) ? comp.input_ports : [];
+      const inputPorts = byondListToArray(comp.input_ports);
       for (const input of inputPorts) {
-        const linked = Array.isArray(input?.connected_to) ? input.connected_to : [];
+        const linked = byondListToArray(input?.connected_to);
         for (const output of linked) {
           const output_port = locations[output];
           connections.push({
@@ -285,23 +292,27 @@ export class IntegratedCircuit extends Component {
               <Stack.Item grow>
                 <Input
                   fluid
-                  placeholder="Имя схемы"
+                  placeholder={ie_circuit
+                    ? 'Имя корпуса (не поиск по деталям)'
+                    : 'Имя схемы'}
                   value={display_name}
                   onChange={(e, value) => act("set_display_name", { display_name: value })}
                 />
               </Stack.Item>
-              <Stack.Item>
-                <Button
-                  color="transparent"
-                  icon="cog"
-                  tooltip="Переменные и сеттеры/геттеры"
-                  selected={menuOpen}
-                  onClick={() => this.setState((state) => ({
-                    menuOpen: !state.menuOpen,
-                  }))}
-                />
-              </Stack.Item>
-              {!!is_admin && (
+              {!ie_circuit && (
+                <Stack.Item>
+                  <Button
+                    color="transparent"
+                    icon="cog"
+                    tooltip="Переменные и сеттеры/геттеры"
+                    selected={menuOpen}
+                    onClick={() => this.setState((state) => ({
+                      menuOpen: !state.menuOpen,
+                    }))}
+                  />
+                </Stack.Item>
+              )}
+              {!!is_admin && !ie_circuit && (
                 <Stack.Item>
                   <Button
                     color="transparent"
@@ -327,6 +338,8 @@ export class IntegratedCircuit extends Component {
               componentCount={componentCount}
               variableCount={variableCount}
               zoomPercent={zoomPercent}
+              showVariableChip={!ie_circuit}
+              ieBatteryPercent={ieBatteryPercent}
             />
             <Box className="IntegratedCircuit__planeHost">
               <InfinitePlane
@@ -370,7 +383,7 @@ export class IntegratedCircuit extends Component {
               notices={examined_notices}
             />
           )}
-          {!!menuOpen && (
+          {!!menuOpen && !ie_circuit && (
             <Box
               className="IntegratedCircuit__variableDock"
               position="absolute"

@@ -9,17 +9,19 @@ export const DisplayName = (props, context) => {
   const { act } = useBackend(context);
   const { port, isOutput, componentId, portIndex, ...rest } = props;
 
-  const InputComponent = FUNDAMENTAL_DATA_TYPES[port.type || 'unknown'];
-  const TypeDisplayHandler = DATATYPE_DISPLAY_HANDLERS[port.type || 'unknown'];
+  const fundamentalType = FUNDAMENTAL_DATA_TYPES[port.type] ? port.type : 'any';
+  const InputComponent = FUNDAMENTAL_DATA_TYPES[fundamentalType];
+  const TypeDisplayHandler = DATATYPE_DISPLAY_HANDLERS[fundamentalType];
 
   const hasInput = !isOutput
     && !port.connected_to?.length
     && InputComponent;
 
-  const displayType = TypeDisplayHandler? TypeDisplayHandler(port) : port.type;
+  const displayType = port.pin_type_label
+    || (TypeDisplayHandler ? TypeDisplayHandler(port) : fundamentalType);
   const showLive = isOutput || (!!port.connected_to?.length);
   const liveText = showLive
-    ? formatPortLiveValue(port.current_data, port.type)
+    ? formatPortLiveValue(port.current_data, fundamentalType)
     : null;
 
   return (
@@ -28,6 +30,9 @@ export const DisplayName = (props, context) => {
         <Flex.Item>
           {(hasInput && (
             <InputComponent
+              act={act}
+              componentId={componentId}
+              portId={portIndex}
               setValue={(val, extraParams) =>
                 act('set_component_input', {
                   component_id: componentId,

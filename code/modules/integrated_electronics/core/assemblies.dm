@@ -182,6 +182,7 @@
 			to_chat(usr, "<span class='notice'>You pull \the [battery] out of \the [src]'s power supplier.</span>")
 			battery = null
 			diag_hud_set_circuitstat() //update diagnostic hud
+			SStgui.update_uis(src)
 
 	var/obj/item/integrated_circuit/component
 
@@ -358,6 +359,7 @@
 	//diagnostic hud update
 	diag_hud_set_circuitstat()
 	diag_hud_set_circuittracking()
+	SStgui.update_uis(src)
 
 
 /obj/item/electronic_assembly/proc/try_remove_component(obj/item/integrated_circuit/IC, mob/user, silent)
@@ -398,6 +400,7 @@
 	//diagnostic hud update
 	diag_hud_set_circuitstat()
 	diag_hud_set_circuittracking()
+	SStgui.update_uis(src)
 
 
 /obj/item/electronic_assembly/afterattack(atom/target, mob/user, proximity)
@@ -500,6 +503,8 @@
 		diag_hud_set_circuitstat() //update diagnostic hud
 		playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>You slot the [I] inside \the [src]'s power supplier.</span>")
+		to_chat(user, "<span class='info'>Питание не считается «компонентом» схемы: в окне редактора в счётчике — только напечатанные на интегральном принтере микросхемы.</span>")
+		SStgui.update_uis(src)
 		return TRUE
 
 	else if(istype(I, /obj/item/integrated_electronics/detailer))

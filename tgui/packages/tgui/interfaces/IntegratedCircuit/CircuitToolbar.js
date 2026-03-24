@@ -9,6 +9,9 @@ export const CircuitToolbar = (props) => {
     componentCount,
     variableCount,
     zoomPercent,
+    showVariableChip = true,
+    /** IE assembly only: null = no cell, number = charge % */
+    ieBatteryPercent,
   } = props;
 
   const powered = circuitOn !== false && circuitOn !== 0;
@@ -26,17 +29,35 @@ export const CircuitToolbar = (props) => {
           </Box>
         </Stack.Item>
         <Stack.Item>
-          <Box className="IntegratedCircuit__chip IntegratedCircuit__chip--muted">
+          <Box
+            className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
+            title={ieBatteryPercent !== undefined
+              ? 'Считаются только микросхемы (чипы с интегрального принтера). Батарея — отдельно.'
+              : undefined}>
             <Icon name="microchip" style={{ 'margin-right': '0.35em' }} />
-            Компонентов: <b>{componentCount}</b>
+            {ieBatteryPercent !== undefined ? 'Чипов (принтер)' : 'Компонентов'}
+            : <b>{componentCount}</b>
           </Box>
         </Stack.Item>
-        <Stack.Item>
-          <Box className="IntegratedCircuit__chip IntegratedCircuit__chip--muted">
-            <Icon name="database" style={{ 'margin-right': '0.35em' }} />
-            Переменных: <b>{variableCount}</b>
-          </Box>
-        </Stack.Item>
+        {ieBatteryPercent !== undefined && (
+          <Stack.Item>
+            <Box
+              className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
+              title="Элемент питания в отсеке батареи, не логический чип.">
+              <Icon name="battery-half" style={{ 'margin-right': '0.35em' }} />
+              Батарея:{' '}
+              <b>{ieBatteryPercent === null ? 'нет' : `${ieBatteryPercent}%`}</b>
+            </Box>
+          </Stack.Item>
+        )}
+        {!!showVariableChip && (
+          <Stack.Item>
+            <Box className="IntegratedCircuit__chip IntegratedCircuit__chip--muted">
+              <Icon name="database" style={{ 'margin-right': '0.35em' }} />
+              Переменных: <b>{variableCount}</b>
+            </Box>
+          </Stack.Item>
+        )}
         <Stack.Item>
           <Box className="IntegratedCircuit__chip IntegratedCircuit__chip--muted">
             <Icon name="search-plus" style={{ 'margin-right': '0.35em' }} />
@@ -47,17 +68,18 @@ export const CircuitToolbar = (props) => {
           <Box
             className="IntegratedCircuit__legend"
             title={
-              'Поле: перетаскивание ЛКМ, масштаб — колёсико мыши. '
+              'Поле: перетаскивание ЛКМ. '
               + 'Нода: перетаскивание за заголовок. '
               + 'Связь: ЛКМ от выхода (справа) ко входу (слева). '
               + 'Снять связь: ПКМ по порту. '
-              + 'Несколько проводов на вход: кнопки ⇄ меняют порядок.'
+              + 'Несколько проводов на вход: кнопки ⇄ меняют порядок. '
+              + 'Масштаб: кнопки +/− у полосы внизу.'
             }>
             <Icon
               name="mouse-pointer"
               style={{ 'margin-right': '0.35em', opacity: 0.75 }}
             />
-            Поле · ЛКМ — сдвиг · колёсико — зум · связь выход→вход · ПКМ — снять
+            Поле · ЛКМ — сдвиг · +/− — зум · связь выход→вход · ПКМ — снять
           </Box>
         </Stack.Item>
       </Stack>

@@ -11,6 +11,12 @@ export function formatPortLiveValue(data, portType) {
   if (portType === 'signal') {
     return data ? '●' : '○';
   }
+  if (portType === 'boolean') {
+    return data ? 'true' : 'false';
+  }
+  if (portType === 'list') {
+    return typeof data === 'string' ? data : `list(${Array.isArray(data) ? data.length : '?'})`;
+  }
   if (typeof data === 'boolean') {
     return data ? 'true' : 'false';
   }

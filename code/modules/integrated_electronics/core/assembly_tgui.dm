@@ -1,6 +1,38 @@
 /// TGUI "IntegratedCircuit" backend for legacy Integrated Electronics (assemblies + loose chips).
 
-GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entity", "signal", "any", "option"))
+GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boolean", "char", "color", "dir", "index", "list", "entity", "signal", "any", "option"))
+
+/proc/ie_ic_tgui_write_input(datum/integrated_io/io, ftype, new_val)
+	if(!io)
+		return
+	switch(ftype)
+		if("list", "signal")
+			return
+		if("number", "index")
+			io.write_data_to_pin(text2num(new_val))
+		if("boolean")
+			if(new_val == TRUE || new_val == 1)
+				io.write_data_to_pin(TRUE)
+			else if(new_val == FALSE || new_val == 0)
+				io.write_data_to_pin(FALSE)
+			else if(istext(new_val))
+				var/nt = lowertext(new_val)
+				io.write_data_to_pin(nt == "true" || nt == "1" || nt == "yes")
+			else
+				io.write_data_to_pin(FALSE)
+		if("dir")
+			io.write_data_to_pin(text2num(new_val))
+		if("char")
+			var/t = istext(new_val) ? new_val : "[new_val]"
+			if(length_char(t) > 1)
+				t = copytext_char(t, 1, 2)
+			io.write_data_to_pin(t)
+		if("color", "string")
+			io.write_data_to_pin(new_val)
+		if("any")
+			io.write_data_to_pin(new_val)
+		else
+			io.write_data_to_pin(new_val)
 
 /proc/ie_ic_is_output_side_pin(datum/integrated_io/io)
 	if(!io)
@@ -16,14 +48,24 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 		return "any"
 	if(io.io_type == PULSE_CHANNEL)
 		return "signal"
-	if(istype(io, /datum/integrated_io/number) || istype(io, /datum/integrated_io/boolean))
+	if(istype(io, /datum/integrated_io/boolean))
+		return "boolean"
+	if(istype(io, /datum/integrated_io/number))
 		return "number"
-	if(istype(io, /datum/integrated_io/string) || istype(io, /datum/integrated_io/char) || istype(io, /datum/integrated_io/color) || istype(io, /datum/integrated_io/dir))
+	if(istype(io, /datum/integrated_io/index))
+		return "index"
+	if(istype(io, /datum/integrated_io/char))
+		return "char"
+	if(istype(io, /datum/integrated_io/color))
+		return "color"
+	if(istype(io, /datum/integrated_io/dir))
+		return "dir"
+	if(istype(io, /datum/integrated_io/string))
 		return "string"
+	if(istype(io, /datum/integrated_io/lists))
+		return "list"
 	if(istype(io, /datum/integrated_io/ref) || istype(io, /datum/integrated_io/selfref))
 		return "entity"
-	if(istype(io, /datum/integrated_io/lists) || istype(io, /datum/integrated_io/index))
-		return "any"
 	return "any"
 
 /proc/ie_ic_serialize_data(datum/integrated_io/io)
@@ -69,6 +111,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 	return list(
 		"name" = io.name,
 		"type" = ie_ic_fundamental_type(io),
+		/// Same human labels as old HTML (\<TEXT\>, \<LIST\>, …); TGUI still uses `type` for widgets.
+		"pin_type_label" = io.display_pin_type(),
 		"ref" = REF(io),
 		"color" = "blue",
 		"current_data" = ie_ic_serialize_data(io),
@@ -78,20 +122,16 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 
 /proc/ie_ic_component_payload(obj/item/integrated_circuit/chip)
 	var/list/component_data = list()
-	/// Use numeric indices so json_encode produces JSON arrays; `L += list(assoc)` merges keys into L.
+	/// Append with `+= list(entry)` so json_encode emits JSON arrays (numeric `[i]=` can become objects on the wire).
 	var/list/input_ports = list()
-	var/port_i = 0
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_input_ios(chip))
-		port_i++
-		input_ports[port_i] = ie_ic_build_port_entry(io)
+		input_ports += list(ie_ic_build_port_entry(io))
 	component_data["input_ports"] = input_ports
 	var/list/output_ports = list()
-	port_i = 0
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_output_ios(chip))
-		port_i++
 		var/list/out_entry = ie_ic_build_port_entry(io)
 		out_entry["connected_to"] = list()
-		output_ports[port_i] = out_entry
+		output_ports += list(out_entry)
 	component_data["output_ports"] = output_ports
 	component_data["name"] = chip.displayed_name || chip.name
 	component_data["x"] = chip.ie_ui_rel_x
@@ -135,7 +175,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 	)
 
 /obj/item/electronic_assembly/ui_state(mob/user)
-	return GLOB.hands_state
+	/// Было hands_state: окно требовало держать сборку в руках; на полу статус становился UI_CLOSE и TGUI не обновлялся / закрывался.
+	return GLOB.default_state
 
 /obj/item/electronic_assembly/ui_interact(mob/user, obj/item/integrated_circuit/circuit_pins)
 	. = ..()
@@ -161,22 +202,23 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 	.["variables"] = list()
 	.["display_name"] = name
 	.["components"] = list()
-	var/comp_i = 0
 	for(var/obj/item/integrated_circuit/part as anything in assembly_components)
-		comp_i++
-		.["components"][comp_i] = ie_ic_component_payload(part)
+		.["components"] += list(ie_ic_component_payload(part))
 	.["screen_x"] = ie_tgui_screen_x
 	.["screen_y"] = ie_tgui_screen_y
+	.["ie_battery_percent"] = null
+	if(battery)
+		.["ie_battery_percent"] = round(100 * battery.charge / max(battery.maxcharge, 1), 0.1)
 	var/obj/item/integrated_circuit/examined = ie_gui_examined_circuit?.resolve()
 	.["examined_name"] = examined?.displayed_name
 	.["examined_desc"] = examined ? "[examined.desc]\n[examined.extended_desc || ""]" : null
 	.["examined_notices"] = list()
 	if(examined)
-		.["examined_notices"] += list(list(
+		.["examined_notices"][1] = list(
 			"content" = "Сложность: [examined.complexity] | КД: [examined.cooldown_per_use / 10] с",
 			"color" = "transparent",
 			"icon" = "info",
-		))
+		)
 	.["examined_rel_x"] = ie_gui_examined_x
 	.["examined_rel_y"] = ie_gui_examined_y
 
@@ -260,14 +302,19 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 						io.write_data_to_pin(WEAKREF(C.holder.marked_datum))
 				return TRUE
 			var/ftype = ie_ic_fundamental_type(io)
-			var/new_val = params["input"]
-			if(ftype == "number")
-				io.write_data_to_pin(text2num(new_val))
-			else if(ftype == "string" || ftype == "any")
-				io.write_data_to_pin(new_val)
-			else
-				io.write_data_to_pin(new_val)
+			ie_ic_tgui_write_input(io, ftype, params["input"])
 			return TRUE
+		if("ie_open_list_editor")
+			var/cid = text2num(params["component_id"])
+			var/pid = text2num(params["port_id"])
+			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
+			if(!chip || !usr)
+				return
+			var/datum/integrated_io/io = ie_ic_get_input_io(chip, pid)
+			if(istype(io, /datum/integrated_io/lists))
+				var/datum/integrated_io/lists/L = io
+				L.interact(usr)
+				. = TRUE
 		if("get_component_value")
 			var/cid = text2num(params["component_id"])
 			var/pid = text2num(params["port_id"])
@@ -347,7 +394,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 	.["variables"] = list()
 	.["display_name"] = displayed_name || name
 	.["components"] = list()
-	.["components"][1] = ie_ic_component_payload(src)
+	.["components"] += list(ie_ic_component_payload(src))
 	.["screen_x"] = ie_tgui_screen_x
 	.["screen_y"] = ie_tgui_screen_y
 	var/obj/item/integrated_circuit/examined = ie_gui_examined_circuit?.resolve()
@@ -412,12 +459,15 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "entit
 						io.write_data_to_pin(WEAKREF(C.holder.marked_datum))
 				return TRUE
 			var/ftype = ie_ic_fundamental_type(io)
-			var/new_val = params["input"]
-			if(ftype == "number")
-				io.write_data_to_pin(text2num(new_val))
-			else
-				io.write_data_to_pin(new_val)
+			ie_ic_tgui_write_input(io, ftype, params["input"])
 			return TRUE
+		if("ie_open_list_editor")
+			var/pid = text2num(params["port_id"])
+			var/datum/integrated_io/io = ie_ic_get_input_io(src, pid)
+			if(istype(io, /datum/integrated_io/lists))
+				var/datum/integrated_io/lists/L = io
+				L.interact(usr)
+				. = TRUE
 		if("get_component_value")
 			var/pid = text2num(params["port_id"])
 			var/datum/integrated_io/io = ie_ic_get_output_io(src, pid)

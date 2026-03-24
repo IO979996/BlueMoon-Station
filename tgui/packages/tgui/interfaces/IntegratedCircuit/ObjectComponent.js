@@ -9,6 +9,7 @@ import {
   Stack,
 } from '../../components';
 import { ABSOLUTE_Y_OFFSET } from './constants';
+import { byondListToArray } from './byondPayload';
 import { Port } from "./Port";
 
 
@@ -109,8 +110,8 @@ export class ObjectComponent extends Component {
       onPortMouseUp,
       ...rest
     } = this.props;
-    const input_ports = Array.isArray(rawInputPorts) ? rawInputPorts : [];
-    const output_ports = Array.isArray(rawOutputPorts) ? rawOutputPorts : [];
+    const input_ports = byondListToArray(rawInputPorts);
+    const output_ports = byondListToArray(rawOutputPorts);
     const { act } = useBackend(this.context);
     const { startPos, dragPos } = this.state;
     const powered = !!circuitOn;

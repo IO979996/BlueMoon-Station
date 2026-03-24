@@ -1,6 +1,18 @@
 import { Button, Dropdown, Input, NumberInput, Stack } from '../../components';
 import { BasicInput } from './BasicInput';
 
+/** BYOND dirs (integrated_io/dir) */
+const IE_DIR_OPTIONS = [
+  [1, 'N (1)'],
+  [2, 'S (2)'],
+  [4, 'E (4)'],
+  [8, 'W (8)'],
+  [5, 'NE (5)'],
+  [9, 'NW (9)'],
+  [6, 'SE (6)'],
+  [10, 'SW (10)'],
+];
+
 export const FUNDAMENTAL_DATA_TYPES = {
   'string': (props, context) => {
     const { name, value, setValue, color } = props;
@@ -30,6 +42,113 @@ export const FUNDAMENTAL_DATA_TYPES = {
           unit={name}
         />
       </BasicInput>
+    );
+  },
+  'index': (props, context) => {
+    return FUNDAMENTAL_DATA_TYPES.number(props, context);
+  },
+  'boolean': (props, context) => {
+    const { name, value, setValue } = props;
+    const on = value === true || value === 1 || value === '1' || value === 'true';
+    return (
+      <Button
+        compact
+        color={on ? 'good' : 'transparent'}
+        icon={on ? 'toggle-on' : 'toggle-off'}
+        content={`${name}: ${on ? 'Да' : 'Нет'}`}
+        onClick={() => setValue(on ? 0 : 1)}
+      />
+    );
+  },
+  'char': (props, context) => {
+    const { name, value, setValue } = props;
+    const s = value === null || value === undefined ? '' : String(value);
+    return (
+      <BasicInput name={name} setValue={setValue} value={value} defaultValue="">
+        <Input
+          placeholder={name}
+          value={s.slice(0, 1)}
+          maxLength={1}
+          width="2.2rem"
+          onChange={(e, val) => setValue((val || '').slice(0, 1))}
+        />
+      </BasicInput>
+    );
+  },
+  'color': (props, context) => {
+    const { name, value, setValue } = props;
+    const hex = typeof value === 'string' && /^#[0-9A-Fa-f]{6}$/.test(value)
+      ? value
+      : '#FFFFFF';
+    return (
+      <BasicInput name={name} setValue={setValue} value={value} defaultValue="#FFFFFF">
+        <Stack>
+          <Stack.Item>
+            <input
+              type="color"
+              value={hex}
+              title={name}
+              onChange={(e) => setValue(e.target.value.toUpperCase())}
+              style={{
+                width: '28px',
+                height: '22px',
+                padding: 0,
+                border: 'none',
+                cursor: 'pointer',
+                verticalAlign: 'middle',
+              }}
+            />
+          </Stack.Item>
+          <Stack.Item>
+            <Input
+              placeholder="#RRGGBB"
+              value={typeof value === 'string' ? value : ''}
+              width="76px"
+              onChange={(e, val) => setValue(val)}
+            />
+          </Stack.Item>
+        </Stack>
+      </BasicInput>
+    );
+  },
+  'dir': (props, context) => {
+    const { value, setValue, name } = props;
+    const labels = IE_DIR_OPTIONS.map(([, label]) => label);
+    const match = IE_DIR_OPTIONS.find(([v]) => v === value);
+    const displayText = match ? match[1] : (value == null ? '—' : String(value));
+    return (
+      <Dropdown
+        width="9rem"
+        noscroll
+        color="transparent"
+        displayText={`${name}: ${displayText}`}
+        options={labels}
+        onSelected={(sel) => {
+          const found = IE_DIR_OPTIONS.find(([, label]) => label === sel);
+          if (found) {
+            setValue(found[0]);
+          }
+        }}
+      />
+    );
+  },
+  'list': (props, context) => {
+    const { act, componentId, portId, name } = props;
+    if (!act || componentId == null || portId == null) {
+      return null;
+    }
+    return (
+      <Button
+        icon="list-ul"
+        content={name}
+        compact
+        color="transparent"
+        tooltip="Редактор списка (как в старом интерфейсе)"
+        onClick={() => act('ie_open_list_editor', {
+          component_id: componentId,
+          port_id: portId,
+        })}
+      />
     );
   },
   'entity': (props, context) => {
