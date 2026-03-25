@@ -68,6 +68,34 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		return "entity"
 	return "any"
 
+/// Цвет точки порта в TGUI (имена из `CSS_COLORS`); по возможности как у wiremod.
+/proc/ie_ic_tgui_port_color(ftype)
+	switch(ftype)
+		if("signal")
+			return "teal"
+		if("boolean")
+			return "yellow"
+		if("number")
+			return "green"
+		if("index")
+			return "violet"
+		if("char")
+			return "brown"
+		if("color")
+			return "pink"
+		if("dir")
+			return "olive"
+		if("string")
+			return "orange"
+		if("list")
+			return "white"
+		if("entity")
+			return "purple"
+		if("option")
+			return "average"
+		else
+			return "blue"
+
 /proc/ie_ic_ui_examine_title(obj/item/integrated_circuit/C)
 	if(!C)
 		return null
@@ -141,14 +169,15 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			out += REF(other)
 	return out
 
-/proc/ie_ic_build_port_entry(datum/integrated_io/io, chip_accent)
+/proc/ie_ic_build_port_entry(datum/integrated_io/io)
+	var/ftype = ie_ic_fundamental_type(io)
 	return list(
 		"name" = io.name,
-		"type" = ie_ic_fundamental_type(io),
+		"type" = ftype,
 		/// Same human labels as old HTML (\<TEXT\>, \<LIST\>, …); TGUI still uses `type` for widgets.
 		"pin_type_label" = io.display_pin_type(),
 		"ref" = REF(io),
-		"color" = chip_accent,
+		"color" = ie_ic_tgui_port_color(ftype),
 		"current_data" = ie_ic_serialize_data(io),
 		"datatype_data" = null,
 		"connected_to" = ie_ic_input_connected_refs(io),
@@ -160,11 +189,11 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	/// Append with `+= list(entry)` so json_encode emits JSON arrays (numeric `[i]=` can become objects on the wire).
 	var/list/input_ports = list()
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_input_ios(chip))
-		input_ports += list(ie_ic_build_port_entry(io, chip_accent))
+		input_ports += list(ie_ic_build_port_entry(io))
 	component_data["input_ports"] = input_ports
 	var/list/output_ports = list()
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_output_ios(chip))
-		var/list/out_entry = ie_ic_build_port_entry(io, chip_accent)
+		var/list/out_entry = ie_ic_build_port_entry(io)
 		out_entry["connected_to"] = list()
 		output_ports += list(out_entry)
 	component_data["output_ports"] = output_ports
