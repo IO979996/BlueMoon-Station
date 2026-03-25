@@ -448,7 +448,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 				. = TRUE
 				return
 			var/datum/browser/popup = new(usr, "ie_asm_clone", "Код сборки для принтера", 720, 540)
-			popup.set_content("Полный JSON этой сборки. Вставь в интегральный принтер при включённом клонировании (как при ghost scan или анализаторе).<br><br><code style='word-break:break-all;white-space:pre-wrap;font-size:11px'>[json]</code>")
+			popup.set_content("Полный JSON этой сборки. Вставь в интегральный принтер при включённом клонировании (как при ghost scan или анализаторе).<br><br><code style='word-break:break-all;white-space:pre-wrap;font-size:11px'>[html_encode(json)]</code>")
 			popup.open()
 			. = TRUE
 		if("ie_copy_component_ref")
@@ -518,7 +518,22 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		return
 	switch(action)
 		if("add_connection")
-			return
+			var/ocid = text2num(params["output_component_id"])
+			var/icid = text2num(params["input_component_id"])
+			var/opid = text2num(params["output_port_id"])
+			var/ipid = text2num(params["input_port_id"])
+			var/obj/item/integrated_circuit/out_chip = ie_ic_chip_from_index(src, ocid)
+			var/obj/item/integrated_circuit/in_chip = ie_ic_chip_from_index(src, icid)
+			if(!out_chip || !in_chip || out_chip != src || in_chip != src)
+				return
+			var/datum/integrated_io/out_io = ie_ic_get_output_io(out_chip, opid)
+			var/datum/integrated_io/in_io = ie_ic_get_input_io(in_chip, ipid)
+			if(!out_io || !in_io)
+				return
+			if(out_io.io_type != in_io.io_type)
+				return
+			out_io.connect_pin(in_io)
+			. = TRUE
 		if("remove_connection")
 			var/port_id = text2num(params["port_id"])
 			var/is_input = params["is_input"]
@@ -610,7 +625,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			var/list/chip_data = save()
 			var/json = json_encode(chip_data)
 			var/datum/browser/popup = new(usr, "ie_chip_save", "Параметры чипа (JSON)", 640, 440)
-			popup.set_content("JSON одного чипа (имя, закреплённые входы и т.д.):<br><br><code style='word-break:break-all;white-space:pre-wrap;font-size:11px'>[json]</code>")
+			popup.set_content("JSON одного чипа (имя, закреплённые входы и т.д.):<br><br><code style='word-break:break-all;white-space:pre-wrap;font-size:11px'>[html_encode(json)]</code>")
 			popup.open()
 			. = TRUE
 	if(action in list("add_variable", "remove_variable", "add_setter_or_getter", "save_circuit"))

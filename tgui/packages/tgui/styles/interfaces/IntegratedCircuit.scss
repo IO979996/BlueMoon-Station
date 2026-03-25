@@ -17,15 +17,14 @@ $bg-map: colors.$bg-map !default;
 
 // Весь фрейм окна (включая TitleBar с полем имени), пока включён LGBTK+ режим.
 .Layout.Window:has([data-ic-rainbow]) {
-  animation: IntegratedCircuit__rainbowHue 4.5s linear infinite;
+  animation: integrated-circuit-rainbow-hue 4.5s linear infinite;
   will-change: filter;
 }
 
-@keyframes IntegratedCircuit__rainbowHue {
+@keyframes integrated-circuit-rainbow-hue {
   from {
     filter: hue-rotate(0deg) saturate(1.14) brightness(1.03);
   }
-
   to {
     filter: hue-rotate(360deg) saturate(1.14) brightness(1.03);
   }
@@ -130,15 +129,14 @@ $bg-map: colors.$bg-map !default;
 }
 
 .IntegratedCircuit__connections--base .IntegratedCircuit__wire--pulse {
-  animation: IntegratedCircuit-wirePulse 0.5s ease-in-out 2 alternate;
+  animation: integrated-circuit-wire-pulse 0.5s ease-in-out 2 alternate;
 }
 
-@keyframes IntegratedCircuit-wirePulse {
+@keyframes integrated-circuit-wire-pulse {
   from {
     opacity: 0.78;
     filter: drop-shadow(0 0 4px rgba(150, 220, 255, 0.95));
   }
-
   to {
     opacity: 1;
     filter: drop-shadow(0 0 12px rgba(100, 255, 200, 1));
@@ -146,16 +144,15 @@ $bg-map: colors.$bg-map !default;
 }
 
 .ObjectComponent--recentPulse {
-  animation: ObjectComponent-recentPulse 0.5s ease-in-out 2 alternate;
+  animation: object-component-recent-pulse 0.5s ease-in-out 2 alternate;
 }
 
-@keyframes ObjectComponent-recentPulse {
+@keyframes object-component-recent-pulse {
   from {
     box-shadow:
       0 0 0 1px rgba(120, 200, 255, 0.35),
       0 0 8px rgba(80, 160, 255, 0.25);
   }
-
   to {
     box-shadow:
       0 0 0 3px rgba(160, 230, 255, 0.7),

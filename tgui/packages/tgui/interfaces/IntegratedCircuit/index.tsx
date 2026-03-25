@@ -274,6 +274,8 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
   componentWillUnmount() {
     window.removeEventListener('mousedown', this.handleMouseDown);
     window.removeEventListener('mouseup', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handlePortDrag);
+    window.removeEventListener('mouseup', this.handlePortRelease);
   }
 
   handleMouseDown(_event: MouseEvent) {
