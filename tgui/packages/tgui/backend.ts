@@ -331,9 +331,6 @@ export const sendMessage = (message: any = {}) => {
   Byond.topic(data);
 };
 
-/** Max encodeURIComponent length per payloadChunk topic (fewer chunks than legacy 512 for big JSON pastes). */
-const TGUI_CHUNK_MAX_ENCODED_LEN = 1536;
-
 const encodedLengthBinarySearch = (charSeq: string[], length: number) => {
   const haystackLength = charSeq.length;
   let high = haystackLength - 1;
@@ -360,17 +357,16 @@ const splitIntoChunks = (str: string): string[] => {
   const charSeq = Array.from(str);
   const length = charSeq.length;
   const chunks: string[] = [];
-  const maxEnc = TGUI_CHUNK_MAX_ENCODED_LEN;
   let startIndex = 0;
-  let endIndex = maxEnc;
+  let endIndex = 512;
   while (startIndex < length) {
     const cut = charSeq.slice(
       startIndex,
       endIndex < length ? endIndex : undefined,
     );
     const cutString = cut.join('');
-    if (encodeURIComponent(cutString).length > maxEnc) {
-      const splitIndex = startIndex + encodedLengthBinarySearch(cut, maxEnc);
+    if (encodeURIComponent(cutString).length > 512) {
+      const splitIndex = startIndex + encodedLengthBinarySearch(cut, 512);
       chunks.push(
         charSeq
           .slice(startIndex, splitIndex < length ? splitIndex : undefined)
@@ -381,7 +377,7 @@ const splitIntoChunks = (str: string): string[] => {
       chunks.push(cutString);
       startIndex = endIndex;
     }
-    endIndex = startIndex + maxEnc;
+    endIndex = startIndex + 512;
   }
   return chunks;
 };
@@ -407,6 +403,15 @@ export const sendAct = (action: string, payload: object = {}) => {
     return;
   }
   const stringifiedPayload = JSON.stringify(payload);
+  // Debounce identical act calls within 50ms (WebView2 double-delivery guard)
+  const now = Date.now();
+  const actKey = action + stringifiedPayload;
+  if (now - lastActTime < 50 && actKey === lastActKey) {
+    return;
+  }
+  lastActTime = now;
+  lastActKey = actKey;
+  const seq = ++actSequence;
   const urlSize = Object.entries({
     type: 'act/' + action,
     payload: stringifiedPayload,
@@ -418,19 +423,7 @@ export const sendAct = (action: string, payload: object = {}) => {
       `${i > 0 ? '&' : '?'}${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`,
     '',
   ).length;
-  const isOversized = urlSize > 2048;
-  // Debounce only small topics; oversized chunk uploads must allow immediate retries.
-  if (!isOversized) {
-    const now = Date.now();
-    const actKey = action + stringifiedPayload;
-    if (now - lastActTime < 50 && actKey === lastActKey) {
-      return;
-    }
-    lastActTime = now;
-    lastActKey = actKey;
-  }
-  const seq = ++actSequence;
-  if (isOversized) {
+  if (urlSize > 2048) {
     const chunks: string[] = splitIntoChunks(stringifiedPayload);
     const id = `${Date.now()}`;
     (window as any).__store__?.dispatch(

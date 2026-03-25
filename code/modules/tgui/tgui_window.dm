@@ -419,15 +419,9 @@
 		if("oversizedPayloadRequest")
 			var/payload_id = payload["id"]
 			var/chunk_count = payload["chunkCount"]
-			var/max_chunks = CONFIG_GET(number/tgui_max_chunk_count)
-			var/permit_payload = chunk_count <= max_chunks
-			if(!permit_payload)
-				if(client?.mob)
-					to_chat(client.mob, span_warning("Слишком большой ввод для TGUI: [chunk_count] фрагментов при лимите [max_chunks]. В config: tgui_max_chunk_count."))
-			else
+			var/permit_payload = chunk_count <= CONFIG_GET(number/tgui_max_chunk_count)
+			if(permit_payload)
 				permit_payload = create_oversized_payload(payload_id, payload["type"], chunk_count)
-				if(!permit_payload && client?.mob)
-					to_chat(client.mob, span_warning("Сервер занят другими большими запросами TGUI. Подождите несколько секунд и нажмите Submit снова."))
 			send_message("oversizePayloadResponse", list("allow" = permit_payload, "id" = payload_id))
 		if("payloadChunk")
 			var/payload_id = payload["id"]
