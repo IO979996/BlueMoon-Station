@@ -250,14 +250,28 @@
 			if("load")
 				if(cloning)
 					return
-				var/input = input("Put your code there:", "loading", null, null) as message | null
+				var/input = tgui_input_text(
+					usr,
+					"Paste assembly JSON here (multiline; max [MAX_IC_PRINTER_JSON_LEN] characters). Raw text is preserved for valid JSON.",
+					"Load program",
+					null,
+					MAX_IC_PRINTER_JSON_LEN,
+					TRUE,
+					FALSE,
+				)
 				if(!check_interactivity(usr) || cloning)
 					return
 				if(!input)
 					program = null
 					return
+				if(length_char(input) > MAX_IC_PRINTER_JSON_LEN)
+					to_chat(usr, "<span class='warning'>Program text exceeds maximum length ([MAX_IC_PRINTER_JSON_LEN] characters).</span>")
+					return
 
-				log_admin("INTEGRAL BITCH [usr.ckey] загрузил программу: [input] в [src]")
+				var/log_body = copytext_char(input, 1, 401)
+				if(length_char(input) > 400)
+					log_body += "... (truncated, [length_char(input)] chars total)"
+				log_admin("INTEGRAL BITCH [usr.ckey] loaded program into [src]: [log_body]")
 				var/validation = SScircuit.validate_electronic_assembly(input)
 
 				// Validation error codes are returned as text.
