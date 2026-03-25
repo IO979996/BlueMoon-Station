@@ -1,11 +1,10 @@
-/// FNV-1a–style mix so nearby refs don’t collapse to one hue (fixes «все красные» заголовки).
+/// Полиномиальный хеш с малыми константами (без больших литералов — dreamchecker / float32).
 /proc/ic_tgui_hash_string(t)
-	var/hash = 2166136261
+	var/hash = 0
 	if(!istext(t) || !length(t))
 		return 0
 	for(var/i = 1, i <= length(t), i++)
-		hash ^= text2ascii(t, i)
-		hash = (hash * 16777619) & 0x7FFFFFFF
+		hash = ((hash * 131) + text2ascii(t, i)) & 0x7FFFFFFF
 	return hash
 
 /// Stable per-instance accent for IntegratedCircuit TGUI (IE chips + wiremod components).

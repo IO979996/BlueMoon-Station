@@ -365,7 +365,7 @@
 		i++
 		if(i > length(assembly.assembly_components))
 			break
-		if("ui_x" in cp || "ui_y" in cp)
+		if(("ui_x" in cp) || ("ui_y" in cp))
 			continue
 		var/obj/item/integrated_circuit/chip = assembly.assembly_components[i]
 		chip.ie_ui_rel_x = clamp((i - 1) * spacing, -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
