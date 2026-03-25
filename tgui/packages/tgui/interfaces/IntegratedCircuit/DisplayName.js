@@ -7,8 +7,9 @@ import { DATATYPE_DISPLAY_HANDLERS, FUNDAMENTAL_DATA_TYPES } from './Fundamental
 import { formatPortLiveValue } from './portValueFormat';
 
 export const DisplayName = (props, context) => {
-  const { act } = useBackend(context);
+  const { act, data } = useBackend(context);
   const { port, isOutput, componentId, portIndex, ...rest } = props;
+  const isIeCircuit = !!data.ie_circuit;
 
   const fundamentalType = FUNDAMENTAL_DATA_TYPES[port.type] ? port.type : 'any';
   const InputComponent = FUNDAMENTAL_DATA_TYPES[fundamentalType];
@@ -16,9 +17,7 @@ export const DisplayName = (props, context) => {
 
   const connectionRefs = connectedToRefList(port.connected_to);
 
-  const hasInput = !isOutput
-    && !connectionRefs.length
-    && InputComponent;
+  const hasInput = !isOutput && !!InputComponent;
 
   const displayType = port.pin_type_label
     || (TypeDisplayHandler ? TypeDisplayHandler(port) : fundamentalType);
@@ -26,6 +25,32 @@ export const DisplayName = (props, context) => {
   const liveText = showLive
     ? formatPortLiveValue(port.current_data, fundamentalType)
     : null;
+
+  const pdata = port.current_data;
+  const liveInspectable = isIeCircuit && (
+    fundamentalType === 'list'
+    || (pdata !== null && pdata !== undefined && typeof pdata === 'object')
+  );
+
+  const openPortInspect = () => {
+    if (!isIeCircuit) {
+      return;
+    }
+    if (fundamentalType === 'list') {
+      act('ie_open_list_editor', {
+        component_id: componentId,
+        port_id: portIndex,
+        is_output: !!isOutput,
+      });
+    }
+    else {
+      act('ie_open_data_inspector', {
+        component_id: componentId,
+        port_id: portIndex,
+        is_output: !!isOutput,
+      });
+    }
+  };
 
   return (
     <Box {...rest}>
@@ -36,6 +61,8 @@ export const DisplayName = (props, context) => {
               act={act}
               componentId={componentId}
               portId={portIndex}
+              isOutput={isOutput}
+              ieCircuit={isIeCircuit}
               setValue={(val, extraParams) =>
                 act('set_component_input', {
                   component_id: componentId,
@@ -63,6 +90,17 @@ export const DisplayName = (props, context) => {
                         port_id: portIndex,
                       })} />
                 </Flex.Item>
+                {isIeCircuit && fundamentalType === 'list' && (
+                  <Flex.Item>
+                    <Button
+                      compact
+                      color="transparent"
+                      icon="list-ul"
+                      tooltip="Редактор / просмотр списка"
+                      onClick={openPortInspect}
+                    />
+                  </Flex.Item>
+                )}
                 <Flex.Item grow>
                   <Box color="white">{port.name}</Box>
                 </Flex.Item>
@@ -129,12 +167,26 @@ export const DisplayName = (props, context) => {
               textAlign={isOutput ? 'right' : 'left'}>
               значение
             </Box>
-            <Box
-              className="PortLiveValue"
-              textAlign={isOutput ? 'right' : 'left'}
-              title={liveText}>
-              {liveText}
-            </Box>
+            {liveInspectable ? (
+              <Box
+                className="PortLiveValue PortLiveValue--inspect"
+                textAlign={isOutput ? 'right' : 'left'}
+                title={
+                  fundamentalType === 'list'
+                    ? `${liveText} — открыть список`
+                    : `${liveText} — открыть полные данные`
+                }
+                onClick={openPortInspect}>
+                {liveText}
+              </Box>
+            ) : (
+              <Box
+                className="PortLiveValue"
+                textAlign={isOutput ? 'right' : 'left'}
+                title={liveText}>
+                {liveText}
+              </Box>
+            )}
           </Flex.Item>
         )}
       </Flex>

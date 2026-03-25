@@ -312,6 +312,15 @@ $bg-map: colors.$bg-map !default;
   margin-top: 0.08rem;
 }
 
+.PortLiveValue--inspect {
+  cursor: pointer;
+  text-decoration: underline dotted rgba(158, 232, 200, 0.35);
+
+  &:hover {
+    color: #b8f5dc;
+  }
+}
+
 .IntegratedCircuit__portRow {
   border-radius: 3px;
   padding: 0.05rem 0.1rem;

@@ -1,5 +1,6 @@
 import { Button, Dropdown, Input, NumberInput, Stack } from '../../components';
 import { BasicInput } from './BasicInput';
+import { formatPortLiveValue } from './portValueFormat';
 
 /** BYOND dirs (integrated_io/dir) */
 const IE_DIR_OPTIONS = [
@@ -133,10 +134,13 @@ export const FUNDAMENTAL_DATA_TYPES = {
     );
   },
   'list': (props, context) => {
-    const { act, componentId, portId, name } = props;
+    const { act, componentId, portId, name, isOutput, ieCircuit } = props;
     if (!act || componentId === null || componentId === undefined
       || portId === null || portId === undefined) {
       return null;
+    }
+    if (!ieCircuit) {
+      return name;
     }
     return (
       <Button
@@ -144,10 +148,11 @@ export const FUNDAMENTAL_DATA_TYPES = {
         content={name}
         compact
         color="transparent"
-        tooltip="Редактор списка (как в старом интерфейсе)"
+        tooltip="Редактор / просмотр списка"
         onClick={() => act('ie_open_list_editor', {
           component_id: componentId,
           port_id: portId,
+          is_output: !!isOutput,
         })}
       />
     );
@@ -191,7 +196,12 @@ export const FUNDAMENTAL_DATA_TYPES = {
     );
   },
   'any': (props, context) => {
-    const { name, value, setValue, color } = props;
+    const { name, value, setValue, color, act, componentId, portId, isOutput, ieCircuit } = props;
+    const complex = value !== null && value !== undefined
+      && typeof value === 'object';
+    const displayStr = complex
+      ? formatPortLiveValue(value, Array.isArray(value) ? 'list' : 'any')
+      : (value ?? '');
     return (
       <BasicInput
         name={name}
@@ -206,12 +216,28 @@ export const FUNDAMENTAL_DATA_TYPES = {
               onClick={() => setValue(null, { marked_atom: true })}
             />
           </Stack.Item>
+          {!!(complex && act && ieCircuit) && (
+            <Stack.Item>
+              <Button
+                icon="search-plus"
+                compact
+                color="transparent"
+                tooltip="Открыть данные (список / объект)"
+                onClick={() => act('ie_open_data_inspector', {
+                  component_id: componentId,
+                  port_id: portId,
+                  is_output: !!isOutput,
+                })}
+              />
+            </Stack.Item>
+          )}
           <Stack.Item>
             <Input
               placeholder={name}
-              value={value}
-              onChange={(e, val) => setValue(val)}
+              value={complex ? displayStr : value}
+              onChange={(e, val) => !complex && setValue(val)}
               width="64px"
+              disabled={complex}
             />
           </Stack.Item>
         </Stack>

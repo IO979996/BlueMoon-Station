@@ -144,6 +144,29 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		return data
 	return "[data]"
 
+/// JSON-friendly value for TGUI (nested lists, refs as names). Does not mutate pin data.
+/proc/ie_ic_tgui_pack_pin_value(data, depth = 0)
+	if(depth > 10)
+		return "…"
+	if(isnull(data))
+		return null
+	if(isweakref(data))
+		var/datum/weakref/wr = data
+		var/atom/A = wr.resolve()
+		return A ? A.name : null
+	if(islist(data))
+		var/list/L = data
+		var/list/out = list()
+		var/maxn = min(L.len, 400)
+		for(var/i = 1 to maxn)
+			out.Add(ie_ic_tgui_pack_pin_value(L[i], depth + 1))
+		if(L.len > maxn)
+			out.Add("([L.len - maxn] more)")
+		return out
+	if(isnum(data) || istext(data))
+		return data
+	return "[data]"
+
 /proc/ie_ic_collect_input_ios(obj/item/integrated_circuit/chip)
 	var/list/L = list()
 	for(var/datum/integrated_io/io as anything in chip.inputs)
@@ -178,7 +201,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		"pin_type_label" = io.display_pin_type(),
 		"ref" = REF(io),
 		"color" = ie_ic_tgui_port_color(ftype),
-		"current_data" = ie_ic_serialize_data(io),
+		"current_data" = ie_ic_tgui_pack_pin_value(io.data),
 		"datatype_data" = null,
 		"connected_to" = ie_ic_input_connected_refs(io),
 	)
@@ -411,11 +434,26 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
 			if(!chip || !usr)
 				return
-			var/datum/integrated_io/io = ie_ic_get_input_io(chip, pid)
+			var/is_out = params["is_output"] ? TRUE : FALSE
+			var/datum/integrated_io/io = is_out ? ie_ic_get_output_io(chip, pid) : ie_ic_get_input_io(chip, pid)
 			if(istype(io, /datum/integrated_io/lists))
 				var/datum/integrated_io/lists/L = io
 				L.interact(usr)
 				. = TRUE
+		if("ie_open_data_inspector")
+			var/cid = text2num(params["component_id"])
+			var/pid = text2num(params["port_id"])
+			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
+			if(!chip || !usr)
+				return
+			var/is_out = params["is_output"] ? TRUE : FALSE
+			var/datum/integrated_io/io = is_out ? ie_ic_get_output_io(chip, pid) : ie_ic_get_input_io(chip, pid)
+			if(!io)
+				return
+			var/datum/browser/popup = new(usr, "ie_pin_data_[REF(io)]", "[chip.displayed_name || chip.name]: [io.name]", 640, 520)
+			popup.set_content("<div style='font-size:12px;word-break:break-word;'>[io.display_data(io.data)]</div>")
+			popup.open()
+			. = TRUE
 		if("get_component_value")
 			var/cid = text2num(params["component_id"])
 			var/pid = text2num(params["port_id"])
@@ -605,11 +643,22 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			return TRUE
 		if("ie_open_list_editor")
 			var/pid = text2num(params["port_id"])
-			var/datum/integrated_io/io = ie_ic_get_input_io(src, pid)
+			var/is_out = params["is_output"] ? TRUE : FALSE
+			var/datum/integrated_io/io = is_out ? ie_ic_get_output_io(src, pid) : ie_ic_get_input_io(src, pid)
 			if(istype(io, /datum/integrated_io/lists))
 				var/datum/integrated_io/lists/L = io
 				L.interact(usr)
 				. = TRUE
+		if("ie_open_data_inspector")
+			var/pid = text2num(params["port_id"])
+			var/is_out = params["is_output"] ? TRUE : FALSE
+			var/datum/integrated_io/io = is_out ? ie_ic_get_output_io(src, pid) : ie_ic_get_input_io(src, pid)
+			if(!io || !usr)
+				return
+			var/datum/browser/popup = new(usr, "ie_pin_data_[REF(io)]", "[src.displayed_name || src.name]: [io.name]", 640, 520)
+			popup.set_content("<div style='font-size:12px;word-break:break-word;'>[io.display_data(io.data)]</div>")
+			popup.open()
+			. = TRUE
 		if("get_component_value")
 			var/pid = text2num(params["port_id"])
 			var/datum/integrated_io/io = ie_ic_get_output_io(src, pid)
