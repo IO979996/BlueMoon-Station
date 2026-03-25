@@ -48,7 +48,7 @@ export class Connections extends Component {
 
   handleOverlayWireMouseEnter(ev) {
     const key = ev.currentTarget.getAttribute('data-wire-key');
-    if (key != null) {
+    if (key !== null) {
       this.setState({ hoveredKey: key });
     }
   }
