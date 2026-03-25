@@ -21,9 +21,18 @@ export const CircuitToolbar = (props) => {
     /** IE: "assembly" | "chip" — показать кнопку копирования JSON для принтера / одного чипа */
     ieCloneCopyMode,
     onIeCloneCopy,
+    /** IE: размер (сумма size) и лимит корпуса; max null = одиночный чип без корпуса */
+    ieUsedSize,
+    ieMaxSize,
+    ieUsedComplexity,
+    ieMaxComplexity,
   } = props;
 
   const powered = circuitOn !== false && circuitOn !== 0;
+
+  const showIeLimits = ieUsedSize != null && ieUsedComplexity != null;
+  const sizeFull = ieMaxSize != null && ieUsedSize >= ieMaxSize;
+  const complexityFull = ieMaxComplexity != null && ieUsedComplexity >= ieMaxComplexity;
 
   return (
     <Box className="IntegratedCircuit__toolbar">
@@ -54,6 +63,38 @@ export const CircuitToolbar = (props) => {
             : <b>{componentCount}</b>
           </Box>
         </Stack.Item>
+        {!!showIeLimits && (
+          <Stack.Item>
+            <Box
+              className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
+              title="Занято места: сумма размеров (size) всех чипов. Максимум — запас корпуса; при переполнении нельзя вставить деталь.">
+              <Icon name="expand-arrows-alt" style={{ 'margin-right': '0.35em' }} />
+              Размер:{' '}
+              <Box as="span" color={sizeFull ? '#ff5555' : undefined}>
+                <b>
+                  {ieUsedSize}
+                  {ieMaxSize != null ? ` / ${ieMaxSize}` : ''}
+                </b>
+              </Box>
+            </Box>
+          </Stack.Item>
+        )}
+        {!!showIeLimits && (
+          <Stack.Item>
+            <Box
+              className="IntegratedCircuit__chip IntegratedCircuit__chip--muted"
+              title="Сумма сложностей всех чипов. Максимум задаёт корпус; при переполнении схема слишком сложная для этого кейса.">
+              <Icon name="project-diagram" style={{ 'margin-right': '0.35em' }} />
+              Сложность:{' '}
+              <Box as="span" color={complexityFull ? '#ff5555' : undefined}>
+                <b>
+                  {ieUsedComplexity}
+                  {ieMaxComplexity != null ? ` / ${ieMaxComplexity}` : ''}
+                </b>
+              </Box>
+            </Box>
+          </Stack.Item>
+        )}
         {ieBatteryPercent !== undefined && (
           <Stack.Item>
             <Stack align="center">

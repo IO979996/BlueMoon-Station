@@ -34,6 +34,48 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 		else
 			io.write_data_to_pin(new_val)
 
+/// Prefer active hand: tool there → use as ref; else debugger in either hand.
+/proc/ie_ic_get_debugger_from_hands(mob/M)
+	if(!M)
+		return null
+	var/obj/item/active = M.get_active_held_item()
+	if(istype(active, /obj/item/integrated_electronics/debugger))
+		return active
+	if(isliving(M))
+		var/mob/living/living_user = M
+		var/obj/item/inactive = living_user.get_inactive_held_item()
+		if(istype(inactive, /obj/item/integrated_electronics/debugger))
+			return inactive
+	return null
+
+/// TGUI upload / marked_atom: debugger memory (ref, null, string, number…) or held atom or varedit mark.
+/proc/ie_ic_tgui_apply_marked_atom_or_debugger(mob/M, datum/integrated_io/io)
+	if(!M || !io)
+		return
+	var/ftype_mark = ie_ic_fundamental_type(io)
+	if(ftype_mark != "entity" && ftype_mark != "any")
+		return
+	var/atom/movable/held = M.get_active_held_item()
+	if(istype(held) && !istype(held, /obj/item/integrated_electronics/debugger))
+		io.write_data_to_pin(WEAKREF(held))
+		return
+	var/obj/item/integrated_electronics/debugger/D = ie_ic_get_debugger_from_hands(M)
+	if(D)
+		if(ftype_mark == "entity")
+			if(isnull(D.data_to_write) || isweakref(D.data_to_write))
+				io.write_data_to_pin(D.data_to_write)
+			else
+				to_chat(M, span_warning("The debugger memory is not a reference. Use ref or null on the debugger, then upload again."))
+		else
+			io.write_data_to_pin(D.data_to_write)
+		return
+	if(istype(held))
+		io.write_data_to_pin(WEAKREF(held))
+		return
+	var/client/C = M.client
+	if(C?.holder?.marked_datum)
+		io.write_data_to_pin(WEAKREF(C.holder.marked_datum))
+
 /proc/ie_ic_is_output_side_pin(datum/integrated_io/io)
 	if(!io)
 		return FALSE
@@ -313,6 +355,10 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	/// "assembly" = копировать JSON всей сборки для принтера; см. `ie_copy_assembly_code`.
 	.["ie_clone_copy_mode"] = "assembly"
 	.["ie_debug_copy_ref"] = user.client && check_rights_for(user.client, R_DEBUG)
+	.["ie_used_size"] = return_total_size()
+	.["ie_max_size"] = max_components
+	.["ie_used_complexity"] = return_total_complexity()
+	.["ie_max_complexity"] = max_complexity
 	.["circuit_on"] = TRUE
 	.["is_admin"] = FALSE
 	.["variables"] = list()
@@ -415,15 +461,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 				io.write_data_to_pin(null)
 				return TRUE
 			if(params["marked_atom"])
-				if(ie_ic_fundamental_type(io) != "entity")
-					return TRUE
-				var/atom/movable/M = usr.get_active_held_item()
-				if(istype(M))
-					io.write_data_to_pin(WEAKREF(M))
-				else
-					var/client/C = usr.client
-					if(C?.holder?.marked_datum)
-						io.write_data_to_pin(WEAKREF(C.holder.marked_datum))
+				ie_ic_tgui_apply_marked_atom_or_debugger(usr, io)
 				return TRUE
 			var/ftype = ie_ic_fundamental_type(io)
 			ie_ic_tgui_write_input(io, ftype, params["input"])
@@ -557,6 +595,10 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	.["ie_circuit"] = TRUE
 	.["ie_clone_copy_mode"] = "chip"
 	.["ie_debug_copy_ref"] = FALSE
+	.["ie_used_size"] = size
+	.["ie_max_size"] = null
+	.["ie_used_complexity"] = complexity
+	.["ie_max_complexity"] = null
 	.["circuit_on"] = TRUE
 	.["is_admin"] = FALSE
 	.["variables"] = list()
@@ -628,15 +670,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 				io.write_data_to_pin(null)
 				return TRUE
 			if(params["marked_atom"])
-				if(ie_ic_fundamental_type(io) != "entity")
-					return TRUE
-				var/atom/movable/M = usr.get_active_held_item()
-				if(istype(M))
-					io.write_data_to_pin(WEAKREF(M))
-				else
-					var/client/C = usr.client
-					if(C?.holder?.marked_datum)
-						io.write_data_to_pin(WEAKREF(C.holder.marked_datum))
+				ie_ic_tgui_apply_marked_atom_or_debugger(usr, io)
 				return TRUE
 			var/ftype = ie_ic_fundamental_type(io)
 			ie_ic_tgui_write_input(io, ftype, params["input"])

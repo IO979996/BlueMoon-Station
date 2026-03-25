@@ -326,6 +326,10 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
     const ieBatteryPercent = ie_circuit && data.ie_battery_percent !== undefined
       ? data.ie_battery_percent
       : undefined;
+    const ieUsedSize = ie_circuit ? data.ie_used_size : undefined;
+    const ieMaxSize = ie_circuit ? data.ie_max_size : undefined;
+    const ieUsedComplexity = ie_circuit ? data.ie_used_complexity : undefined;
+    const ieMaxComplexity = ie_circuit ? data.ie_max_complexity : undefined;
     const circuitCellPercent = !ie_circuit ? data.circuit_cell_percent : undefined;
     const panX = this.state.screenPanOverride?.x ?? screen_x ?? 0;
     const panY = this.state.screenPanOverride?.y ?? screen_y ?? 0;
@@ -459,6 +463,10 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
                   : undefined
               }
               ieCloneCopyMode={ie_circuit ? ie_clone_copy_mode : null}
+              ieUsedSize={ieUsedSize}
+              ieMaxSize={ieMaxSize}
+              ieUsedComplexity={ieUsedComplexity}
+              ieMaxComplexity={ieMaxComplexity}
               onIeCloneCopy={
                 ie_circuit
                 && (ie_clone_copy_mode === 'assembly' || ie_clone_copy_mode === 'chip')

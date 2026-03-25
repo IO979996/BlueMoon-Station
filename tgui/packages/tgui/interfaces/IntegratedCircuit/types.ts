@@ -86,6 +86,12 @@ export interface IntegratedCircuitData {
   ie_clone_copy_mode?: IeCloneCopyMode | null;
   ie_debug_copy_ref?: boolean;
   ie_battery_percent?: number | null;
+  /** IE: сумма `size` чипов / лимит корпуса (`max_components`); у одиночного чипа только число. */
+  ie_used_size?: number | null;
+  ie_max_size?: number | null;
+  /** IE: сумма сложностей / лимит корпуса. */
+  ie_used_complexity?: number | null;
+  ie_max_complexity?: number | null;
   /** BYOND list, array, or dense 1..N object of component dicts. */
   components?: unknown;
   /** Краткая подсветка «какая связь сработала» (совпадает с ref портов в connections). */

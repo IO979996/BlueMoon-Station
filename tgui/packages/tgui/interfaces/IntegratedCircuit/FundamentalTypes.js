@@ -165,6 +165,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
         color="transparent"
         icon="upload"
         compact
+        tooltip="Сначала предмет в активной руке (как ref); иначе память debugger в любой руке (ref/null); иначе marked"
         onClick={() => setValue(null, { marked_atom: true })}
       />
     );
@@ -213,6 +214,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
             <Button
               color={color}
               icon="upload"
+              tooltip="Сначала предмет в активной руке; иначе память debugger (строка/число/ref/null); иначе marked"
               onClick={() => setValue(null, { marked_atom: true })}
             />
           </Stack.Item>
