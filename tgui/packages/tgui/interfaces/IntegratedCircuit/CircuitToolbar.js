@@ -30,9 +30,12 @@ export const CircuitToolbar = (props) => {
 
   const powered = circuitOn !== false && circuitOn !== 0;
 
-  const showIeLimits = ieUsedSize != null && ieUsedComplexity != null;
-  const sizeFull = ieMaxSize != null && ieUsedSize >= ieMaxSize;
-  const complexityFull = ieMaxComplexity != null && ieUsedComplexity >= ieMaxComplexity;
+  const showIeLimits = ieUsedSize !== null && ieUsedSize !== undefined
+    && ieUsedComplexity !== null && ieUsedComplexity !== undefined;
+  const sizeFull = ieMaxSize !== null && ieMaxSize !== undefined
+    && ieUsedSize >= ieMaxSize;
+  const complexityFull = ieMaxComplexity !== null && ieMaxComplexity !== undefined
+    && ieUsedComplexity >= ieMaxComplexity;
 
   return (
     <Box className="IntegratedCircuit__toolbar">
@@ -73,7 +76,7 @@ export const CircuitToolbar = (props) => {
               <Box as="span" color={sizeFull ? '#ff5555' : undefined}>
                 <b>
                   {ieUsedSize}
-                  {ieMaxSize != null ? ` / ${ieMaxSize}` : ''}
+                  {ieMaxSize !== null && ieMaxSize !== undefined ? ` / ${ieMaxSize}` : ''}
                 </b>
               </Box>
             </Box>
@@ -89,7 +92,7 @@ export const CircuitToolbar = (props) => {
               <Box as="span" color={complexityFull ? '#ff5555' : undefined}>
                 <b>
                   {ieUsedComplexity}
-                  {ieMaxComplexity != null ? ` / ${ieMaxComplexity}` : ''}
+                  {ieMaxComplexity !== null && ieMaxComplexity !== undefined ? ` / ${ieMaxComplexity}` : ''}
                 </b>
               </Box>
             </Box>

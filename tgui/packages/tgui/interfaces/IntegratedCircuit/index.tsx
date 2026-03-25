@@ -22,9 +22,12 @@ import {
 import { ObjectComponent } from './ObjectComponent';
 import { VariableMenu } from './VariableMenu';
 import type {
+  CircuitComponentView,
   CircuitPortPayload,
   IntegratedCircuitData,
   IntegratedCircuitState,
+  PortLocation,
+  SelectedPortState,
   WireConnection,
 } from './types';
 
@@ -299,6 +302,65 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
     });
   }
 
+  buildWireConnections(
+    components: (CircuitComponentView | null)[],
+    locations: Record<string, PortLocation>,
+    selectedPort: SelectedPortState | null,
+    dragClientX: number | null,
+    dragClientY: number | null,
+    zoomState: number,
+  ): WireConnection[] {
+    const connections: WireConnection[] = [];
+
+    for (const comp of components) {
+      if (comp === null) {
+        continue;
+      }
+
+      const inputPorts = comp.input_ports;
+      for (const input of inputPorts) {
+        const linked = connectedToRefList(input?.connected_to);
+        for (const outputRef of linked) {
+          const output_port = locations[outputRef];
+          connections.push({
+            color: (output_port && output_port.color) || 'blue',
+            from: output_port,
+            to: locations[input.ref],
+            outRef: outputRef,
+            inRef: input.ref,
+          });
+        }
+      }
+    }
+
+    if (selectedPort) {
+      const z = Math.max(zoomState || 1, 0.01);
+      const isOutput = selectedPort.is_output;
+      const portLocation = locations[selectedPort.ref];
+      const svg = this.connectionsSvgRef?.current;
+      if (
+        portLocation
+        && svg
+        && dragClientX !== null
+        && dragClientY !== null
+      ) {
+        const sr = svg.getBoundingClientRect();
+        const mouseCoords = {
+          x: (dragClientX - sr.left) / z,
+          y: (dragClientY - sr.top) / z,
+        };
+        connections.push({
+          color: (portLocation && portLocation.color) || 'blue',
+          from: isOutput ? portLocation : mouseCoords,
+          to: isOutput ? mouseCoords : portLocation,
+          isPreview: true,
+        });
+      }
+    }
+
+    return connections;
+  }
+
   render() {
     const { act, data } = useBackend<IntegratedCircuitData>(this.context);
     const {
@@ -333,58 +395,18 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
     const circuitCellPercent = !ie_circuit ? data.circuit_cell_percent : undefined;
     const panX = this.state.screenPanOverride?.x ?? screen_x ?? 0;
     const panY = this.state.screenPanOverride?.y ?? screen_y ?? 0;
-    const { locations, selectedPort, menuOpen, zoom } = this.state;
-    const connections: WireConnection[] = [];
+    const { locations, selectedPort, menuOpen, zoom, dragClientX, dragClientY } = this.state;
+    const connections = this.buildWireConnections(
+      components,
+      locations,
+      selectedPort,
+      dragClientX,
+      dragClientY,
+      zoom,
+    );
     const componentCount = components.reduce((n, c) => n + (c ? 1 : 0), 0);
     const variableCount = variables?.length ?? 0;
     const zoomPercent = Math.round((zoom || 1) * 100);
-
-    for (const comp of components) {
-      if (comp === null) {
-        continue;
-      }
-
-      const inputPorts = comp.input_ports;
-      for (const input of inputPorts) {
-        const linked = connectedToRefList(input?.connected_to);
-        for (const outputRef of linked) {
-          const output_port = locations[outputRef];
-          connections.push({
-            color: (output_port && output_port.color) || 'blue',
-            from: output_port,
-            to: locations[input.ref],
-            outRef: outputRef,
-            inRef: input.ref,
-          });
-        }
-      }
-    }
-
-    if (selectedPort) {
-      const { dragClientX, dragClientY, zoom: zState } = this.state;
-      const z = Math.max(zState || 1, 0.01);
-      const isOutput = selectedPort.is_output;
-      const portLocation = locations[selectedPort.ref];
-      const svg = this.connectionsSvgRef?.current;
-      if (
-        portLocation
-        && svg
-        && dragClientX !== null
-        && dragClientY !== null
-      ) {
-        const sr = svg.getBoundingClientRect();
-        const mouseCoords = {
-          x: (dragClientX - sr.left) / z,
-          y: (dragClientY - sr.top) / z,
-        };
-        connections.push({
-          color: (portLocation && portLocation.color) || 'blue',
-          from: isOutput ? portLocation : mouseCoords,
-          to: isOutput ? mouseCoords : portLocation,
-          isPreview: true,
-        });
-      }
-    }
 
     return (
       <Window
