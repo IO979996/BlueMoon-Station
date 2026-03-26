@@ -465,6 +465,17 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			battery = null
 			diag_hud_set_circuitstat()
 			. = TRUE
+		if("set_component_display_name")
+			var/cid = text2num(params["component_id"])
+			var/nn = params["display_name"]
+			if(isnull(nn))
+				return TRUE
+			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
+			if(!chip || !(chip in assembly_components))
+				return
+			chip.displayed_name = reject_bad_name(strip_html(nn), TRUE) || chip.displayed_name
+			add_allowed_scanner(usr.ckey)
+			. = TRUE
 		if("add_connection")
 			var/ocid = text2num(params["output_component_id"])
 			var/icid = text2num(params["input_component_id"])
@@ -716,6 +727,12 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			usr.client.prefs.ie_classic_circuit_ui = TRUE
 			SStgui.close_uis(src)
 			ie_legacy_ui_interact_chip(usr)
+			. = TRUE
+		if("set_component_display_name")
+			var/nn = params["display_name"]
+			if(isnull(nn))
+				return TRUE
+			displayed_name = reject_bad_name(strip_html(nn), TRUE) || displayed_name
 			. = TRUE
 		if("add_connection")
 			var/ocid = text2num(params["output_component_id"])

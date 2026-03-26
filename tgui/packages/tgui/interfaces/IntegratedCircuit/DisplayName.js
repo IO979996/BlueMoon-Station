@@ -1,3 +1,4 @@
+import { classes } from 'common/react';
 import { useBackend } from '../../backend';
 import { Box, Button, Flex, Stack } from '../../components';
 import { connectedToRefList } from './byondPayload';
@@ -6,7 +7,7 @@ import { formatPortLiveValue } from './portValueFormat';
 
 export const DisplayName = (props, context) => {
   const { act, data } = useBackend(context);
-  const { port, isOutput, componentId, portIndex, ...rest } = props;
+  const { port, isOutput, componentId, portIndex, className, ...rest } = props;
   const isIeCircuit = !!data.ie_circuit;
 
   const fundamentalType = FUNDAMENTAL_DATA_TYPES[port.type] ? port.type : 'any';
@@ -61,7 +62,9 @@ export const DisplayName = (props, context) => {
   };
 
   return (
-    <Box {...rest}>
+    <Box
+      {...rest}
+      className={classes(className, 'IntegratedCircuit__portDisplayName')}>
       <Flex direction="column">
         <Flex.Item>
           {(hasInput && (

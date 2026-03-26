@@ -167,6 +167,7 @@ export class Port extends Component {
       <Stack
         {...rest}
         className="IntegratedCircuit__portRow"
+        align="flex-start"
         justify={isOutput ? 'flex-end' : 'flex-start'}
         title={portHint}
         onMouseDown={(e) => e.stopPropagation()}>

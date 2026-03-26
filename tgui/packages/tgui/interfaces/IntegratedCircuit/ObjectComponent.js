@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Icon,
+  Input,
   Stack,
 } from '../../components';
 import { ABSOLUTE_Y_OFFSET } from './constants';
@@ -22,6 +23,8 @@ export class ObjectComponent extends Component {
       dragPos: null,
       startPos: null,
       lastMousePos: null,
+      editingNodeTitle: false,
+      nodeTitleDraft: '',
     };
 
     this.handleStartDrag = this.handleStartDrag.bind(this);
@@ -155,7 +158,7 @@ export class ObjectComponent extends Component {
           <Box className="ObjectComponent__colLabel" textAlign="left">
             Входы
           </Box>
-          <Stack vertical fill>
+          <Stack vertical>
             {renderPortList(inRows, false)}
           </Stack>
         </Stack.Item>
@@ -232,10 +235,74 @@ export class ObjectComponent extends Component {
               />
             </Stack.Item>
             <Stack.Item grow={1} unselectable="on">
-              <Box className="ObjectComponent__titleText">
-                {name}
-              </Box>
+              {!!showIeNodeStats && this.state.editingNodeTitle ? (
+                <Input
+                  autoFocus
+                  className="ObjectComponent__titleInput"
+                  value={this.state.nodeTitleDraft}
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onInput={(e, val) =>
+                    this.setState({ nodeTitleDraft: val })}
+                  onBlur={() => {
+                    const { nodeTitleDraft } = this.state;
+                    const trimmed = (nodeTitleDraft ?? '').trim();
+                    this.setState({ editingNodeTitle: false });
+                    if (trimmed && trimmed !== name) {
+                      act('set_component_display_name', {
+                        component_id: index,
+                        display_name: trimmed,
+                      });
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.currentTarget.blur();
+                    }
+                    if (e.key === 'Escape') {
+                      this.setState({
+                        editingNodeTitle: false,
+                        nodeTitleDraft: name,
+                      });
+                    }
+                  }}
+                />
+              ) : (
+                <Box
+                  className="ObjectComponent__titleText"
+                  title="Двойной клик или карандаш — переименовать ноду"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onDblClick={(e) => {
+                    e.stopPropagation();
+                    if (!showIeNodeStats) {
+                      return;
+                    }
+                    this.setState({
+                      editingNodeTitle: true,
+                      nodeTitleDraft: name,
+                    });
+                  }}>
+                  {name}
+                </Box>
+              )}
             </Stack.Item>
+            {!!showIeNodeStats && !this.state.editingNodeTitle && (
+              <Stack.Item>
+                <Button
+                  color="transparent"
+                  icon="pen"
+                  compact
+                  tooltip="Переименовать ноду"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    this.setState({
+                      editingNodeTitle: true,
+                      nodeTitleDraft: name,
+                    });
+                  }}
+                />
+              </Stack.Item>
+            )}
             <Stack.Item>
               <Button
                 color="transparent"

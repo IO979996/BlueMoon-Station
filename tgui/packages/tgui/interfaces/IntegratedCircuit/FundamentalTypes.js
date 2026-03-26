@@ -43,6 +43,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
           color={color}
           onChange={(e, val) => setValue(val)}
           unit={name}
+          showBar={false}
         />
       </BasicInput>
     );
