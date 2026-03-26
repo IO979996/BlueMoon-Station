@@ -64,7 +64,7 @@ export const DisplayName = (props, context) => {
   return (
     <Box
       {...rest}
-      className={classes(className, 'IntegratedCircuit__portDisplayName')}>
+      className={classes([className, 'IntegratedCircuit__portDisplayName'])}>
       <Flex direction="column">
         <Flex.Item>
           {(hasInput && (
