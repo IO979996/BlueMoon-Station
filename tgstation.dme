@@ -4601,6 +4601,8 @@
 #include "modular_bluemoon\code\modules\clothing\wrists\_wrists.dm"
 #include "modular_bluemoon\code\modules\death_memory\death_memory.dm"
 #include "modular_bluemoon\code\modules\events\spacebattle.dm"
+#include "modular_bluemoon\code\modules\events\wizard_dice\wizard_dice_helpers.dm"
+#include "modular_bluemoon\code\modules\events\wizard_dice\wizard_dice_event.dm"
 #include "modular_bluemoon\code\modules\food_and_drinks\drinks\drinks.dm"
 #include "modular_bluemoon\code\modules\food_and_drinks\drinks\drinks\bottle.dm"
 #include "modular_bluemoon\code\modules\food_and_drinks\food\snacks_other.dm"
