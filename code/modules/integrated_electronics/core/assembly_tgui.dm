@@ -48,32 +48,78 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			return inactive
 	return null
 
-/// TGUI upload / marked_atom: debugger memory (ref, null, string, number…) or held atom or varedit mark.
+/// TGUI upload: debugger (copy from pin / paste memory), held item ref, or varedit mark. Works for all data-channel pin types.
 /proc/ie_ic_tgui_apply_marked_atom_or_debugger(mob/M, datum/integrated_io/io)
 	if(!M || !io)
 		return
+	if(io.io_type != DATA_CHANNEL)
+		return
 	var/ftype_mark = ie_ic_fundamental_type(io)
-	if(ftype_mark != "entity" && ftype_mark != "any")
-		return
 	var/atom/movable/held = M.get_active_held_item()
-	if(istype(held) && !istype(held, /obj/item/integrated_electronics/debugger))
-		io.write_data_to_pin(WEAKREF(held))
-		return
 	var/obj/item/integrated_electronics/debugger/D = ie_ic_get_debugger_from_hands(M)
+
+	// Prefer debugger in hands over "held item" when both could apply
 	if(D)
-		if(ftype_mark == "entity")
-			if(isnull(D.data_to_write) || isweakref(D.data_to_write))
+		if(D.copy_values)
+			D.data_to_write = io.data
+			D.copy_values = FALSE
+			to_chat(M, span_notice("Debugger copied the pin's current value into memory. Use upload on another pin to paste, or set string/number/ref on the debugger."))
+			return
+		if(D.accepting_refs)
+			to_chat(M, span_warning("Finish ref scan on the debugger first (click a target in the world), or switch mode."))
+			return
+		switch(ftype_mark)
+			if("entity")
+				if(isnull(D.data_to_write) || isweakref(D.data_to_write))
+					io.write_data_to_pin(D.data_to_write)
+				else
+					to_chat(M, span_warning("The debugger memory is not a reference. Use ref or null on the debugger, then upload again."))
+			if("number", "index", "dir")
+				if(isnull(D.data_to_write))
+					io.write_data_to_pin(null)
+				else if(isnum(D.data_to_write))
+					io.write_data_to_pin(D.data_to_write)
+				else if(istext(D.data_to_write))
+					io.write_data_to_pin(text2num(D.data_to_write))
+				else
+					to_chat(M, span_warning("Debugger memory must be a number or null for this pin."))
+			if("boolean")
+				if(isnull(D.data_to_write))
+					io.write_data_to_pin(null)
+				else if(D.data_to_write == TRUE || D.data_to_write == FALSE)
+					io.write_data_to_pin(D.data_to_write)
+				else if(isnum(D.data_to_write))
+					io.write_data_to_pin(!!D.data_to_write)
+				else if(istext(D.data_to_write))
+					var/nt = lowertext(D.data_to_write)
+					io.write_data_to_pin(nt == "true" || nt == "1" || nt == "yes")
+				else
+					to_chat(M, span_warning("Debugger memory must be boolean-like or null."))
+			if("char", "string", "color")
+				if(isnull(D.data_to_write) || istext(D.data_to_write))
+					io.write_data_to_pin(D.data_to_write)
+				else
+					to_chat(M, span_warning("Debugger memory must be text or null for this pin."))
+			if("list")
+				if(isnull(D.data_to_write) || islist(D.data_to_write))
+					io.write_data_to_pin(D.data_to_write)
+				else
+					to_chat(M, span_warning("Debugger memory must be a list or null."))
+			if("any")
 				io.write_data_to_pin(D.data_to_write)
 			else
-				to_chat(M, span_warning("The debugger memory is not a reference. Use ref or null on the debugger, then upload again."))
+				io.write_data_to_pin(D.data_to_write)
+		return
+
+	if(istype(held) && !istype(held, /obj/item/integrated_electronics/debugger))
+		if(ftype_mark == "entity" || ftype_mark == "any")
+			io.write_data_to_pin(WEAKREF(held))
 		else
-			io.write_data_to_pin(D.data_to_write)
+			to_chat(M, span_warning("Put a circuit debugger in hand to paste memory, or use this only on ref/any pins with an item in active hand."))
 		return
-	if(istype(held))
-		io.write_data_to_pin(WEAKREF(held))
-		return
+
 	var/client/C = M.client
-	if(C?.holder?.marked_datum)
+	if((ftype_mark == "entity" || ftype_mark == "any") && C?.holder?.marked_datum)
 		io.write_data_to_pin(WEAKREF(C.holder.marked_datum))
 
 /proc/ie_ic_is_output_side_pin(datum/integrated_io/io)
@@ -164,9 +210,12 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	if(!C)
 		return out
 	var/cx = isnum(C.complexity) ? C.complexity : 0
+	var/sz = isnum(C.size) ? C.size : 0
 	var/cd = isnum(C.cooldown_per_use) ? C.cooldown_per_use : 0
+	var/ed = isnum(C.ext_cooldown) ? C.ext_cooldown : 0
+	var/ext_txt = ed > 0 ? "[ed / 10] с" : "нет"
 	out += list(list(
-		"content" = "Сложность: [cx] | КД: [cd / 10] с",
+		"content" = "Размер: [sz] | Сложность: [cx] | КД: [cd / 10] с | Внеш. КД: [ext_txt]",
 		"color" = "transparent",
 		"icon" = "info",
 	))
@@ -234,6 +283,14 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			out += REF(other)
 	return out
 
+/// Входы, подключённые к этому выходу (порядок = порядок линий на схеме).
+/proc/ie_ic_output_connected_input_refs(datum/integrated_io/io)
+	var/list/out = list()
+	for(var/datum/integrated_io/other as anything in io.linked)
+		if(!ie_ic_is_output_side_pin(other))
+			out += REF(other)
+	return out
+
 /proc/ie_ic_build_port_entry(datum/integrated_io/io)
 	var/ftype = ie_ic_fundamental_type(io)
 	return list(
@@ -259,7 +316,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	var/list/output_ports = list()
 	for(var/datum/integrated_io/io as anything in ie_ic_collect_output_ios(chip))
 		var/list/out_entry = ie_ic_build_port_entry(io)
-		out_entry["connected_to"] = list()
+		out_entry["connected_to"] = ie_ic_output_connected_input_refs(io)
 		output_ports += list(out_entry)
 	component_data["output_ports"] = output_ports
 	component_data["color"] = chip_accent
@@ -275,6 +332,10 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	else if(world.time < chip.ie_tgui_solo_pulse_until)
 		pulsing = TRUE
 	component_data["recent_pulse"] = pulsing
+	component_data["ie_size"] = chip.size
+	component_data["ie_complexity"] = chip.complexity
+	component_data["ie_cooldown_ds"] = chip.cooldown_per_use
+	component_data["ie_ext_cooldown_ds"] = chip.ext_cooldown
 	return component_data
 
 /proc/ie_ic_get_input_io(obj/item/integrated_circuit/chip, port_id)
@@ -388,6 +449,13 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	if(.)
 		return
 	switch(action)
+		if("ie_switch_classic_ui")
+			if(!usr?.client?.prefs)
+				return
+			usr.client.prefs.ie_classic_circuit_ui = TRUE
+			SStgui.close_uis(src)
+			ie_legacy_ui_interact(usr, null)
+			. = TRUE
 		if("ie_eject_battery")
 			if(!battery || !usr)
 				return
@@ -544,6 +612,22 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 				return
 			io.linked.Swap(lower, lower + 1)
 			. = TRUE
+		if("swap_output_connection_order")
+			var/cid = text2num(params["component_id"])
+			var/pid = text2num(params["port_id"])
+			var/lower = text2num(params["lower_index"])
+			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
+			if(!chip)
+				return
+			var/datum/integrated_io/io = ie_ic_get_output_io(chip, pid)
+			if(!io || !ie_ic_is_output_side_pin(io) || length(io.linked) < lower + 1 || lower < 1)
+				return
+			var/datum/integrated_io/a = io.linked[lower]
+			var/datum/integrated_io/b = io.linked[lower + 1]
+			if(ie_ic_is_output_side_pin(a) || ie_ic_is_output_side_pin(b))
+				return
+			io.linked.Swap(lower, lower + 1)
+			. = TRUE
 		if("ie_copy_assembly_code")
 			if(!usr)
 				return
@@ -626,6 +710,13 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	if(.)
 		return
 	switch(action)
+		if("ie_switch_classic_ui")
+			if(!usr?.client?.prefs)
+				return
+			usr.client.prefs.ie_classic_circuit_ui = TRUE
+			SStgui.close_uis(src)
+			ie_legacy_ui_interact_chip(usr)
+			. = TRUE
 		if("add_connection")
 			var/ocid = text2num(params["output_component_id"])
 			var/icid = text2num(params["input_component_id"])
@@ -728,6 +819,18 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			var/lower = text2num(params["lower_index"])
 			var/datum/integrated_io/io = ie_ic_get_input_io(src, pid)
 			if(!io || length(io.linked) < lower + 1 || lower < 1)
+				return
+			io.linked.Swap(lower, lower + 1)
+			. = TRUE
+		if("swap_output_connection_order")
+			var/pid = text2num(params["port_id"])
+			var/lower = text2num(params["lower_index"])
+			var/datum/integrated_io/io = ie_ic_get_output_io(src, pid)
+			if(!io || !ie_ic_is_output_side_pin(io) || length(io.linked) < lower + 1 || lower < 1)
+				return
+			var/datum/integrated_io/a = io.linked[lower]
+			var/datum/integrated_io/b = io.linked[lower + 1]
+			if(ie_ic_is_output_side_pin(a) || ie_ic_is_output_side_pin(b))
 				return
 			io.linked.Swap(lower, lower + 1)
 			. = TRUE

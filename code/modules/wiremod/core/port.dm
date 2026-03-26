@@ -115,6 +115,8 @@
  * Sends a signal whenever the output value is changed
  */
 /datum/port/output
+	/// Input ports receiving this output; order matches fan-out wire order in TGUI.
+	var/list/datum/port/input/wire_input_targets = list()
 
 /**
  * Disconnects a port from all other ports.
@@ -132,6 +134,7 @@
 
 /datum/port/input/proc/disconnect(datum/port/output/output)
 	connected_ports -= output
+	output.wire_input_targets -= src
 	UnregisterSignal(output, COMSIG_PORT_SET_VALUE)
 	UnregisterSignal(output, COMSIG_PORT_SET_TYPE)
 	UnregisterSignal(output, COMSIG_PORT_DISCONNECT)
@@ -170,6 +173,7 @@
  */
 /datum/port/input/proc/connect(datum/port/output/output)
 	connected_ports |= output
+	output.wire_input_targets |= src
 	RegisterSignal(output, COMSIG_PORT_SET_VALUE, PROC_REF(receive_value))
 	RegisterSignal(output, COMSIG_PORT_SET_TYPE, PROC_REF(check_type))
 	RegisterSignal(output, COMSIG_PORT_DISCONNECT, PROC_REF(disconnect))

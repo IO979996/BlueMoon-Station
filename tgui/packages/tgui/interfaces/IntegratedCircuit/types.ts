@@ -25,6 +25,13 @@ export interface CircuitComponentPayload {
   removable: boolean;
   /** Titlebar accent: TGUI color name or `#rrggbb` from server. */
   color?: string;
+  /** Integrated Electronics: size / complexity / cooldowns (deciseconds). */
+  ie_size?: number | null;
+  ie_complexity?: number | null;
+  ie_cooldown_ds?: number | null;
+  ie_ext_cooldown_ds?: number | null;
+  /** Wiremod: cell cost per input fire. */
+  power_usage_per_input?: number | null;
   input_ports: CircuitPortPayload[] | Record<string, CircuitPortPayload>;
   output_ports: CircuitPortPayload[] | Record<string, CircuitPortPayload>;
 }

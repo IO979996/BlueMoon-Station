@@ -2745,6 +2745,7 @@
 #include "code\modules\integrated_electronics\core\helpers.dm"
 #include "code\modules\integrated_electronics\core\integrated_circuit.dm"
 #include "code\modules\integrated_electronics\core\assembly_tgui.dm"
+#include "code\modules\integrated_electronics\core\assembly_legacy_ui.dm"
 #include "code\modules\integrated_electronics\core\pins.dm"
 #include "code\modules\integrated_electronics\core\printer.dm"
 #include "code\modules\integrated_electronics\core\saved_circuits.dm"

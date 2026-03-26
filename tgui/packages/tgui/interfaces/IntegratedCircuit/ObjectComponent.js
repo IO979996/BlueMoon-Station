@@ -9,8 +9,9 @@ import {
   Stack,
 } from '../../components';
 import { ABSOLUTE_Y_OFFSET } from './constants';
+import { formatIeCooldownDs, formatIeSizeDisplay } from './circuitNodeFormat';
 import { byondListToArray } from './byondPayload';
-import { Port } from "./Port";
+import { Port } from './Port';
 
 
 export class ObjectComponent extends Component {
@@ -110,11 +111,64 @@ export class ObjectComponent extends Component {
       onPortMouseUp,
       portLayoutKey: _portLayoutKey,
       debugCopyRef,
+      ie_size,
+      ie_complexity,
+      ie_cooldown_ds,
+      ie_ext_cooldown_ds,
+      power_usage_per_input,
       ...rest
     } = this.props;
     const input_ports = byondListToArray(rawInputPorts);
     const output_ports = byondListToArray(rawOutputPorts);
-    const { act } = useBackend(this.context);
+    const { act, data } = useBackend(this.context);
+    const isIe = !!data.ie_circuit;
+    const showIeNodeStats = isIe && typeof ie_complexity === 'number';
+    const showWiremodPower = !isIe && typeof power_usage_per_input === 'number';
+
+    const rowsWithIndex = (ports) =>
+      ports.map((port, i) => ({ port, portIndex: i + 1 }));
+    const isPulse = (p) => p.type === 'signal';
+    const dataInputs = rowsWithIndex(input_ports).filter((r) => !isPulse(r.port));
+    const pulseInputs = rowsWithIndex(input_ports).filter((r) => isPulse(r.port));
+    const dataOutputs = rowsWithIndex(output_ports).filter((r) => !isPulse(r.port));
+    const pulseOutputs = rowsWithIndex(output_ports).filter((r) => isPulse(r.port));
+    const hasDataZone = dataInputs.length > 0 || dataOutputs.length > 0;
+    const hasPulseZone = pulseInputs.length > 0 || pulseOutputs.length > 0;
+
+    const renderPortList = (rows, isOutput) =>
+      rows.map(({ port, portIndex }) => (
+        <Stack.Item key={`${isOutput ? 'o' : 'i'}-${port.ref || portIndex}`}>
+          <Port
+            port={port}
+            portIndex={portIndex}
+            componentId={index}
+            isOutput={!!isOutput}
+            act={act}
+            {...PortOptions}
+          />
+        </Stack.Item>
+      ));
+
+    const renderPortColumns = (inRows, outRows) => (
+      <Stack className="ObjectComponent__portColumns">
+        <Stack.Item grow={1}>
+          <Box className="ObjectComponent__colLabel" textAlign="left">
+            Входы
+          </Box>
+          <Stack vertical fill>
+            {renderPortList(inRows, false)}
+          </Stack>
+        </Stack.Item>
+        <Stack.Item ml={5}>
+          <Box className="ObjectComponent__colLabel" textAlign="right">
+            Выходы
+          </Box>
+          <Stack vertical>
+            {renderPortList(outRows, true)}
+          </Stack>
+        </Stack.Item>
+      </Stack>
+    );
     const { startPos, dragPos } = this.state;
     const powered = !!circuitOn;
 
@@ -218,47 +272,51 @@ export class ObjectComponent extends Component {
             )}
           </Stack>
         </Box>
+        {!!showIeNodeStats && (
+          <Box className="ObjectComponent__ieStats" px={1} py={0.35}>
+            <Box
+              className="ObjectComponent__ieStatsText"
+              title={'Размер и сложность — лимиты корпуса. КД — пауза компонента после срабатывания. Внеш. КД — общая пауза корпуса при действиях компонента в мир.'}>
+              Разм. {formatIeSizeDisplay(ie_size)} · Сложн. {ie_complexity} · КД {formatIeCooldownDs(ie_cooldown_ds, false)} · Вн. КД {formatIeCooldownDs(ie_ext_cooldown_ds, true)}
+            </Box>
+          </Box>
+        )}
+        {!!showWiremodPower && (
+          <Box className="ObjectComponent__ieStats ObjectComponent__ieStats--wiremod" px={1} py={0.35}>
+            <Box
+              className="ObjectComponent__ieStatsText"
+              title="Расход заряда ячейки на одно срабатывание входа">
+              Энергия: {power_usage_per_input} за вход
+            </Box>
+          </Box>
+        )}
         <Box
           className="ObjectComponent__Content"
           unselectable="on"
           py={1}
           px={1}>
-          <Stack className="ObjectComponent__portColumns">
-            <Stack.Item grow={1}>
-              <Box className="ObjectComponent__colLabel" textAlign="left">
-                Входы
+          {!!hasDataZone && (
+            <Box className="ObjectComponent__dataZone">
+              {!!(hasDataZone && hasPulseZone) && (
+                <Box className="ObjectComponent__zoneLabel">
+                  Данные
+                </Box>
+              )}
+              {renderPortColumns(dataInputs, dataOutputs)}
+            </Box>
+          )}
+          {!!hasPulseZone && (
+            <Box
+              className={classes([
+                'ObjectComponent__pulseZone',
+                hasDataZone && 'ObjectComponent__pulseZone--split',
+              ])}>
+              <Box className="ObjectComponent__zoneLabel ObjectComponent__zoneLabel--pulse">
+                Импульсы
               </Box>
-              <Stack vertical fill>
-                {input_ports.map((port, portIndex) => (
-                  <Stack.Item key={portIndex}>
-                    <Port
-                      port={port}
-                      portIndex={portIndex + 1}
-                      componentId={index}
-                      {...PortOptions}
-                    />
-                  </Stack.Item>
-                ))}
-              </Stack>
-            </Stack.Item>
-            <Stack.Item ml={5}>
-              <Box className="ObjectComponent__colLabel" textAlign="right">
-                Выходы
-              </Box>
-              <Stack vertical>
-                {output_ports.map((port, portIndex) => (
-                  <Stack.Item key={portIndex}>
-                    <Port
-                      port={port}
-                      portIndex={portIndex + 1}
-                      componentId={index}
-                      {...PortOptions}
-                      isOutput />
-                  </Stack.Item>
-                ))}
-              </Stack>
-            </Stack.Item>
-          </Stack>
+              {renderPortColumns(pulseInputs, pulseOutputs)}
+            </Box>
+          )}
         </Box>
       </Box>
     );

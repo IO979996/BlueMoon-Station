@@ -21,7 +21,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
       <BasicInput name={name} setValue={setValue} value={value} defaultValue="">
         <Input
           placeholder={name}
-          value={value}
+          value={value ?? ''}
           onChange={(e, val) => setValue(val)}
           width="96px"
         />
@@ -30,6 +30,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
   },
   'number': (props, context) => {
     const { name, value, setValue, color } = props;
+    const hasNumber = typeof value === 'number' && Number.isFinite(value);
     return (
       <BasicInput
         name={name}
@@ -37,7 +38,8 @@ export const FUNDAMENTAL_DATA_TYPES = {
         value={value}
         defaultValue={0}>
         <NumberInput
-          value={value}
+          value={hasNumber ? value : 0}
+          format={hasNumber ? undefined : () => '—'}
           color={color}
           onChange={(e, val) => setValue(val)}
           unit={name}
@@ -143,18 +145,35 @@ export const FUNDAMENTAL_DATA_TYPES = {
       return name;
     }
     return (
-      <Button
-        icon="list-ul"
-        content={name}
-        compact
-        color="transparent"
-        tooltip="Редактор / просмотр списка"
-        onClick={() => act('ie_open_list_editor', {
-          component_id: componentId,
-          port_id: portId,
-          is_output: !!isOutput,
-        })}
-      />
+      <Stack align="center">
+        <Stack.Item>
+          <Button
+            icon="list-ul"
+            content={name}
+            compact
+            color="transparent"
+            tooltip="Редактор / просмотр списка"
+            onClick={() => act('ie_open_list_editor', {
+              component_id: componentId,
+              port_id: portId,
+              is_output: !!isOutput,
+            })}
+          />
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            icon="upload"
+            compact
+            color="transparent"
+            tooltip="Debugger: вставить/скопировать список (режим Copy — забрать текущий список в память)"
+            onClick={() => act('set_component_input', {
+              component_id: componentId,
+              port_id: portId,
+              marked_atom: true,
+            })}
+          />
+        </Stack.Item>
+      </Stack>
     );
   },
   'entity': (props, context) => {
@@ -172,13 +191,33 @@ export const FUNDAMENTAL_DATA_TYPES = {
   },
   'signal': (props, context) => {
     const { name, setValue } = props;
+    const fire = (e) => {
+      e?.stopPropagation?.();
+      setValue();
+    };
     return (
-      <Button
-        content={name}
-        color="transparent"
-        compact
-        onClick={() => setValue()}
-      />
+      <Stack align="center">
+        <Stack.Item>
+          <Button
+            icon="bolt"
+            color="transparent"
+            compact
+            tooltip="Вручную подать импульс на вход"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={fire}
+          />
+        </Stack.Item>
+        <Stack.Item>
+          <Button
+            content={name}
+            color="transparent"
+            compact
+            tooltip="Вручную подать импульс на вход"
+            onMouseDown={(e) => e.stopPropagation()}
+            onClick={fire}
+          />
+        </Stack.Item>
+      </Stack>
     );
   },
   'option': (props, context) => {
@@ -236,7 +275,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
           <Stack.Item>
             <Input
               placeholder={name}
-              value={complex ? displayStr : value}
+              value={complex ? displayStr : (value ?? '')}
               onChange={(e, val) => !complex && setValue(val)}
               width="64px"
               disabled={complex}

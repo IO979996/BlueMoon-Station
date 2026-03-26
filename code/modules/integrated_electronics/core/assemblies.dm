@@ -155,6 +155,9 @@
 				I.power_fail()
 
 /obj/item/electronic_assembly/interact(mob/user, circuit)
+	if(user?.client?.prefs?.ie_classic_circuit_ui)
+		ie_legacy_ui_interact(user, circuit)
+		return
 	ui_interact(user, circuit)
 
 /obj/item/electronic_assembly/Topic(href, href_list)
@@ -173,6 +176,23 @@
 		return
 
 	if(!check_interactivity(usr))
+		return
+
+	if(href_list["ie_ui_mode"] == "tgui")
+		if(usr.client?.prefs)
+			usr.client.prefs.ie_classic_circuit_ui = FALSE
+		SStgui.close_uis(src)
+		ui_interact(usr, null)
+		return
+
+	if(href_list["ie_legacy_overview"])
+		ie_legacy_ui_interact(usr, null)
+		return
+
+	if(href_list["ie_legacy_chip"])
+		var/obj/item/integrated_circuit/open_chip = locate(href_list["ie_legacy_chip"]) in assembly_components
+		if(open_chip)
+			ie_legacy_ui_interact(usr, open_chip)
 		return
 
 	if(href_list["rename"])

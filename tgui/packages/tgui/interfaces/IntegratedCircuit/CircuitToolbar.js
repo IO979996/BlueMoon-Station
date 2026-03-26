@@ -21,6 +21,8 @@ export const CircuitToolbar = (props) => {
     /** IE: "assembly" | "chip" — показать кнопку копирования JSON для принтера / одного чипа */
     ieCloneCopyMode,
     onIeCloneCopy,
+    /** IE: переключиться на классический браузерный UI */
+    onIeClassicUi,
     /** IE: размер (сумма size) и лимит корпуса; max null = одиночный чип без корпуса */
     ieUsedSize,
     ieMaxSize,
@@ -161,6 +163,18 @@ export const CircuitToolbar = (props) => {
                 : 'JSON одного чипа (имя, входы) — открыть и скопировать из окна'}
               onClick={onIeCloneCopy}>
               {ieCloneCopyMode === 'assembly' ? 'Код сборки' : 'Код чипа'}
+            </Button>
+          </Stack.Item>
+        )}
+        {typeof onIeClassicUi === 'function' && (
+          <Stack.Item>
+            <Button
+              color="transparent"
+              icon="window-restore"
+              compact
+              tooltip="Классический интерфейс (окно браузера Byond). Настройка сохраняется в префах."
+              onClick={onIeClassicUi}>
+              Классика
             </Button>
           </Stack.Item>
         )}

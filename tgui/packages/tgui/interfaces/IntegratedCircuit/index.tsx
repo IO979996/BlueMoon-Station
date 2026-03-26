@@ -358,6 +358,37 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
       }
     }
 
+    const fanOutOrder = new Map<string, number>();
+    for (const comp of components) {
+      if (!comp) {
+        continue;
+      }
+      for (const op of comp.output_ports) {
+        const targets = connectedToRefList(op?.connected_to);
+        for (let ti = 0; ti < targets.length; ti++) {
+          fanOutOrder.set(`${op.ref}\0${targets[ti]}`, ti);
+        }
+      }
+    }
+
+    connections.sort((a, b) => {
+      if (a.isPreview || b.isPreview) {
+        if (a.isPreview && b.isPreview) {
+          return 0;
+        }
+        return a.isPreview ? 1 : -1;
+      }
+      if (!a.outRef || !b.outRef || !a.inRef || !b.inRef) {
+        return 0;
+      }
+      if (a.outRef !== b.outRef) {
+        return a.outRef.localeCompare(b.outRef);
+      }
+      const ia = fanOutOrder.get(`${a.outRef}\0${a.inRef}`) ?? 999;
+      const ib = fanOutOrder.get(`${b.outRef}\0${b.inRef}`) ?? 999;
+      return ia - ib;
+    });
+
     return connections;
   }
 
@@ -414,16 +445,17 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
         height={720}
         buttons={(
           <Box
-            minWidth="280px"
-            maxWidth="420px"
+            className="IntegratedCircuit__titleNameWrap"
             position="absolute"
+            left={0}
             top="4px"
             height="24px"
           >
-            <Stack>
-              <Stack.Item grow>
+            <Stack align="center" wrap="nowrap">
+              <Stack.Item>
                 <Input
-                  fluid
+                  width="260px"
+                  maxWidth="min(100%, 320px)"
                   placeholder={ie_circuit
                     ? 'Имя корпуса (не поиск по деталям)'
                     : 'Имя схемы'}
@@ -499,6 +531,9 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
                         : 'ie_copy_component_code',
                     )
                   : undefined
+              }
+              onIeClassicUi={
+                ie_circuit ? () => act('ie_switch_classic_ui') : undefined
               }
             />
             <Box className="IntegratedCircuit__planeHost">

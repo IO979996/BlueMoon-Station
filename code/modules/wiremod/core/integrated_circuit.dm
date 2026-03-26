@@ -270,6 +270,15 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 	.["screen_x"] = screen_x
 	.["screen_y"] = screen_y
 
+/// Backfill fan-out order for boards saved before wire_input_targets existed.
+/obj/item/integrated_circuit/proc/wiremod_sync_output_wire_targets(datum/port/output/port)
+	if(length(port.wire_input_targets))
+		return
+	for(var/obj/item/circuit_component/comp as anything in attached_components)
+		for(var/datum/port/input/inp as anything in comp.input_ports)
+			if(port in inp.connected_ports)
+				port.wire_input_targets |= inp
+
 /obj/item/integrated_circuit/ui_data(mob/user)
 	. = list()
 	.["components"] = list()
@@ -298,11 +307,16 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			))
 		component_data["output_ports"] = list()
 		for(var/datum/port/output/port as anything in component.output_ports)
+			wiremod_sync_output_wire_targets(port)
+			var/list/wire_input_refs = list()
+			for(var/datum/port/input/inp as anything in port.wire_input_targets)
+				wire_input_refs += REF(inp)
 			component_data["output_ports"] += list(list(
 				"name" = port.name,
 				"type" = port.datatype,
 				"ref" = REF(port),
 				"color" = port.color,
+				"connected_to" = wire_input_refs,
 			))
 
 		component_data["name"] = component.display_name
@@ -310,6 +324,7 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		component_data["y"] = component.rel_y
 		component_data["removable"] = component.removable
 		component_data["color"] = ic_tgui_chip_accent_hex(component)
+		component_data["power_usage_per_input"] = component.power_usage_per_input
 		component_data["recent_pulse"] = (world.time < circuit_ui_pulse_until && circuit_ui_pulse_weak_component?.resolve() == component)
 		.["components"] += list(component_data)
 
@@ -598,6 +613,21 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			if(length(input_port.connected_ports) < lower + 1 || lower < 1)
 				return
 			input_port.connected_ports.Swap(lower, lower + 1)
+			. = TRUE
+		if("swap_output_connection_order")
+			var/component_id = text2num(params["component_id"])
+			var/port_id = text2num(params["port_id"])
+			var/lower = text2num(params["lower_index"])
+			if(!WITHIN_RANGE(component_id, attached_components))
+				return
+			var/obj/item/circuit_component/component = attached_components[component_id]
+			if(!WITHIN_RANGE(port_id, component.output_ports))
+				return
+			var/datum/port/output/output_port = component.output_ports[port_id]
+			wiremod_sync_output_wire_targets(output_port)
+			if(length(output_port.wire_input_targets) < lower + 1 || lower < 1)
+				return
+			output_port.wire_input_targets.Swap(lower, lower + 1)
 			. = TRUE
 
 /obj/item/integrated_circuit/proc/clear_setter_or_getter(datum/source)

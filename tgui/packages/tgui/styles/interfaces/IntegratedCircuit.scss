@@ -3,6 +3,24 @@
 
 $bg-map: colors.$bg-map !default;
 
+// Поле имени схемы в TitleBar: глобальный `.TitleBar__buttons { width: 100% }` превращал
+// всю полосу заголовка в зону клика fluid-Input — клики по канвасу уводили фокус в поле.
+.Layout.Window:has(.IntegratedCircuit__content) {
+  .TitleBar__buttons {
+    width: auto;
+    max-width: min(28rem, calc(100% - 4.5rem));
+  }
+
+  .Window__titleBar {
+    overflow: hidden;
+  }
+}
+
+.IntegratedCircuit__titleNameWrap {
+  display: flex;
+  align-items: center;
+}
+
 .IntegratedCircuit__content.Window__content {
   display: flex;
   flex-direction: column;
@@ -203,7 +221,8 @@ $bg-map: colors.$bg-map !default;
 .ObjectComponent__root {
   z-index: 1;
   border-radius: 10px;
-  overflow: hidden;
+  /* visible — чтобы всплывающее окно порядка связей не обрезалось у края ноды */
+  overflow: visible;
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(180, 210, 255, 0.09);
@@ -246,6 +265,25 @@ $bg-map: colors.$bg-map !default;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
 }
 
+.ObjectComponent__ieStats {
+  background: rgba(0, 0, 0, 0.38);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.ObjectComponent__ieStats--wiremod {
+  border-top-color: rgba(180, 200, 255, 0.08);
+}
+
+.ObjectComponent__ieStatsText {
+  font-size: 0.68rem;
+  line-height: 1.35;
+  font-family: monospace;
+  color: rgba(210, 225, 245, 0.88);
+  white-space: normal;
+  word-break: break-word;
+}
+
 .ObjectComponent__titleText {
   font-weight: 600;
   font-size: 0.92rem;
@@ -269,6 +307,43 @@ $bg-map: colors.$bg-map !default;
   align-items: flex-start;
 }
 
+.ObjectComponent__dataZone {
+  margin-bottom: 0;
+}
+
+.ObjectComponent__pulseZone {
+  margin-top: 0.2rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(80, 200, 170, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 45, 38, 0.28) 0%,
+    rgba(0, 28, 24, 0.42) 100%
+  );
+  border-radius: 0 0 6px 6px;
+}
+
+.ObjectComponent__pulseZone--split {
+  margin-top: 0.45rem;
+  padding-top: 0.45rem;
+}
+
+.ObjectComponent__zoneLabel {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+  color: rgba(200, 230, 255, 0.92);
+  margin-bottom: 0.28rem;
+  line-height: 1;
+}
+
+.ObjectComponent__zoneLabel--pulse {
+  opacity: 0.62;
+  color: rgba(130, 235, 210, 0.95);
+}
+
 .ObjectComponent__Content {
   white-space: nowrap;
   background: linear-gradient(
@@ -287,6 +362,38 @@ $bg-map: colors.$bg-map !default;
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.PortConnectionPopover {
+  min-width: 6.2rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 6px;
+  background: linear-gradient(
+    165deg,
+    rgba(12, 28, 38, 0.97) 0%,
+    rgba(8, 18, 26, 0.98) 100%
+  );
+  border: 1px solid rgba(120, 200, 190, 0.35);
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+
+.PortConnectionPopover__title {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.55;
+  color: rgba(180, 235, 220, 0.95);
+  margin-bottom: 0.25rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.PortConnectionOrder__hint {
+  line-height: 1.25;
 }
 
 .PortLiveValue__label {
