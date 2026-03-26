@@ -1,5 +1,3 @@
-/// Классический браузерный UI интегральной электроники (как на master до TGUI) + ссылка переключения на TGUI.
-
 /obj/item/electronic_assembly/proc/ie_legacy_ui_interact(mob/user, obj/item/integrated_circuit/circuit_pins)
 	if(!user || !check_interactivity(user))
 		return
@@ -79,7 +77,7 @@
 
 		for(var/i = 1 to row_height)
 			HTML += "<tr>"
-			for(var/j = 1 to column_width)
+			for(var/j = 1 to 3)
 				var/datum/integrated_io/io = null
 				var/words = ""
 				var/height = 1
@@ -184,7 +182,7 @@
 
 	for(var/i = 1 to row_height)
 		HTML += "<tr>"
-		for(var/j = 1 to column_width)
+		for(var/j = 1 to 3)
 			var/datum/integrated_io/io = null
 			var/words = ""
 			var/height = 1
