@@ -181,26 +181,6 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		ui_interact(usr)
 		return
 
-	if(href_list["manual_pulse"])
-		var/datum/integrated_io/pulse_pin = locate(href_list["pin"]) in inputs + outputs + activators
-		if(pulse_pin && pulse_pin.io_type == PULSE_CHANNEL && !istype(pulse_pin, /datum/integrated_io/activate/out))
-			check_then_do_work(pulse_pin.ord, ignore_power = TRUE)
-		if(assembly)
-			assembly.ie_legacy_ui_interact(usr, src)
-		else
-			ie_legacy_ui_interact_chip(usr)
-		return
-
-	if(href_list["ie_legacy_list"])
-		var/datum/integrated_io/lists/L = locate(href_list["list_pin"]) in inputs + outputs + activators
-		if(istype(L))
-			L.interact(usr)
-		if(assembly)
-			assembly.ie_legacy_ui_interact(usr, src)
-		else
-			ie_legacy_ui_interact_chip(usr)
-		return
-
 	var/update = TRUE
 	var/update_to_assembly = FALSE
 

@@ -185,16 +185,6 @@
 		ui_interact(usr, null)
 		return
 
-	if(href_list["ie_legacy_overview"])
-		ie_legacy_ui_interact(usr, null)
-		return
-
-	if(href_list["ie_legacy_chip"])
-		var/obj/item/integrated_circuit/open_chip = locate(href_list["ie_legacy_chip"]) in assembly_components
-		if(open_chip)
-			ie_legacy_ui_interact(usr, open_chip)
-		return
-
 	if(href_list["rename"])
 		rename(usr)
 
