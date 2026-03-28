@@ -80,6 +80,13 @@ export class InfinitePlane extends Component {
   }
 
   handleMouseDown(event) {
+    // Shift+ЛКМ: вставка чипа IE по клику (не начинать панораму поля)
+    if (this.props.onShiftPlaneMouseDown && event.shiftKey) {
+      this.props.onShiftPlaneMouseDown(event);
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
     this.setState((state) => {
       return {
         mouseDown: true,

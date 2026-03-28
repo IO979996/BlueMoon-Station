@@ -257,6 +257,47 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
     act('move_screen', { screen_x: 0, screen_y: 0 });
   }
 
+  /** IE: экранные координаты → rel_x/rel_y в пространстве нод (как при перетаскивании). */
+  ieClientToCircuitCoords(clientX: number, clientY: number) {
+    const svg = this.connectionsSvgRef?.current;
+    const z = Math.max(this.state.zoom || 1, 0.01);
+    if (!svg) {
+      return { rel_x: 0, rel_y: 0 };
+    }
+    const r = svg.getBoundingClientRect();
+    return {
+      rel_x: (clientX - r.left) / z,
+      rel_y: (clientY - r.top) / z,
+    };
+  }
+
+  handleShiftPlaneMouseDown = (event: MouseEvent) => {
+    const { act, data } = useBackend<IntegratedCircuitData>(this.context);
+    if (!data.ie_circuit || data.ie_clone_copy_mode !== 'assembly') {
+      return;
+    }
+    const { rel_x, rel_y } = this.ieClientToCircuitCoords(event.clientX, event.clientY);
+    act('ie_place_hand_chip_at', { rel_x, rel_y });
+  };
+
+  handleIePlaceChipCenter = () => {
+    const { act, data } = useBackend<IntegratedCircuitData>(this.context);
+    if (!data.ie_circuit || data.ie_clone_copy_mode !== 'assembly') {
+      return;
+    }
+    const svg = this.connectionsSvgRef?.current;
+    const z = Math.max(this.state.zoom || 1, 0.01);
+    if (!svg) {
+      act('ie_place_hand_chip_at', { rel_x: 0, rel_y: 0 });
+      return;
+    }
+    const r = svg.getBoundingClientRect();
+    act('ie_place_hand_chip_at', {
+      rel_x: (r.width / 2) / z,
+      rel_y: (r.height / 2) / z,
+    });
+  };
+
   componentDidUpdate(_prevProps: unknown, _prevState: IntegratedCircuitState) {
     const { data } = useBackend<IntegratedCircuitData>(this.context);
     if (!this.state.screenPanOverride) {
@@ -438,6 +479,8 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
     const componentCount = components.reduce((n, c) => n + (c ? 1 : 0), 0);
     const variableCount = variables?.length ?? 0;
     const zoomPercent = Math.round((zoom || 1) * 100);
+    /** Только корпус сборки (не одиночный чип в руках) — вставка чипа в поле. */
+    const ieAssemblyUi = !!ie_circuit && ie_clone_copy_mode === 'assembly';
 
     return (
       <Window
@@ -535,6 +578,9 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
               onIeClassicUi={
                 ie_circuit ? () => act('ie_switch_classic_ui') : undefined
               }
+              onIePlaceChipCenter={
+                ieAssemblyUi ? this.handleIePlaceChipCenter : undefined
+              }
             />
             <Box className="IntegratedCircuit__planeHost">
               <InfinitePlane
@@ -547,6 +593,9 @@ export class IntegratedCircuit extends Component<unknown, IntegratedCircuitState
                 initialLeft={panX}
                 initialTop={panY}
                 resetPanNonce={this.state.planeHomeNonce}
+                onShiftPlaneMouseDown={
+                  ieAssemblyUi ? this.handleShiftPlaneMouseDown : undefined
+                }
               >
                 <Connections
                   connections={connections}

@@ -104,6 +104,22 @@ export const DisplayName = (props, context) => {
           ))
             || (isOutput && (
               <Flex align="center" direction="row">
+                {!!(isIeCircuit && fundamentalType !== 'signal' && fundamentalType !== 'option') && (
+                  <Flex.Item>
+                    <Button
+                      compact
+                      color="transparent"
+                      icon="upload"
+                      tooltip="Debugger: вставить память во вход (слева); режим Copy — скопировать текущее значение с этого выхода"
+                      onClick={() => act('set_component_input', {
+                        component_id: componentId,
+                        port_id: portIndex,
+                        marked_atom: true,
+                        is_output: true,
+                      })}
+                    />
+                  </Flex.Item>
+                )}
                 <Flex.Item>
                   <Button
                     compact

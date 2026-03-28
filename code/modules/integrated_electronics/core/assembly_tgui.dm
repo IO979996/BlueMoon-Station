@@ -53,6 +53,7 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 	if(!M || !io)
 		return
 	if(io.io_type != DATA_CHANNEL)
+		to_chat(M, span_warning("Отладчик (upload) работает только с данными, не с импульсными пинами."))
 		return
 	var/ftype_mark = ie_ic_fundamental_type(io)
 	var/atom/movable/held = M.get_active_held_item()
@@ -67,6 +68,10 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			return
 		if(D.accepting_refs)
 			to_chat(M, span_warning("Finish ref scan on the debugger first (click a target in the world), or switch mode."))
+			return
+		// Вставка памяти — только во входы; с выходов можно только скопировать (режим Copy выше).
+		if(ie_ic_is_output_side_pin(io))
+			to_chat(M, span_warning("Вставьте память отладчика во вход (слева). С выхода значение можно только скопировать (режим Copy на кнопке upload)."))
 			return
 		switch(ftype_mark)
 			if("entity")
@@ -465,6 +470,23 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			battery = null
 			diag_hud_set_circuitstat()
 			. = TRUE
+		if("ie_place_hand_chip_at")
+			var/rx = text2num(params["rel_x"])
+			var/ry = text2num(params["rel_y"])
+			if(!isnum(rx) || !isnum(ry) || !usr)
+				return
+			var/obj/item/integrated_circuit/chip = usr.get_active_held_item()
+			if(!istype(chip))
+				chip = usr.get_inactive_held_item()
+			if(!istype(chip))
+				return
+			if(chip.assembly)
+				return
+			if(!try_add_component(chip, usr))
+				return
+			chip.ie_ui_rel_x = clamp(rx, -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
+			chip.ie_ui_rel_y = clamp(ry, -IE_TGUI_COMPONENT_COORD_LIMIT, IE_TGUI_COMPONENT_COORD_LIMIT)
+			. = TRUE
 		if("set_component_display_name")
 			var/cid = text2num(params["component_id"])
 			var/nn = params["display_name"]
@@ -528,7 +550,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			var/obj/item/integrated_circuit/chip = ie_ic_chip_from_index(src, cid)
 			if(!chip || !usr)
 				return
-			var/datum/integrated_io/io = ie_ic_get_input_io(chip, pid)
+			var/is_out = params["is_output"]
+			var/datum/integrated_io/io = is_out ? ie_ic_get_output_io(chip, pid) : ie_ic_get_input_io(chip, pid)
 			if(!io)
 				return
 			if(io.io_type == PULSE_CHANNEL)
@@ -766,7 +789,8 @@ GLOBAL_LIST_INIT(ie_integrated_circuit_ui_types, list("string", "number", "boole
 			. = TRUE
 		if("set_component_input")
 			var/pid = text2num(params["port_id"])
-			var/datum/integrated_io/io = ie_ic_get_input_io(src, pid)
+			var/is_out = params["is_output"]
+			var/datum/integrated_io/io = is_out ? ie_ic_get_output_io(src, pid) : ie_ic_get_input_io(src, pid)
 			if(!io || !usr)
 				return
 			if(io.io_type == PULSE_CHANNEL)

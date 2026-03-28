@@ -23,6 +23,8 @@ export const CircuitToolbar = (props) => {
     onIeCloneCopy,
     /** IE: переключиться на классический браузерный UI */
     onIeClassicUi,
+    /** IE: вставить чип из руки в центр текущего вида поля */
+    onIePlaceChipCenter,
     /** IE: размер (сумма size) и лимит корпуса; max null = одиночный чип без корпуса */
     ieUsedSize,
     ieMaxSize,
@@ -178,6 +180,18 @@ export const CircuitToolbar = (props) => {
             </Button>
           </Stack.Item>
         )}
+        {typeof onIePlaceChipCenter === 'function' && (
+          <Stack.Item>
+            <Button
+              color="transparent"
+              icon="crosshairs"
+              compact
+              tooltip="Вставить чип из руки в центр текущего вида (корпус открыт). Shift+ЛКМ по полю — в точку клика."
+              onClick={onIePlaceChipCenter}>
+              Чип сюда
+            </Button>
+          </Stack.Item>
+        )}
         <Stack.Item>
           <Box className="IntegratedCircuit__chip IntegratedCircuit__chip--muted">
             <Icon name="search-plus" style={{ 'margin-right': '0.35em' }} />
@@ -222,7 +236,8 @@ export const CircuitToolbar = (props) => {
               + 'Связь: ЛКМ от выхода (справа) ко входу (слева). '
               + 'Снять связь: ПКМ по порту. '
               + 'Несколько проводов на вход: кнопки ⇄ меняют порядок. '
-              + 'Масштаб: кнопки +/− у полосы внизу.'
+              + 'Масштаб: кнопки +/− у полосы внизу. '
+              + 'IE: «Чип сюда» / Shift+ЛКМ по полю — вставить чип из руки в видимую область.'
             }>
             <Icon
               name="mouse-pointer"
