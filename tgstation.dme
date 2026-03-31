@@ -4849,6 +4849,7 @@
 #include "modular_bluemoon\code\modules\uplink\uplink_items\uplink_roles.dm"
 #include "modular_bluemoon\code\modules\uplink\uplink_items\uplink_stealth.dm"
 #include "modular_bluemoon\code\modules\uplink\uplink_items\uplink_stealthdevices.dm"
+#include "modular_bluemoon\code\modules\vehicles\cardboard_tank.dm"
 #include "modular_bluemoon\code\modules\vehicles\pimpin_ride.dm"
 #include "modular_bluemoon\code\modules\vehicles\tank.dm"
 #include "modular_bluemoon\code\modules\vehicles\funny_movement\funny_movement.dm"
