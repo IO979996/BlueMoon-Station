@@ -219,11 +219,11 @@ export const CircuitToolbar = (props) => {
               selected={lgbtqRainbowMode}
               tooltip={
                 lgbtqRainbowMode
-                  ? 'Выключить LGBTK+ режим'
-                  : 'LGBTK+ режим: всё окно переливается радужными цветами'
+                  ? 'Выключить ЛГБТК+ режим'
+                  : 'ЛГБТК+ режим: всё окно переливается радужными цветами'
               }
               onClick={onLgbtqRainbowToggle}>
-              LGBTK+
+              ЛГБТК+
             </Button>
           </Stack.Item>
         )}

@@ -33,7 +33,7 @@ $bg-map: colors.$bg-map !default;
   );
 }
 
-// Весь фрейм окна (включая TitleBar с полем имени), пока включён LGBTK+ режим.
+// Весь фрейм окна (включая TitleBar с полем имени), пока включён ЛГБТК+ режим.
 .Layout.Window:has([data-ic-rainbow]) {
   animation: integrated-circuit-rainbow-hue 4.5s linear infinite;
   will-change: filter;

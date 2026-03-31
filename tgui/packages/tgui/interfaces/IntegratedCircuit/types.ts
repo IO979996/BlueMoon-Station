@@ -68,7 +68,7 @@ export interface IntegratedCircuitState {
   backgroundX: number;
   backgroundY: number;
   menuOpen: boolean;
-  /** Клиентский «LGBTK+ режим»: радужные переливы всего окна схемы. */
+  /** Клиентский «ЛГБТК+ режим»: радужные переливы всего окна схемы. */
   lgbtqRainbowMode: boolean;
   /** Пока ждём ответ сервера после «к (0,0)», якорь панорамы с сервера подменяем нулями. */
   screenPanOverride: { x: number; y: number } | null;
