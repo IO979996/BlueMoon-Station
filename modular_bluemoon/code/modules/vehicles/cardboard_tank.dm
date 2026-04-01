@@ -5,6 +5,20 @@
 #define SFX_CT_TRACKS 'sound/bluemoon/cardboard_tank/tracks.ogg'
 #define SFX_CT_HIT 'sound/bluemoon/cardboard_tank/hit.ogg'
 
+/// У базового riding offsets только на N/S/E/W; при диагональном шаге ключ не находится и сносит pixel_x/y.
+/datum/component/riding/cardboard_tank/handle_vehicle_offsets(dir)
+	var/snap = dir
+	if(dir & (dir - 1))
+		if(dir & NORTH)
+			snap = NORTH
+		else if(dir & SOUTH)
+			snap = SOUTH
+		else if(dir & EAST)
+			snap = EAST
+		else
+			snap = WEST
+	return ..(snap)
+
 /obj/item/cardboard_tank_kit
 	name = "folded cardboard tank"
 	desc = "Свёрстанный «танк» из картона. Разверните мультитулом. В сложенном виде можно таскать за собой."
@@ -84,7 +98,7 @@
 
 /obj/vehicle/sealed/cardboard_tank/Initialize(mapload)
 	. = ..()
-	var/datum/component/riding/R = LoadComponent(/datum/component/riding)
+	var/datum/component/riding/R = LoadComponent(/datum/component/riding/cardboard_tank)
 	var/walk_base = CONFIG_GET(number/movedelay/walk_delay)
 	R.vehicle_move_delay = isnum(walk_base) ? walk_base : 1
 	for(var/dir_nudge in list(NORTH, SOUTH, EAST, WEST))
