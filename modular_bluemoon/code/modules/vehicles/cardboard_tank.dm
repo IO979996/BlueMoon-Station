@@ -62,7 +62,7 @@
 	name = "cardboard tank"
 	desc = "Шедевр инженерной мысли из гофрокартона. Внутри тесно, но зато есть «пушка»."
 	icon = CARDBOARD_TANK_ICON
-	icon_state = "Close"
+	icon_state = "Open"
 	layer = ABOVE_MOB_LAYER
 	anchored = FALSE
 	max_integrity = 85
@@ -85,7 +85,8 @@
 /obj/vehicle/sealed/cardboard_tank/Initialize(mapload)
 	. = ..()
 	var/datum/component/riding/R = LoadComponent(/datum/component/riding)
-	R.vehicle_move_delay = 3.5
+	var/walk_base = CONFIG_GET(number/movedelay/walk_delay)
+	R.vehicle_move_delay = isnum(walk_base) ? walk_base : 1
 	for(var/dir_nudge in list(NORTH, SOUTH, EAST, WEST))
 		R.set_vehicle_dir_offsets(dir_nudge, sprite_nudge_x, sprite_nudge_y)
 	R.handle_vehicle_offsets(dir)
@@ -180,7 +181,7 @@
 		canmove = TRUE
 		resistance_flags &= ~INDESTRUCTIBLE
 		obj_integrity = max_integrity
-		icon_state = occupant_amount() ? "Open" : "Close"
+		icon_state = occupant_amount() ? "Close" : "Open"
 		qdel(I)
 		return TRUE
 	return ..()
@@ -188,13 +189,13 @@
 /obj/vehicle/sealed/cardboard_tank/mob_enter(mob/M, silent = FALSE)
 	. = ..()
 	if(. && !tank_broken)
-		icon_state = "Open"
+		icon_state = "Close"
 		START_PROCESSING(SSobj, src)
 
 /obj/vehicle/sealed/cardboard_tank/mob_exit(mob/M, silent = FALSE, randomstep = FALSE)
 	. = ..()
 	if(. && !tank_broken && !occupant_amount())
-		icon_state = "Close"
+		icon_state = "Open"
 	if(!occupant_amount())
 		STOP_PROCESSING(SSobj, src)
 
@@ -214,7 +215,7 @@
 		return
 	last_move_sound = world.time
 	playsound(src, SFX_CT_TRACKS, 28, TRUE)
-	if(icon_state == "Open")
+	if(icon_state == "Close")
 		icon_state = "Movement"
 		addtimer(CALLBACK(src, PROC_REF(reset_move_icon)), 2, TIMER_UNIQUE|TIMER_OVERRIDE)
 
@@ -222,9 +223,9 @@
 	if(tank_broken)
 		return
 	if(occupant_amount())
-		icon_state = "Open"
-	else
 		icon_state = "Close"
+	else
+		icon_state = "Open"
 
 /obj/vehicle/sealed/cardboard_tank/setDir(newdir)
 	var/old = dir
@@ -239,6 +240,12 @@
 	var/datum/component/riding/R = GetComponent(/datum/component/riding)
 	if(!R)
 		return FALSE
+	if(isliving(user))
+		R.vehicle_move_delay = max(user.movement_delay(), 0.5)
+	else
+		var/walk_base = CONFIG_GET(number/movedelay/walk_delay)
+		if(isnum(walk_base))
+			R.vehicle_move_delay = walk_base
 	R.handle_ride(user, direction)
 	return TRUE
 
