@@ -27,11 +27,16 @@
 	w_class = WEIGHT_CLASS_BULKY
 	/// Если задан — развернуть мультитулом может только этот ckey (без дефисов, в нижнем регистре).
 	var/owner_ckey
+	/// Имя персонажа владельца (для подписи при осмотре); задаётся при выдаче с маяка.
+	var/owner_character_name
 
 /obj/item/cardboard_tank_kit/examine(mob/user)
 	. = ..()
 	if(owner_ckey)
-		. += span_notice("На дне мелким шрифтом: «Собственность [owner_ckey]».")
+		if(owner_character_name)
+			. += span_notice("На дне мелким шрифтом: «Собственность: [owner_character_name]».")
+		else
+			. += span_notice("На дне мелким шрифтом отмечено, что комплект персональный — развернуть мультитулом может только владелец.")
 
 /obj/item/cardboard_tank_kit/attackby(obj/item/W, mob/user, params)
 	if(W.tool_behaviour == TOOL_MULTITOOL)
@@ -310,6 +315,7 @@
 	var/obj/item/cardboard_tank_kit/K = new choice()
 	if(istype(owner))
 		K.owner_ckey = owner.ckey
+		K.owner_character_name = owner.real_name ? owner.real_name : owner.name
 	return K
 
 /datum/crafting_recipe/cardboard_tank_kit
