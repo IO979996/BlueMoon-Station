@@ -4,6 +4,8 @@
 #define SFX_CT_FIRE 'sound/bluemoon/cardboard_tank/fire.ogg'
 #define SFX_CT_TRACKS 'sound/bluemoon/cardboard_tank/tracks.ogg'
 #define SFX_CT_HIT 'sound/bluemoon/cardboard_tank/hit.ogg'
+/// После fire.ogg до вылета пирога (мuzzle + снаряд).
+#define CARDBOARD_TANK_FIRE_DELAY 2 SECONDS
 
 /// У базового riding offsets только на N/S/E/W; при диагональном шаге ключ не находится и сносит pixel_x/y.
 /datum/component/riding/cardboard_tank/handle_vehicle_offsets(dir)
@@ -94,7 +96,7 @@
 	max_occupants = 1
 	/// Подгонка к клетке: в DMI якорь — нижний левый угол кадра; крупный кадр с танком «вверху-справа» визуально смещает модель. Отрицательные — влево/вниз.
 	var/sprite_nudge_x = -32
-	var/sprite_nudge_y = -32
+	var/sprite_nudge_y = -20
 	/// Сломанный корпус (нерушимый до починки бумагой).
 	var/tank_broken = FALSE
 	var/last_move_sound = 0
@@ -279,8 +281,16 @@
 		to_chat(user, span_warning("Пушка остывает!"))
 		return
 	COOLDOWN_START(src, fire_cooldown, 4 SECONDS)
-	user.say("ВЫСТРЕЕЕЛ!", forced = "cardboard tank")
 	playsound(src, SFX_CT_FIRE, 80, FALSE)
+	user.say("ВЫСТРЕЕЕЛ!", forced = "cardboard tank")
+	addtimer(CALLBACK(src, PROC_REF(fire_main_gun_after_sound), user), CARDBOARD_TANK_FIRE_DELAY)
+
+/// Вспышка ствола и пирог после CARDBOARD_TANK_FIRE_DELAY (fire.ogg уже сыгран при нажатии).
+/obj/vehicle/sealed/cardboard_tank/proc/fire_main_gun_after_sound(mob/living/user)
+	if(QDELETED(src) || tank_broken || QDELETED(user) || !isliving(user) || !is_occupant(user))
+		return
+	if(!isturf(loc))
+		return
 	new /obj/effect/temp_visual/dir_setting/cardboard_tank_muzzle(get_turf(src), dir)
 	var/turf/T = get_turf(src)
 	var/turf/target = get_ranged_target_turf(T, dir, 5)
