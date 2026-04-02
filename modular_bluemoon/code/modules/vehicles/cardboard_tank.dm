@@ -7,6 +7,33 @@
 /// После fire.ogg до вылета пирога (мuzzle + снаряд).
 #define CARDBOARD_TANK_FIRE_DELAY 2 SECONDS
 
+/// Диагональ `dir` приводим к тому же кардиналу, что и riding (спрайт танка).
+/obj/vehicle/sealed/cardboard_tank/proc/snap_tank_dir(dir)
+	var/snap = dir
+	if(dir & (dir - 1))
+		if(dir & NORTH)
+			snap = NORTH
+		else if(dir & SOUTH)
+			snap = SOUTH
+		else if(dir & EAST)
+			snap = EAST
+		else
+			snap = WEST
+	return snap
+
+/// Доп. смещение вспышки относительно якоря спрайта танка (у дула); суммируется с pixel_x/y танка.
+/obj/vehicle/sealed/cardboard_tank/proc/get_muzzle_barrel_offset(snap_dir)
+	switch(snap_dir)
+		if(NORTH)
+			return list(0, 18)
+		if(SOUTH)
+			return list(0, -18)
+		if(EAST)
+			return list(22, 0)
+		if(WEST)
+			return list(-22, 0)
+	return list(0, 0)
+
 /// У базового riding offsets только на N/S/E/W; при диагональном шаге ключ не находится и сносит pixel_x/y.
 /datum/component/riding/cardboard_tank/handle_vehicle_offsets(dir)
 	var/snap = dir
@@ -291,10 +318,16 @@
 		return
 	if(!isturf(loc))
 		return
-	new /obj/effect/temp_visual/dir_setting/cardboard_tank_muzzle(get_turf(src), dir)
+	var/snap_dir = snap_tank_dir(dir)
+	var/obj/effect/temp_visual/dir_setting/cardboard_tank_muzzle/muzzle = new(get_turf(src), snap_dir)
+	var/list/barrel = get_muzzle_barrel_offset(snap_dir)
+	muzzle.pixel_x = pixel_x + barrel[1]
+	muzzle.pixel_y = pixel_y + barrel[2]
 	var/turf/T = get_turf(src)
-	var/turf/target = get_ranged_target_turf(T, dir, 5)
+	var/turf/target = get_ranged_target_turf(T, snap_dir, 5)
 	var/obj/item/reagent_containers/food/snacks/pie/cream/nostun/cardboard_slug/pie = new(T)
+	pie.pixel_x = pixel_x + barrel[1]
+	pie.pixel_y = pixel_y + barrel[2]
 	pie.throw_at(target, 8, 4, user, FALSE)
 
 /datum/action/vehicle/sealed/cardboard_tank_fire
