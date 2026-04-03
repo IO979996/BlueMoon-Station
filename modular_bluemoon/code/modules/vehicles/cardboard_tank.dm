@@ -6,6 +6,9 @@
 #define SFX_CT_HIT 'sound/bluemoon/cardboard_tank/hit.ogg'
 /// После fire.ogg до вылета пирога (мuzzle + снаряд).
 #define CARDBOARD_TANK_FIRE_DELAY 2 SECONDS
+#define CARDBOARD_TANK_INTEGRITY 85
+/// HP «руин» после первого разрушения — доломать до исчезновения.
+#define CARDBOARD_TANK_RUIN_INTEGRITY 50
 
 /// Диагональ `dir` приводим к тому же кардиналу, что и riding (спрайт танка).
 /obj/vehicle/sealed/cardboard_tank/proc/snap_tank_dir(dir)
@@ -113,7 +116,7 @@
 	icon_state = "Open"
 	layer = ABOVE_MOB_LAYER
 	anchored = FALSE
-	max_integrity = 85
+	max_integrity = CARDBOARD_TANK_INTEGRITY
 	damage_deflection = 7
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 0, ACID = 0)
 	movedelay = 1
@@ -124,7 +127,7 @@
 	/// Подгонка к клетке: в DMI якорь — нижний левый угол кадра; крупный кадр с танком «вверху-справа» визуально смещает модель. Отрицательные — влево/вниз.
 	var/sprite_nudge_x = -32
 	var/sprite_nudge_y = -20
-	/// Сломанный корпус (нерушимый до починки бумагой).
+	/// Сломанный корпус (остов); дальше можно доломать до 0 HP или подлатать бумагой.
 	var/tank_broken = FALSE
 	var/last_move_sound = 0
 	var/last_idle_rumble = 0
@@ -147,7 +150,7 @@
 /obj/vehicle/sealed/cardboard_tank/examine(mob/user)
 	. = ..()
 	if(tank_broken)
-		. += span_warning("Развалено. Можно подлатать листом бумаги.")
+		. += span_warning("Развалено в остов. Можно подлатать листом бумаги или доломать в щепки.")
 
 /obj/vehicle/sealed/cardboard_tank/play_attack_sound(damage_amount, damage_type = BRUTE, damage_flag = 0)
 	if(!tank_broken)
@@ -156,13 +159,24 @@
 		playsound(src, 'sound/weapons/tap.ogg', 30, TRUE)
 
 /obj/vehicle/sealed/cardboard_tank/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armour_penetration = 0)
-	if(tank_broken && (resistance_flags & INDESTRUCTIBLE))
-		return
 	return ..()
 
-/// Не даём ex_act мгновенно qdel — только ломаем в остов.
+/// Не даём ex_act мгновенно qdel — только ломаем в остов; в остове бьём по руинам.
 /obj/vehicle/sealed/cardboard_tank/ex_act(severity, target, origin)
-	if(tank_broken || (resistance_flags & INDESTRUCTIBLE))
+	if(tank_broken)
+		SEND_SIGNAL(src, COMSIG_ATOM_EX_ACT, severity, target, origin)
+		if(QDELETED(src))
+			return
+		var/dmg = 0
+		switch(severity)
+			if(1)
+				dmg = 80
+			if(2)
+				dmg = rand(18, 35)
+			if(3)
+				dmg = rand(6, 14)
+		if(dmg)
+			take_damage(dmg, BRUTE, BOMB, 0)
 		return
 	contents_explosion(severity, target, origin)
 	SEND_SIGNAL(src, COMSIG_ATOM_EX_ACT, severity, target, origin)
@@ -180,8 +194,10 @@
 		take_damage(dmg, BRUTE, BOMB, 0)
 
 /obj/vehicle/sealed/cardboard_tank/wave_ex_act(power, datum/wave_explosion/explosion, dir)
-	if(tank_broken || (resistance_flags & INDESTRUCTIBLE))
-		return power
+	if(tank_broken)
+		if(!QDELETED(src))
+			take_damage(wave_explosion_damage(power * 0.45, explosion), BRUTE, BOMB, 0)
+		return power * wave_explosion_multiply - wave_explosion_block
 	. = power * wave_explosion_multiply - wave_explosion_block
 	if(explosion.source == src)
 		take_damage(max_integrity * 2, BRUTE, BOMB, 0)
@@ -192,17 +208,27 @@
 
 /obj/vehicle/sealed/cardboard_tank/obj_destruction(damage_flag)
 	if(tank_broken)
+		destroy_cardboard_ruin()
 		return
 	shatter_tank()
 	return
+
+/// Остов доломан — убираем с тайла.
+/obj/vehicle/sealed/cardboard_tank/proc/destroy_cardboard_ruin()
+	playsound(src, 'sound/effects/glassbr3.ogg', 25, TRUE)
+	visible_message(span_warning("[src] превращается в лишь кучу мокрого картона!"))
+	var/turf/T = get_turf(src)
+	if(T)
+		new /obj/effect/decal/cleanable/shreds(T)
+	qdel(src)
 
 /obj/vehicle/sealed/cardboard_tank/proc/shatter_tank()
 	if(tank_broken)
 		return
 	tank_broken = TRUE
 	canmove = FALSE
-	resistance_flags |= INDESTRUCTIBLE
-	obj_integrity = max(max_integrity, 1)
+	max_integrity = CARDBOARD_TANK_RUIN_INTEGRITY
+	obj_integrity = CARDBOARD_TANK_RUIN_INTEGRITY
 	icon_state = "Broken"
 	playsound(src, 'sound/effects/glassbr3.ogg', 40, TRUE)
 	visible_message(span_warning("[src] рассыпается!"))
@@ -227,7 +253,7 @@
 		playsound(src, 'sound/items/handling/paper_pickup.ogg', 40, TRUE)
 		tank_broken = FALSE
 		canmove = TRUE
-		resistance_flags &= ~INDESTRUCTIBLE
+		max_integrity = CARDBOARD_TANK_INTEGRITY
 		obj_integrity = max_integrity
 		icon_state = occupant_amount() ? "Close" : "Open"
 		qdel(I)
