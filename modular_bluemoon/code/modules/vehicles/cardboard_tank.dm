@@ -4,6 +4,8 @@
 #define SFX_CT_FIRE 'sound/bluemoon/cardboard_tank/fire.ogg'
 #define SFX_CT_TRACKS 'sound/bluemoon/cardboard_tank/tracks.ogg'
 #define SFX_CT_HIT 'sound/bluemoon/cardboard_tank/hit.ogg'
+/// Длина tracks.ogg в десятых долях секунды; `mid_length` в looping_sound ≥ длины файла, иначе наложение.
+#define CARDBOARD_TANK_TRACKS_LENGTH_DS 70
 /// После fire.ogg до вылета пирога (мuzzle + снаряд).
 #define CARDBOARD_TANK_FIRE_DELAY 2 SECONDS
 #define CARDBOARD_TANK_INTEGRITY 85
@@ -129,8 +131,8 @@
 	var/sprite_nudge_y = -20
 	/// Сломанный корпус (остов); дальше можно доломать до 0 HP или подлатать бумагой.
 	var/tank_broken = FALSE
-	var/last_move_sound = 0
-	var/last_idle_rumble = 0
+	/// Один канал гусениц, только пока кто-то внутри (без спама playsound на каждый тайл).
+	var/datum/looping_sound/cardboard_tank_tracks/tracks_loop
 	COOLDOWN_DECLARE(fire_cooldown)
 
 /obj/vehicle/sealed/cardboard_tank/Initialize(mapload)
@@ -144,6 +146,7 @@
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(on_tank_moved))
 
 /obj/vehicle/sealed/cardboard_tank/Destroy()
+	stop_tracks_loop()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -227,6 +230,7 @@
 		return
 	tank_broken = TRUE
 	canmove = FALSE
+	stop_tracks_loop()
 	max_integrity = CARDBOARD_TANK_RUIN_INTEGRITY
 	obj_integrity = CARDBOARD_TANK_RUIN_INTEGRITY
 	icon_state = "Broken"
@@ -264,31 +268,29 @@
 	. = ..()
 	if(. && !tank_broken)
 		icon_state = "Close"
-		START_PROCESSING(SSobj, src)
+		start_tracks_loop()
 
 /obj/vehicle/sealed/cardboard_tank/mob_exit(mob/M, silent = FALSE, randomstep = FALSE)
 	. = ..()
 	if(. && !tank_broken && !occupant_amount())
 		icon_state = "Open"
 	if(!occupant_amount())
-		STOP_PROCESSING(SSobj, src)
+		stop_tracks_loop()
 
-/obj/vehicle/sealed/cardboard_tank/process()
-	if(tank_broken || !occupant_amount())
+/obj/vehicle/sealed/cardboard_tank/proc/start_tracks_loop()
+	if(tank_broken || tracks_loop || !occupant_amount())
 		return
-	if(world.time < last_idle_rumble + 16)
-		return
-	last_idle_rumble = world.time
-	playsound(src, SFX_CT_TRACKS, 12, TRUE, extrarange = -5)
+	tracks_loop = new /datum/looping_sound/cardboard_tank_tracks(src, TRUE)
+
+/obj/vehicle/sealed/cardboard_tank/proc/stop_tracks_loop()
+	if(tracks_loop)
+		tracks_loop.stop()
+		QDEL_NULL(tracks_loop)
 
 /obj/vehicle/sealed/cardboard_tank/proc/on_tank_moved(datum/source, atom/oldloc, movement_dir, forced)
 	SIGNAL_HANDLER
 	if(tank_broken || !occupant_amount())
 		return
-	if(world.time < last_move_sound + 4)
-		return
-	last_move_sound = world.time
-	playsound(src, SFX_CT_TRACKS, 28, TRUE)
 	if(icon_state == "Close")
 		icon_state = "Movement"
 		addtimer(CALLBACK(src, PROC_REF(reset_move_icon)), 2, TIMER_UNIQUE|TIMER_OVERRIDE)
@@ -300,12 +302,6 @@
 		icon_state = "Close"
 	else
 		icon_state = "Open"
-
-/obj/vehicle/sealed/cardboard_tank/setDir(newdir)
-	var/old = dir
-	. = ..()
-	if(. && dir != old && occupant_amount() && !tank_broken)
-		playsound(src, SFX_CT_TRACKS, 22, TRUE, extrarange = -2)
 
 /obj/vehicle/sealed/cardboard_tank/driver_move(mob/user, direction)
 	if(tank_broken)
@@ -355,6 +351,14 @@
 	pie.pixel_x = pixel_x + barrel[1]
 	pie.pixel_y = pixel_y + barrel[2]
 	pie.throw_at(target, 8, 4, user, FALSE)
+
+/// Один непрерываемый цикл гусениц: не плодит отдельный playsound на каждый шаг (длинный tracks.ogg).
+/datum/looping_sound/cardboard_tank_tracks
+	mid_sounds = list(SFX_CT_TRACKS = 1)
+	mid_length = CARDBOARD_TANK_TRACKS_LENGTH_DS
+	volume = 20
+	vary = TRUE
+	extra_range = -5
 
 /datum/action/vehicle/sealed/cardboard_tank_fire
 	name = "Main gun (pie)"
