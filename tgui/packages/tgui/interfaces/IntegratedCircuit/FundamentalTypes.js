@@ -178,10 +178,14 @@ export const FUNDAMENTAL_DATA_TYPES = {
     );
   },
   'entity': (props, context) => {
-    const { name, setValue } = props;
+    const { name, setValue, value } = props;
+    const hasRef = value !== null && value !== undefined && value !== '';
+    const label = hasRef
+      ? `${name}: ${formatPortLiveValue(value, 'entity')}`
+      : name;
     return (
       <Button
-        content={name}
+        content={label}
         color="transparent"
         icon="upload"
         compact

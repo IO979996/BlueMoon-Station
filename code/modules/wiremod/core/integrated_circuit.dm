@@ -291,8 +291,9 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 		component_data["input_ports"] = list()
 		for(var/datum/port/input/port as anything in component.input_ports)
 			var/current_data = port.value
-			if(isatom(current_data)) // Prevent passing the name of the atom.
-				current_data = null
+			if(isatom(current_data))
+				var/atom/atom_value = current_data
+				current_data = QDELETED(atom_value) ? "(deleted)" : "[atom_value.name] ([REF(atom_value)])"
 			var/list/connected_to = list()
 			for(var/datum/port/output/output as anything in port.connected_ports)
 				connected_to += REF(output)
