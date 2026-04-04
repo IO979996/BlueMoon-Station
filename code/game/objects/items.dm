@@ -343,6 +343,9 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 			. += "<span class='notice'>[src] выглядит очень ухоженно. Видимо, этот предмет кому-то ценен...</span>"
 	// BLUEMOON ADD END
 
+	// BLUEMOON ADD - метка цели кражи при осмотре (активные задачи на кражу в раунде)
+	append_traitor_steal_target_examine(src, user, .)
+
 	if(!user.research_scanner)
 		return
 
