@@ -24,6 +24,8 @@ GLOBAL_VAR_INIT(bsminers_lock, FALSE)
 /// Номинальное давление вокруг майнера (кПа); вне ±BSM_CORE_PRESSURE_TOLERANCE_KPA — двойной износ ядра
 #define BSM_CORE_PRESSURE_NOMINAL_KPA 101.28
 #define BSM_CORE_PRESSURE_TOLERANCE_KPA 50
+/// Интервал повтора радио-предупреждений о ядре (секунды), как `WARNING_DELAY` у суперматерии.
+#define BSM_CORE_WARNING_REPEAT_AFTER 60
 
 #define CORE_INSERT_REG_SIGNAL RegisterSignal(bs_core, COMSIG_PARENT_QDELETING, PROC_REF(on_core_remove))
 
@@ -85,9 +87,9 @@ GLOBAL_VAR_INIT(bsminers_lock, FALSE)
 
 	COOLDOWN_DECLARE(instability_cooldown)
 	var/bsm_rainbow_until = 0
-	/// Сбрасываются при целостности выше порога; одно предупреждение на канал Science на каждый «переход» вниз.
-	var/core_integrity_warned_50 = FALSE
-	var/core_integrity_warned_10 = FALSE
+	/// `REALTIMEOFDAY` последнего оповещения по порогу 50% / 10%; сброс в 0 при целостности выше порога (как `lastwarning` у СМ).
+	var/last_core_radio_warning_50 = 0
+	var/last_core_radio_warning_10 = 0
 	var/static/list/instability_settings = list(
 		INSTABILITY_LIST_ADD(100, 10, "inst1", "#c5641e"),
 		INSTABILITY_LIST_ADD(50, 20, "inst2", "#c51e1e"),
@@ -253,8 +255,8 @@ GLOBAL_VAR_INIT(bsminers_lock, FALSE)
 	if(user.temporarilyRemoveItemFromInventory(I))
 		I.forceMove(src)
 		bs_core = I
-		core_integrity_warned_50 = FALSE
-		core_integrity_warned_10 = FALSE
+		last_core_radio_warning_50 = 0
+		last_core_radio_warning_10 = 0
 		CORE_INSERT_REG_SIGNAL
 
 /obj/machinery/mineral/bluespace_miner/process(delta_time)
@@ -415,31 +417,36 @@ GLOBAL_VAR_INIT(bsminers_lock, FALSE)
 
 	UnregisterSignal(bs_core, COMSIG_PARENT_QDELETING)
 	bs_core = null
-	core_integrity_warned_50 = FALSE
-	core_integrity_warned_10 = FALSE
+	last_core_radio_warning_50 = 0
+	last_core_radio_warning_10 = 0
 
-/// Предупреждения в канал РНД (Science) при просадке целостности ядра.
+/// Радио-предупреждения о ядре: Science при ≤50%, Common+громко при ≤10%; повтор каждые `BSM_CORE_WARNING_REPEAT_AFTER` с (как суперматерия).
 /obj/machinery/mineral/bluespace_miner/proc/check_core_integrity_radio_warnings()
 	if(no_core_damage || !bs_core || QDELETED(bs_core))
 		return
 	var/pct = CORE_INTEGRITY_PERCENT
 	if(pct > 50)
-		core_integrity_warned_50 = FALSE
+		last_core_radio_warning_50 = 0
 	if(pct > 10)
-		core_integrity_warned_10 = FALSE
+		last_core_radio_warning_10 = 0
 	var/area_name = get_area_name(src)
-	if(pct <= 10 && !core_integrity_warned_10)
-		core_integrity_warned_10 = TRUE
-		core_integrity_warned_50 = TRUE
-		var/msg = "КРИТИЧНО: блюспейс-майнер ([area_name], [COORD(src)]): целостность блюспейс-ядра [pct]% — достигнут порог 10%. Немедленно отключите майнер!"
-		playsound(src, 'sound/machines/engine_alert1.ogg', 100, FALSE, 30, 30, falloff_distance = 10)
-		bsm_radio_common_loud(msg)
-		log_game("BSM core ≤10%: [src] at [area_name] [COORD(src)].")
-	else if(pct <= 50 && !core_integrity_warned_50)
-		core_integrity_warned_50 = TRUE
-		var/msg = "ВНИМАНИЕ: блюспейс-майнер ([area_name], [COORD(src)]): целостность блюспейс-ядра [pct]% — достигнут порог 50%. Требуется проверка или остановка."
-		bsm_radio_science(msg)
-		log_game("BSM core ≤50%: [src] at [area_name] [COORD(src)].")
+	if(pct <= 10)
+		if(!last_core_radio_warning_10 || (REALTIMEOFDAY - last_core_radio_warning_10) / 10 >= BSM_CORE_WARNING_REPEAT_AFTER)
+			var/first_in_band = !last_core_radio_warning_10
+			last_core_radio_warning_10 = REALTIMEOFDAY
+			var/msg = "КРИТИЧНО: блюспейс-майнер ([area_name], [COORD(src)]): целостность блюспейс-ядра [pct]%. Немедленно отключите майнер!"
+			playsound(src, 'sound/machines/engine_alert1.ogg', 100, FALSE, 30, 30, falloff_distance = 10)
+			bsm_radio_common_loud(msg)
+			if(first_in_band)
+				log_game("BSM core ≤10%: [src] at [area_name] [COORD(src)].")
+	else if(pct <= 50)
+		if(!last_core_radio_warning_50 || (REALTIMEOFDAY - last_core_radio_warning_50) / 10 >= BSM_CORE_WARNING_REPEAT_AFTER)
+			var/first_in_band = !last_core_radio_warning_50
+			last_core_radio_warning_50 = REALTIMEOFDAY
+			var/msg = "ВНИМАНИЕ: блюспейс-майнер ([area_name], [COORD(src)]): целостность блюспейс-ядра [pct]%. Требуется проверка или остановка."
+			bsm_radio_science(msg)
+			if(first_in_band)
+				log_game("BSM core ≤50%: [src] at [area_name] [COORD(src)].")
 
 /obj/machinery/mineral/bluespace_miner/proc/bsm_radio_science(message)
 	if(!message)
