@@ -424,6 +424,9 @@ GLOBAL_VAR_INIT(bsminers_lock, FALSE)
 /obj/machinery/mineral/bluespace_miner/proc/check_core_integrity_radio_warnings()
 	if(no_core_damage || !bs_core || QDELETED(bs_core))
 		return
+	// Тот же критерий, что и в z_check() (is_station_level). Не вызываем z_check(TRUE) отсюда: process() дергает часто и сбило бы кулдаун z_check.
+	if(!is_station_level(z))
+		return
 	var/pct = CORE_INTEGRITY_PERCENT
 	if(pct > 50)
 		last_core_radio_warning_50 = 0
