@@ -465,6 +465,22 @@ GLOBAL_LIST_EMPTY_TYPED(integrated_circuits, /obj/item/integrated_circuit)
 			component.rel_x = min(max(-COMPONENT_MAX_POS, text2num(params["rel_x"])), COMPONENT_MAX_POS)
 			component.rel_y = min(max(-COMPONENT_MAX_POS, text2num(params["rel_y"])), COMPONENT_MAX_POS)
 			. = TRUE
+		if("set_component_display_name")
+			var/component_id = text2num(params["component_id"])
+			if(!WITHIN_RANGE(component_id, attached_components))
+				return
+			var/obj/item/circuit_component/component = attached_components[component_id]
+			var/raw = params["display_name"]
+			if(isnull(raw))
+				return TRUE
+			var/new_name = copytext(strip_html("[raw]", label_max_length), 1, label_max_length + 1)
+			if(!length(new_name) || reject_bad_name(new_name, TRUE))
+				component.display_name = initial(component.display_name)
+			else
+				component.display_name = new_name
+			if(component.name == COMPONENT_DEFAULT_NAME || findtext(component.name, COMPONENT_DEFAULT_NAME))
+				component.name = "[lowertext(component.display_name)] [COMPONENT_DEFAULT_NAME]"
+			. = TRUE
 		if("set_component_input")
 			var/component_id = text2num(params["component_id"])
 			var/port_id = text2num(params["port_id"])

@@ -125,7 +125,14 @@ export class ObjectComponent extends Component {
     const output_ports = byondListToArray(rawOutputPorts);
     const { act, data } = useBackend(this.context);
     const isIe = !!data.ie_circuit;
-    const showIeNodeStats = isIe && typeof ie_complexity === 'number';
+    /** IE: строка размер/сложность/КД под нодой. */
+    const showIeStatsBlock = isIe && typeof ie_complexity === 'number';
+    /**
+     * Переименование заголовка ноды: wiremod — по умолчанию вкл.; legacy IE — только если сервер шлёт ie_node_rename === true.
+     */
+    const allowNodeTitleRename =
+      (showIeStatsBlock && data.ie_node_rename === true) ||
+      (!isIe && data.wiremod_node_rename !== false);
     const showWiremodPower = !isIe && typeof power_usage_per_input === 'number';
 
     const rowsWithIndex = (ports) =>
@@ -235,7 +242,7 @@ export class ObjectComponent extends Component {
               />
             </Stack.Item>
             <Stack.Item grow={1} unselectable="on">
-              {!!showIeNodeStats && this.state.editingNodeTitle ? (
+              {!!allowNodeTitleRename && this.state.editingNodeTitle ? (
                 <Input
                   autoFocus
                   className="ObjectComponent__titleInput"
@@ -273,7 +280,7 @@ export class ObjectComponent extends Component {
                   onMouseDown={(e) => e.stopPropagation()}
                   onDblClick={(e) => {
                     e.stopPropagation();
-                    if (!showIeNodeStats) {
+                    if (!allowNodeTitleRename) {
                       return;
                     }
                     this.setState({
@@ -285,7 +292,7 @@ export class ObjectComponent extends Component {
                 </Box>
               )}
             </Stack.Item>
-            {!!showIeNodeStats && !this.state.editingNodeTitle && (
+            {!!allowNodeTitleRename && !this.state.editingNodeTitle && (
               <Stack.Item>
                 <Button
                   color="transparent"
@@ -339,7 +346,7 @@ export class ObjectComponent extends Component {
             )}
           </Stack>
         </Box>
-        {!!showIeNodeStats && (
+        {!!showIeStatsBlock && (
           <Box className="ObjectComponent__ieStats" px={1} py={0.35}>
             <Box
               className="ObjectComponent__ieStatsText"

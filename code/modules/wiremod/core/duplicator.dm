@@ -192,11 +192,19 @@ GLOBAL_LIST_INIT(circuit_dupe_whitelisted_types, list(
 /obj/item/circuit_component/proc/save_data_to_list(list/component_data)
 	component_data["rel_x"] = rel_x
 	component_data["rel_y"] = rel_y
+	if(display_name != initial(display_name))
+		component_data["component_display_name"] = display_name
 
 /// Loads data from a list
 /obj/item/circuit_component/proc/load_data_from_list(list/component_data)
 	rel_x = component_data["rel_x"]
 	rel_y = component_data["rel_y"]
+	if(component_data["component_display_name"])
+		var/loaded = copytext(strip_html(component_data["component_display_name"], 24), 1, 25)
+		if(length(loaded) && !reject_bad_name(loaded, TRUE))
+			display_name = loaded
+			if(name == COMPONENT_DEFAULT_NAME || findtext(name, COMPONENT_DEFAULT_NAME))
+				name = "[lowertext(display_name)] [COMPONENT_DEFAULT_NAME]"
 
 /client/proc/load_circuit()
 	set name = "Load Circuit"

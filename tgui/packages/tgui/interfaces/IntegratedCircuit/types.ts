@@ -99,6 +99,14 @@ export interface IntegratedCircuitData {
   /** IE: сумма сложностей / лимит корпуса. */
   ie_used_complexity?: number | null;
   ie_max_complexity?: number | null;
+  /**
+   * Legacy IE: показать переименование ноды (карандаш / двойной клик). По умолчанию в UI выключено.
+   */
+  ie_node_rename?: boolean;
+  /**
+   * Wiremod: показать переименование ноды; если не передано — считается true.
+   */
+  wiremod_node_rename?: boolean;
   /** BYOND list, array, or dense 1..N object of component dicts. */
   components?: unknown;
   /** Краткая подсветка «какая связь сработала» (совпадает с ref портов в connections). */
