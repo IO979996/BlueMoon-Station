@@ -65,6 +65,9 @@ GLOBAL_LIST_EMPTY(vending_machines_to_restock)
 	armor = list(MELEE = 20, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 70)
 	circuit = /obj/item/circuitboard/machine/vendor
 	payment_department = ACCOUNT_SRV
+	use_power = IDLE_POWER_USE
+	idle_power_usage = 100
+	active_power_usage = 500
 	light_power = 0.5
 	light_range = MINIMUM_USEFUL_LIGHT_RANGE
 	/// Is the machine active (No sales pitches if off)!
