@@ -218,6 +218,10 @@
 	. = ..()
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	STR.max_items = 10
+	/// Базовый /datum/component/storage ограничивает по `max_w_class` (только SMALL) и сумме w_class (7×SMALL).
+	/// При спавне `new(..., src)` проверки обходятся; при ручной укладке ломается — нужны лимиты под набор ERT/CentCom.
+	STR.max_w_class = WEIGHT_CLASS_NORMAL
+	STR.max_combined_w_class = WEIGHT_CLASS_NORMAL * 10
 	STR.storage_flags = STORAGE_FLAGS_LEGACY_DEFAULT
 
 /obj/item/storage/box/survival/centcom/PopulateContents()
