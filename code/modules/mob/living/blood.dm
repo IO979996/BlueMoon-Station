@@ -340,6 +340,22 @@
 	if(temp_blood_DNA)
 		B.blood_DNA |= temp_blood_DNA
 
+/// Blood that flies along the floor in a direction (tgstation-style [/obj/effect/decal/cleanable/blood/hitsplatter]).
+/mob/living/proc/spray_blood(splatter_direction, splatter_strength = 3)
+	if(!isturf(loc) || !get_blood_dna_list())
+		return
+	var/obj/effect/decal/cleanable/blood/hitsplatter/our_splatter = new(loc, get_static_viruses())
+	our_splatter.transfer_mob_blood_dna(src)
+	if(splatter_strength)
+		our_splatter.splatter_strength = splatter_strength
+	var/turf/targ = get_ranged_target_turf(src, splatter_direction, splatter_strength)
+	our_splatter.fly_towards(targ, splatter_strength)
+
+/mob/living/carbon/human/spray_blood(splatter_direction, splatter_strength = 3)
+	if((NOBLOOD in dna.species.species_traits) || !blood_volume)
+		return
+	return ..()
+
 /mob/living/carbon/human/add_splatter_floor(turf/T, small_drip)
 	if(!(NOBLOOD in dna.species.species_traits))
 		..()
