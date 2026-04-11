@@ -15,7 +15,7 @@
 	return items
 
 // Return the item currently in the slot ID
-/mob/living/carbon/human/get_item_by_slot(slot_id)
+/mob/living/carbon/human/get_item_by_slot(slot_id) as /obj/item
 	switch(slot_id)
 		if(ITEM_SLOT_BACK)
 			return back
