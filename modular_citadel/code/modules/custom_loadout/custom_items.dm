@@ -645,22 +645,15 @@
 	icon_state = chip_icon
 	item_state = chip_icon
 
-/obj/item/coin/pokerchip/attack_self(mob/user)
-	if(cooldown < world.time)
-		if(string_attached)
-			to_chat(user, "<span class='warning'>The chip won't flip very well with something attached!</span>")
-			return FALSE
-		cooldown = world.time + 15
-		coinflip = pick(sideslist)
-		playsound(user.loc, 'sound/items/coinflip.ogg', 50, TRUE)
-		var/oldloc = loc
-		sleep(15)
-		if(loc == oldloc && user && !user.incapacitated())
-			user.visible_message("<span class='notice'>[user] flips [src]. It lands on [coinflip].</span>", \
-				"<span class='notice'>You flip [src]. It lands on [coinflip].</span>", \
-				"<span class='hear'>You hear plastic clattering.</span>")
-		icon_state = chip_icon
-	return TRUE
+/obj/item/coin/pokerchip/play_coin_flip_animation()
+	return
+
+/obj/item/coin/pokerchip/apply_coin_flip_icon_state()
+	icon_state = chip_icon
+	item_state = chip_icon
+
+/obj/item/coin/pokerchip/coin_flip_hear_message()
+	return "<span class='hear'>You hear plastic clattering.</span>"
 
 /obj/item/coin/pokerchip/red
 	name = "red pokerchip"
@@ -694,6 +687,7 @@
 	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
 	STR.max_items = 50
 	STR.max_combined_w_class = WEIGHT_CLASS_TINY * 50
+	STR.can_hold = typecacheof(/obj/item/coin/pokerchip)
 
 /obj/item/storage/box/pockerchips/PopulateContents()
 	for(var/i in 1 to 5)
