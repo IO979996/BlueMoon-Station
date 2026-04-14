@@ -629,33 +629,58 @@
 	mob_overlay_icon = 'icons/mob/clothing/custom_w.dmi'
 	mutantrace_variation = NONE
 
-/obj/item/coin/red
+// Poker chips: /obj/item/coin/Initialize overwrites icon_state to economy.dmi sprites; restore custom art after ..()
+/obj/item/coin/pokerchip
+	name = "poker chip"
+	desc = "A poker chip."
+	icon = 'icons/obj/custom.dmi'
+	custom_materials = list()
+	material_flags = NONE
+	value = 0
+	var/chip_icon = "c_red"
+
+/obj/item/coin/pokerchip/Initialize(mapload)
+	. = ..()
+	icon = 'icons/obj/custom.dmi'
+	icon_state = chip_icon
+	item_state = chip_icon
+
+/obj/item/coin/pokerchip/attack_self(mob/user)
+	if(cooldown < world.time)
+		if(string_attached)
+			to_chat(user, "<span class='warning'>The chip won't flip very well with something attached!</span>")
+			return FALSE
+		cooldown = world.time + 15
+		coinflip = pick(sideslist)
+		playsound(user.loc, 'sound/items/coinflip.ogg', 50, TRUE)
+		var/oldloc = loc
+		sleep(15)
+		if(loc == oldloc && user && !user.incapacitated())
+			user.visible_message("<span class='notice'>[user] flips [src]. It lands on [coinflip].</span>", \
+				"<span class='notice'>You flip [src]. It lands on [coinflip].</span>", \
+				"<span class='hear'>You hear plastic clattering.</span>")
+		icon_state = chip_icon
+	return TRUE
+
+/obj/item/coin/pokerchip/red
 	name = "red pokerchip"
 	desc = "A red pokerchip."
-	icon_state = "c_red"
-	item_state = "c_red"
-	icon = 'icons/obj/custom.dmi'
+	chip_icon = "c_red"
 
-/obj/item/coin/blue
+/obj/item/coin/pokerchip/blue
 	name = "blue pokerchip"
 	desc = "A blue pokerchip."
-	icon_state = "c_nlue"
-	item_state = "c_blue"
-	icon = 'icons/obj/custom.dmi'
+	chip_icon = "c_blue"
 
-/obj/item/coin/green
+/obj/item/coin/pokerchip/green
 	name = "green pokerchip"
 	desc = "A green pokerchip."
-	icon_state = "c_green"
-	item_state = "c_green"
-	icon = 'icons/obj/custom.dmi'
+	chip_icon = "c_green"
 
-/obj/item/coin/black
+/obj/item/coin/pokerchip/black
 	name = "black pokerchip"
 	desc = "A black pokerchip."
-	icon_state = "c_black"
-	item_state = "c_black"
-	icon = 'icons/obj/custom.dmi'
+	chip_icon = "c_black"
 
 /obj/item/storage/box/pockerchips
 	name = "tray of pocker chips"
@@ -664,15 +689,21 @@
 	icon = 'icons/obj/custom.dmi'
 	illustration=null
 
+/obj/item/storage/box/pockerchips/ComponentInitialize()
+	. = ..()
+	var/datum/component/storage/STR = GetComponent(/datum/component/storage)
+	STR.max_items = 50
+	STR.max_combined_w_class = WEIGHT_CLASS_TINY * 50
+
 /obj/item/storage/box/pockerchips/PopulateContents()
 	for(var/i in 1 to 5)
-		new /obj/item/coin/red(src)
+		new /obj/item/coin/pokerchip/red(src)
 	for(var/i in 1 to 10)
-		new /obj/item/coin/blue(src)
+		new /obj/item/coin/pokerchip/blue(src)
 	for(var/i in 1 to 15)
-		new /obj/item/coin/black(src)
+		new /obj/item/coin/pokerchip/black(src)
 	for(var/i in 1 to 20)
-		new /obj/item/coin/green(src)
+		new /obj/item/coin/pokerchip/green(src)
 
 //Bluemood ADD
 
