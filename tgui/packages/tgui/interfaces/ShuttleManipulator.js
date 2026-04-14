@@ -1,7 +1,7 @@
 import { map } from 'common/collections';
 
 import { useBackend, useLocalState } from '../backend';
-import { Button, Flex, LabeledList, Section, Table, Tabs } from '../components';
+import { Box, Button, Dropdown, Flex, LabeledList, Section, Table, Tabs } from '../components';
 import { Window } from '../layouts';
 
 export const ShuttleManipulator = (props, context) => {
@@ -91,6 +91,29 @@ export const ShuttleManipulatorStatus = (props, context) => {
                       shuttle_id: shuttle.shuttle_id,
                     })} />
                 </>
+              )}
+            </Table.Cell>
+            <Table.Cell>
+              {shuttle.can_force_hyperspace_event ? (
+                <Dropdown
+                  width="16rem"
+                  noscroll
+                  displayText="Ивент гиперпространства…"
+                  options={(shuttle.hyperspace_event_options || []).map(o => o.name)}
+                  onSelected={selectedName => {
+                    const opt = (shuttle.hyperspace_event_options || []).find(
+                      o => o.name === selectedName
+                    );
+                    if (opt?.path) {
+                      act('force_hyperspace_event', {
+                        shuttle_id: shuttle.shuttle_id,
+                        event_path: opt.path,
+                      });
+                    }
+                  }}
+                />
+              ) : (
+                <Box color="label">—</Box>
               )}
             </Table.Cell>
           </Table.Row>

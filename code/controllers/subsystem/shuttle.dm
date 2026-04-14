@@ -901,6 +901,16 @@ SUBSYSTEM_DEF(shuttle)
 		L["can_fly"] = TRUE
 		if(istype(M, /obj/docking_port/mobile/emergency))
 			L["can_fly"] = FALSE
+			var/obj/docking_port/stationary/emergency_docked = M.get_docked()
+			if(istype(emergency_docked, /obj/docking_port/stationary/transit))
+				L["can_force_hyperspace_event"] = TRUE
+				var/list/event_opts = list()
+				for(var/event_type in GLOB.admin_forceable_hyperspace_events)
+					UNTYPED_LIST_ADD(event_opts, list(
+						"name" = initial(event_type:name),
+						"path" = "[event_type]",
+					))
+				L["hyperspace_event_options"] = event_opts
 		else if(!M.destination)
 			L["can_fast_travel"] = FALSE
 		if (M.mode != SHUTTLE_IDLE)
@@ -1004,3 +1014,32 @@ SUBSYSTEM_DEF(shuttle)
 					var/set_purchase = alert(usr, "Do you want to also disable shuttle purchases/random events that would change the shuttle?", "Butthurt Admin Prevention", "Yes, disable purchases/events", "No, I want to possibly get owned")
 					if(set_purchase == "Yes, disable purchases/events")
 						SSshuttle.shuttle_purchased = SHUTTLEPURCHASE_FORCED
+
+		if("force_hyperspace_event")
+			var/event_path_text = params["event_path"]
+			if(!shuttle_id || !event_path_text)
+				return
+			var/event_type = text2path(event_path_text)
+			if(!ispath(event_type, /datum/shuttle_event))
+				return
+			if(!(event_type in GLOB.admin_forceable_hyperspace_events))
+				return
+			for(var/mob_idx in mobile)
+				var/obj/docking_port/mobile/M = mob_idx
+				if(M.shuttle_id != shuttle_id)
+					continue
+				if(!istype(M, /obj/docking_port/mobile/emergency))
+					return
+				var/obj/docking_port/stationary/docked = M.get_docked()
+				if(!istype(docked, /obj/docking_port/stationary/transit))
+					to_chat(user, span_warning("Эвакуационный шаттл не в транзите (гиперпространство)."))
+					return
+				var/obj/docking_port/mobile/emergency/eshut = M
+				var/evac_duration = emergencyEscapeTime * eshut.engine_coeff
+				var/datum/shuttle_event/new_event = eshut.add_shuttle_event(event_type)
+				new_event?.start_up_event(evac_duration)
+				message_admins("[key_name_admin(usr)] forced hyperspace event [event_type] on the evacuation shuttle.")
+				log_admin("[key_name(usr)] forced hyperspace event [event_type] on the evacuation shuttle.")
+				SSblackbox.record_feedback("text", "shuttle_manipulator", 1, "force_hyperspace:[event_type]")
+				. = TRUE
+				break

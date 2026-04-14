@@ -370,6 +370,24 @@
 	query_round_shuttle_name.Execute()
 	qdel(query_round_shuttle_name)
 
+/// Paths admins may inject via Shuttle Manipulator while the evacuation shuttle is in transit (whitelist; keep aligned with random rolls + admin-only types).
+GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
+	/datum/shuttle_event/turbulence,
+	/datum/shuttle_event/simple_spawner/carp/friendly,
+	/datum/shuttle_event/simple_spawner/carp,
+	/datum/shuttle_event/simple_spawner/maintenance,
+	/datum/shuttle_event/simple_spawner/meteor/dust,
+	/datum/shuttle_event/simple_spawner/meteor/safe,
+	/datum/shuttle_event/simple_spawner/meteor/dust/meaty,
+	/datum/shuttle_event/simple_spawner/projectile/fireball,
+	/datum/shuttle_event/simple_spawner/human_shuttle/greytide,
+	/datum/shuttle_event/simple_spawner/player_controlled/human/hitchhiker,
+	/datum/shuttle_event/simple_spawner/player_controlled/carp,
+	/datum/shuttle_event/simple_spawner/player_controlled/alien_queen,
+	/datum/shuttle_event/simple_spawner/black_hole,
+	/datum/shuttle_event/simple_spawner/black_hole/adminbus,
+))
+
 /// Roll and schedule tg-style hyperspace events for the transit leg (processed in SSshuttle while docked to /transit).
 /obj/docking_port/mobile/emergency/proc/prepare_hyperspace_events()
 	for(var/datum/shuttle_event/old_event as anything in event_list)
