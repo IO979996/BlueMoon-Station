@@ -126,6 +126,10 @@ SUBSYSTEM_DEF(shuttle)
 			continue
 		var/obj/docking_port/mobile/P = thing
 		P.check()
+		if(length(P.event_list))
+			var/obj/docking_port/stationary/docked_now = P.get_docked()
+			if(istype(docked_now, /obj/docking_port/stationary/transit))
+				P.process_events()
 	for(var/thing in transit)
 		var/obj/docking_port/stationary/transit/T = thing
 		if(!T.owner)

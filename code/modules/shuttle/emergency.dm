@@ -370,6 +370,36 @@
 	query_round_shuttle_name.Execute()
 	qdel(query_round_shuttle_name)
 
+/// Roll and schedule tg-style hyperspace events for the transit leg (processed in SSshuttle while docked to /transit).
+/obj/docking_port/mobile/emergency/proc/prepare_hyperspace_events()
+	for(var/datum/shuttle_event/old_event as anything in event_list)
+		qdel(old_event)
+	event_list.Cut()
+
+	var/evac_duration = SSshuttle.emergencyEscapeTime * engine_coeff
+	var/list/weighted = list(
+		/datum/shuttle_event/turbulence = 5,
+		/datum/shuttle_event/simple_spawner/carp/friendly = 3,
+		/datum/shuttle_event/simple_spawner/carp = 4,
+		/datum/shuttle_event/simple_spawner/maintenance = 3,
+		/datum/shuttle_event/simple_spawner/meteor/dust = 2,
+		/datum/shuttle_event/simple_spawner/meteor/safe = 3,
+		/datum/shuttle_event/simple_spawner/meteor/dust/meaty = 1,
+		/datum/shuttle_event/simple_spawner/projectile/fireball = 1,
+		/datum/shuttle_event/simple_spawner/human_shuttle/greytide = 2,
+		/datum/shuttle_event/simple_spawner/player_controlled/human/hitchhiker = 2,
+		/datum/shuttle_event/simple_spawner/player_controlled/carp = 2,
+		/datum/shuttle_event/simple_spawner/player_controlled/alien_queen = 1,
+	)
+	var/num_events = rand(2, 3)
+	for(var/i in 1 to num_events)
+		if(!length(weighted))
+			break
+		var/chosen = pickweight(weighted)
+		weighted -= chosen
+		var/datum/shuttle_event/new_event = add_shuttle_event(chosen)
+		new_event?.start_up_event(evac_duration)
+
 /obj/docking_port/mobile/emergency/check()
 	if(!timer)
 		return
@@ -450,6 +480,7 @@
 				mode = SHUTTLE_ESCAPE
 				launch_status = ENDGAME_LAUNCHED
 				setTimer(SSshuttle.emergencyEscapeTime * engine_coeff)
+				prepare_hyperspace_events()
 				priority_announce("Шаттл Эвакуации покинул станцию. До прибытия Шаттла Эвакуации на Аванпост Центрального Командования осталось [timeLeft(600)] минут.", null, null, "ВНИМАНИЕ: ОТБЫТИЕ ШАТТЛА")
 				INVOKE_ASYNC(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, poll_hearts))
 
