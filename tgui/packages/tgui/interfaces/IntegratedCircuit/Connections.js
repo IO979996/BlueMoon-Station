@@ -2,7 +2,7 @@ import { Component } from 'inferno';
 
 import { classes } from '../../../common/react';
 import { CSS_COLORS } from '../../constants';
-import { SVG_CURVE_INTENSITY } from './constants';
+import { SVG_CURVE_INTENSITY, WIRE_HIT_AREA_STROKE_WIDTH } from './constants';
 
 const isColorClass = (str) => typeof str === 'string' && CSS_COLORS.includes(str);
 
@@ -144,7 +144,9 @@ export class Connections extends Component {
                 d={d}
                 fill="none"
                 stroke="rgba(255,255,255,0.001)"
-                strokeWidth="14"
+                strokeWidth={WIRE_HIT_AREA_STROKE_WIDTH}
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 vectorEffect="non-scaling-stroke"
                 style={{ 'pointer-events': 'stroke', cursor: 'crosshair' }}
                 onMouseEnter={this.handleOverlayWireMouseEnter}
