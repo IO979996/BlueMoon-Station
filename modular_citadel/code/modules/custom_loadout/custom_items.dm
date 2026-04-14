@@ -664,7 +664,7 @@
 	icon = 'icons/obj/custom.dmi'
 	illustration=null
 
-/obj/item/storage/box/pokerchips/PopulateContents()
+/obj/item/storage/box/pockerchips/PopulateContents()
 	for(var/i in 1 to 5)
 		new /obj/item/coin/red(src)
 	for(var/i in 1 to 10)
