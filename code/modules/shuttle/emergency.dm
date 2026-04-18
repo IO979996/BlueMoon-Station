@@ -582,7 +582,7 @@ GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
 
 /obj/machinery/computer/shuttle/pod
 	name = "pod control computer"
-	admin_controlled = TRUE
+	admin_controlled = FALSE
 	possible_destinations = "pod_asteroid"
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "dorm_available"
@@ -590,9 +590,9 @@ GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
 	density = FALSE
 	clockwork = TRUE //it'd look weird
 
-/obj/machinery/computer/shuttle/pod/Initialize(mapload)
+/obj/machinery/computer/shuttle/pod/ui_data(mob/user)
 	. = ..()
-	RegisterSignal(SSsecurity_level, COMSIG_SECURITY_LEVEL_CHANGED, PROC_REF(check_lock))
+	.["pod_depart_locked"] = !(obj_flags & EMAGGED) && (GLOB.security_level < SEC_LEVEL_RED)
 
 /obj/machinery/computer/shuttle/pod/ComponentInitialize()
 	. = ..()
@@ -602,7 +602,7 @@ GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
 	. = SEND_SIGNAL(src, COMSIG_ATOM_EMAG_ACT)
 	if(obj_flags & EMAGGED)
 		return
-	log_admin("[key_name(usr)] emagged [src] at [AREACOORD(src)]")
+	log_admin("[key_name(user)] emagged [src] at [AREACOORD(src)]")
 	obj_flags |= EMAGGED
 	to_chat(user, "<span class='warning'>You fry the pod's alert level checking system.</span>")
 	return TRUE
@@ -611,21 +611,6 @@ GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
 	. = ..()
 	if(possible_destinations == initial(possible_destinations) || override)
 		possible_destinations = "pod_lavaland[idnum];pod"
-
-/**
- * Signal handler for checking if we should lock or unlock escape pods accordingly to a newly set security level
- *
- * Arguments:
- * * source The datum source of the signal
- * * new_level The new security level that is in effect
- */
-/obj/machinery/computer/shuttle/pod/proc/check_lock(datum/source, new_level)
-	SIGNAL_HANDLER
-
-	if(obj_flags & EMAGGED)
-		return
-	log_admin("[key_name(usr)] emagged [src] at [AREACOORD(src)]")
-	admin_controlled = !(new_level < SEC_LEVEL_RED)
 
 /obj/docking_port/stationary/random
 	name = "escape pod"
