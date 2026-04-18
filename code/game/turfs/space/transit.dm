@@ -50,6 +50,9 @@
 		return
 	if(HAS_TRAIT(M, TRAIT_FREE_HYPERSPACE_MOVEMENT) || HAS_TRAIT(M, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT))
 		return
+	// Transit floor inside a moving shuttle should not add extra drift (items get flung into open hyperspace).
+	if(SSshuttle.is_in_shuttle_bounds(M))
+		return
 	var/turf/open/space/transit/T = get_turf(M)
 	if(!istype(T))
 		return
