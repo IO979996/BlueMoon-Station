@@ -46,6 +46,7 @@
 #include "code\__BLUEMOONCODE\_DEFINES\time.dm"
 #include "code\__BLUEMOONCODE\_DEFINES\traits.dm"
 #include "code\__BLUEMOONCODE\_DEFINES\vote.dm"
+#include "code\__BLUEMOONCODE\changeling_lewd_shop_round.dm"
 #include "code\__DEFINES\_click.dm"
 #include "code\__DEFINES\_globals.dm"
 #include "code\__DEFINES\_helpers.dm"

@@ -79,9 +79,7 @@
 
 /datum/cellular_emporium/proc/gamemode_restricted(datum/action/changeling/ability)
 	var/restriction = initial(ability.gamemode_restriction_type)
-	var/extended_like = (GLOB.round_type == ROUNDTYPE_DYNAMIC_LIGHT) \
-		|| (GLOB.master_mode in list(ROUNDTYPE_EXTENDED, ROUNDTYPE_DYNAMIC_LIGHT)) \
-		|| (SSticker.mode && (SSticker.mode.config_tag in list("Extended", "secret_extended")))
+	var/extended_like = changeling_lewd_shop_round()
 	if(extended_like)
 		return !!(restriction & ANTAG_EXTENDED)
 	return !!(restriction & ANTAG_DYNAMIC)
