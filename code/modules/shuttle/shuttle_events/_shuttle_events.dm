@@ -89,21 +89,27 @@
 
 	if(spawning_behaviour & SHUTTLE_EVENT_HIT_SHUTTLE)
 		var/tile_amount = abs((direction == NORTH || direction == SOUTH) ? bounding_coords[1] - bounding_coords[3] : bounding_coords[2] - bounding_coords[4])
+		// Pathological docking coords could make this huge and freeze MC during admin-forced start_up_event.
+		tile_amount = min(tile_amount, 127)
 		for(var/i in 0 to tile_amount)
 			var/list/target_coords = list(target_corner[1] + step_dir[1] * i + spawn_offset[1], target_corner[2] + step_dir[2] * i + spawn_offset[2])
 			var/turf/T = locate(target_coords[1], target_coords[2], port.z)
 			if(T)
 				spawning_turfs_hit += T
+			if(!(i % 12))
+				CHECK_TICK
 	if(spawning_behaviour & SHUTTLE_EVENT_MISS_SHUTTLE)
 		for(var/i in 1 to SHUTTLE_TRANSIT_BORDER)
 			var/turf/T = locate(target_corner[1] - step_dir[1] * i + spawn_offset[1], target_corner[2] - step_dir[2] * i + spawn_offset[2], port.z)
 			if(T)
 				spawning_turfs_miss += T
+			CHECK_TICK
 		var/list/corner_delta = list(bounding_coords[3] - bounding_coords[1], bounding_coords[2] - bounding_coords[4])
 		for(var/i in 1 to SHUTTLE_TRANSIT_BORDER)
 			var/turf/T = locate(target_corner[1] + corner_delta[1] * step_dir[1] + step_dir[1] * i + spawn_offset[1], target_corner[2] + corner_delta[2] * step_dir[2] + step_dir[2] * i + spawn_offset[2], port.z)
 			if(T)
 				spawning_turfs_miss += T
+			CHECK_TICK
 
 /datum/shuttle_event/simple_spawner/event_process()
 	. = ..()
@@ -116,12 +122,20 @@
 	if(prob(spawn_probability_per_process))
 		for(var/i in 1 to spawns_per_spawn)
 			spawn_movable(get_type_to_spawn())
+			CHECK_TICK // spawn_movable can still be heavy (mob Initialize); yield between spawns
 
 /datum/shuttle_event/simple_spawner/proc/get_spawn_turf()
-	return pick(spawning_turfs_hit + spawning_turfs_miss)
+	var/list/pool = spawning_turfs_hit + spawning_turfs_miss
+	if(!length(pool))
+		return null
+	return pick(pool)
 
 /datum/shuttle_event/simple_spawner/proc/spawn_movable(spawn_type)
-	post_spawn(new spawn_type(get_spawn_turf()))
+	var/turf/spawn_point = get_spawn_turf()
+	if(!spawn_point)
+		return FALSE
+	post_spawn(new spawn_type(spawn_point))
+	return TRUE
 
 /datum/shuttle_event/simple_spawner/proc/get_type_to_spawn()
 	. = pickweight(spawning_list)
@@ -131,5 +145,10 @@
 			spawning_list.Remove(.)
 
 /datum/shuttle_event/simple_spawner/proc/post_spawn(atom/movable/spawnee)
-	ADD_TRAIT(spawnee, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT, INNATE_TRAIT)
+	// Do NOT add TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT here: transit.dm and shuttle_cling treat it like
+	// TRAIT_FREE_HYPERSPACE_MOVEMENT and skip/stop hyperspace drift — carp, humans, debris would pile up at the spawn edge.
+	// Meteors/projectiles use anchored or their own motion; use TRAIT_FREE_HYPERSPACE_MOVEMENT there when needed.
 	ADD_TRAIT(spawnee, TRAIT_DEL_ON_SPACE_DUMP, INNATE_TRAIT)
+	// Defer cling: synchronous AddComponent in the same tick as SSshuttle.fire was stalling MC (DEFCON).
+	if(ismovable(spawnee) && !spawnee.anchored && istype(get_turf(spawnee), /turf/open/space/transit))
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(deferred_init_shuttle_cling_for_event), WEAKREF(spawnee)), 1)

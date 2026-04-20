@@ -45,21 +45,30 @@
 	dir = SOUTH
 
 /// Start tg-style hyperspace drift for movables entering a transit tile (flow direction follows turf dir).
-/proc/init_shuttle_cling(atom/movable/M)
+/// If [ignore_shuttle_interior] is TRUE, drift is applied even when inside a mobile dock's bbox (shuttle event spawns often sit there but are still open transit).
+/proc/init_shuttle_cling(atom/movable/M, ignore_shuttle_interior = FALSE)
 	if(!M || M.anchored || istype(M, /obj/docking_port))
+		return
+	if(M.GetComponent(/datum/component/shuttle_cling))
 		return
 	if(HAS_TRAIT(M, TRAIT_FREE_HYPERSPACE_MOVEMENT) || HAS_TRAIT(M, TRAIT_FREE_HYPERSPACE_SOFTCORDON_MOVEMENT))
 		return
 	// Transit floor inside a moving shuttle should not add extra drift (items get flung into open hyperspace).
-	if(SSshuttle.is_in_shuttle_bounds(M))
+	if(!ignore_shuttle_interior && SSshuttle.is_in_shuttle_bounds(M))
 		return
 	var/turf/open/space/transit/T = get_turf(M)
 	if(!istype(T))
 		return
-	if(M.GetComponent(/datum/component/shuttle_cling))
-		return
 	M.inertia_dir = 0
 	M.AddComponent(/datum/component/shuttle_cling, REVERSE_DIR(T.dir))
+
+/// Next tick — avoids running AddComponent(shuttle_cling) synchronously inside shuttle event spawn (same MC tick as SSshuttle.fire).
+/proc/deferred_init_shuttle_cling_for_event(datum/weakref/wref)
+	var/atom/movable/M = wref?.resolve()
+	if(QDELETED(M) || !ismovable(M) || M.anchored)
+		return
+	if(istype(get_turf(M), /turf/open/space/transit))
+		init_shuttle_cling(M, TRUE)
 
 /turf/open/space/transit/Entered(atom/movable/AM, atom/OldLoc)
 	. = ..()

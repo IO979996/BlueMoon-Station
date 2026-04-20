@@ -760,6 +760,7 @@
 	for(var/datum/shuttle_event/event as anything in event_list)
 		if(event.event_process() == SHUTTLE_EVENT_CLEAR)
 			removees += event
+		CHECK_TICK
 	for(var/datum/shuttle_event/E in removees)
 		event_list -= E
 		qdel(E)
