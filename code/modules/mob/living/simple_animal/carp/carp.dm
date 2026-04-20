@@ -128,7 +128,7 @@
 
 /// For [/datum/shuttle_event/simple_spawner/carp/friendly] — drifts with hyperspace, does not hunt the crew.
 /mob/living/simple_animal/hostile/carp/shuttle_passive
-	name = "мирный космический карп"
+	name = "peaceful space carp"
 	desc = "Плывёт в гиперпространственном потоке рядом с шаттлом и не проявляет к экипажу агрессии."
 	AIStatus = AI_OFF
 	gold_core_spawnable = NO_SPAWN
