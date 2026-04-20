@@ -502,7 +502,7 @@
 	cost = 30 //BLUEMOON CHANGES
 	required_round_type = list(ROUNDTYPE_DYNAMIC_TEAMBASED, ROUNDTYPE_DYNAMIC_HARD, ROUNDTYPE_DYNAMIC_MEDIUM) // BLUEMOON ADD
 	requirements = list(101,101,101,101,101,101,60,40,30,10) //BLUEMOON CHANGES
-	var/list/operative_cap = list(3,3,3,3,4,5,5,5,5,5)
+	var/list/operative_cap = list(5,5,5,5,5,5,5,5,5,5)
 	var/datum/team/nuclear/nuke_team
 	flags = HIGH_IMPACT_RULESET
 
@@ -511,6 +511,7 @@
 		return FALSE // Unavailable if nuke ops were already sent at roundstart
 	indice_pop = min(operative_cap.len, round(living_players.len/5)+1)
 	required_candidates = operative_cap[indice_pop]
+	required_applicants = required_candidates
 	return ..()
 
 /datum/dynamic_ruleset/midround/from_ghosts/nuclear/ready(forced = FALSE)

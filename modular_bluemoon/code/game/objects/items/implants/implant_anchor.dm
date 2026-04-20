@@ -46,7 +46,7 @@
 	if(!my_location)
 		return
 	var/area/my_area = get_area(owner)
-	if(istype(my_area, /area/shuttle/sbc_corvette))
+	if(istype(my_area, /area/ruin/space/has_grav/bluemoon) || istype(my_area, /area/shuttle/sbc_corvette))
 		return
 	if(SSmapping.level_trait(my_location.z, ZTRAIT_RESERVED))
 		return

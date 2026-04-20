@@ -208,12 +208,19 @@
 
 /obj/item/flashlight/flare/plasma_projectile/Initialize(mapload)
 	. = ..()
-	fuel = rand(3 MINUTES, 5 MINUTES)
+	fuel = 99999
 	on = TRUE
 	force = on_damage
 	damtype = "fire"
 	START_PROCESSING(SSobj, src)
 	update_brightness(null)
+	addtimer(CALLBACK(src, PROC_REF(fade_plasma_flare)), rand(2.5 MINUTES, 4 MINUTES))
+
+/obj/item/flashlight/flare/plasma_projectile/process()
+	open_flame(heat)
+
+/obj/item/flashlight/flare/plasma_projectile/proc/fade_plasma_flare()
+	qdel(src)
 
 /obj/item/flashlight/flare/plasma_projectile/turn_off()
 	. = ..()
