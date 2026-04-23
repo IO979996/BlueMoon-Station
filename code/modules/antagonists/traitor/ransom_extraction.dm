@@ -61,7 +61,7 @@
 	RegisterSignal(empty_pod, COMSIG_ATOM_ENTERED, PROC_REF(enter_extraction_pod))
 	new /obj/effect/pod_landingzone(empty_pod_turf, empty_pod)
 	if(force_victim_into_pod)
-		addtimer(CALLBACK(src, PROC_REF(force_pirate_victim), expected_victim, empty_pod), 1.5 SECONDS, TIMER_DELETE_ON_BRACKET)
+		addtimer(CALLBACK(src, PROC_REF(force_pirate_victim), expected_victim, empty_pod), 1.5 SECONDS, TIMER_DELETE_ME)
 
 /datum/ransom_extraction/proc/force_pirate_victim(mob/living/carbon/human/human_victim, obj/structure/closet/supplypod/extractionpod/extraction)
 	if(QDELETED(human_victim) || QDELETED(extraction) || human_victim.stat == DEAD)
