@@ -489,7 +489,7 @@
 	r_hand = /obj/item/gun/energy/pulse/destroyer/annihilator
 	backpack_contents = list(/obj/item/storage/box/survival/centcom=1,\
 		/obj/item/storage/box/ert_commander=1,
-		/obj/item/storage/box/syndie_kit/revolver=1,\
+		/obj/item/storage/box/syndie_kit/revolver/requiem=1,\
 		/obj/item/storage/firstaid/tactical/slaver=1,\
 		/obj/item/storage/box/flashbangs/super=1,\
 		/obj/item/pinpointer/nuke=1,\
