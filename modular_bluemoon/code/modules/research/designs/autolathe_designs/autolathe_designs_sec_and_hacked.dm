@@ -78,3 +78,12 @@
 	build_path = /obj/item/ammo_casing/a357/requiem
 	category = list("hacked", "Security")
 	departmental_flags = DEPARTMENTAL_FLAG_SECURITY
+
+/datum/design/a127x55_speedloader
+	name = "Speed loader (12.7x55mm)"
+	id = "a127x55_speedloader"
+	build_type = AUTOLATHE | NO_PUBLIC_LATHE | PROTOLATHE
+	materials = list(/datum/material/iron = 26000)
+	build_path = /obj/item/ammo_box/a357/requiem
+	category = list("hacked", "Security")
+	departmental_flags = DEPARTMENTAL_FLAG_SECURITY

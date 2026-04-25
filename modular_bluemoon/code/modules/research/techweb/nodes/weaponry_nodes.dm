@@ -89,4 +89,5 @@
 /// 12.7x55mm (The Central Requiem) — печать на взломанном севлате; техфаб после "Ballistic Weaponry"
 /datum/techweb_node/ballistic_weapons/New()
 	LAZYADD(design_ids, "a127x55")
+	LAZYADD(design_ids, "a127x55_speedloader")
 	. = ..()
