@@ -2,6 +2,7 @@
 /obj/singularity/gravitational/shuttle_event
 	name = "гравитационная аномалия"
 	desc = "Сенсоры фиксируют искажение метрики по курсу шаттла."
+	anchored = FALSE
 	contained = TRUE
 	move_self = FALSE
 	dissipate = TRUE

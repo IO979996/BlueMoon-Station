@@ -93,6 +93,11 @@
 		return SHUTTLE_CLING_ALL_GOOD
 
 	if(!isliving(movee))
+		/// Декоративные сингулярности ивента: иначе открытый космос = SUPER_LOST → `launch_very_hard` к краю Z-левела (копна у границы, не поток с шаттлом).
+		if(istype(movee, /obj/singularity/gravitational/shuttle_event))
+			if(is_tile_solid(get_step(movee, direction)))
+				return SHUTTLE_CLING_CLINGING
+			return SHUTTLE_CLING_NOT_HOLDING
 		if(is_tile_solid(get_step(movee, direction)))
 			return SHUTTLE_CLING_CLINGING
 		return SHUTTLE_CLING_SUPER_LOST

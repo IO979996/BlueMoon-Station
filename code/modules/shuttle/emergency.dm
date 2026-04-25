@@ -293,6 +293,8 @@
 	port_direction = WEST
 	var/sound_played = 0 //If the launch sound has been sent to all players on the shuttle itself
 	var/hijack_status = NOT_BEGUN
+	/// Тип /datum/shuttle_event из GLOB.admin_forceable_hyperspace_events: гарантированно добавится в prepare_hyperspace_events() при уходе в транзит.
+	var/queued_admin_hyperspace_event
 
 /obj/docking_port/mobile/emergency/canDock(obj/docking_port/stationary/S)
 	return SHUTTLE_CAN_DOCK //If the emergency shuttle can't move, the whole game breaks, so it will force itself to land even if it has to crush a few departments in the process
@@ -395,6 +397,12 @@ GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
 	event_list.Cut()
 
 	var/evac_duration = SSshuttle.emergencyEscapeTime * engine_coeff
+	var/used_admin_queue = FALSE
+	if(queued_admin_hyperspace_event && (queued_admin_hyperspace_event in GLOB.admin_forceable_hyperspace_events))
+		var/datum/shuttle_event/queued_first = add_shuttle_event(queued_admin_hyperspace_event)
+		queued_first?.start_up_event(evac_duration)
+		queued_admin_hyperspace_event = null
+		used_admin_queue = TRUE
 	var/list/weighted = list(
 		/datum/shuttle_event/turbulence = 5,
 		/datum/shuttle_event/simple_spawner/carp/friendly = 3,
@@ -409,7 +417,8 @@ GLOBAL_LIST_INIT(admin_forceable_hyperspace_events, list(
 		/datum/shuttle_event/simple_spawner/player_controlled/carp = 2,
 		/datum/shuttle_event/simple_spawner/player_controlled/alien_queen = 1,
 	)
-	var/num_events = rand(2, 3)
+	/// При предзаказе один слот уже занят — меньше случайных, итого обычно 2–3 ивента.
+	var/num_events = used_admin_queue ? rand(1, 2) : rand(2, 3)
 	for(var/i in 1 to num_events)
 		if(!length(weighted))
 			break
