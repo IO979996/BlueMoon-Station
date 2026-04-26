@@ -177,9 +177,9 @@
 	desc = "A massive Nanotrasen heavy assault revolver chambered in 12.7x55mm. Issued in tiny numbers to Central Command and asset-protection details. The cylinder only accepts 12.7x55mm cartridges — not .357."
 	icon = 'modular_bluemoon/icons/obj/guns/requiem_revolver.dmi'
 	icon_state = "revolver"
-	item_state = "mateba"
-	lefthand_file = 'icons/mob/inhands/weapons/guns_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/weapons/guns_righthand.dmi'
+	item_state = "revolver"
+	lefthand_file = 'modular_bluemoon/icons/mob/inhands/weapons/requiem_revolver_lefthand.dmi'
+	righthand_file = 'modular_bluemoon/icons/mob/inhands/weapons/requiem_revolver_righthand.dmi'
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/requiem127
 	w_class = WEIGHT_CLASS_NORMAL
 	weapon_weight = WEAPON_HEAVY
@@ -198,6 +198,7 @@
 		icon_state = "revolver_open"
 	else
 		icon_state = "revolver"
+	item_state = icon_state
 
 /obj/item/gun/ballistic/revolver/requiem/shoot_live_shot(mob/living/user, pointblank = FALSE, mob/pbtarget, message = 1, stam_cost = 0)
 	. = ..()
