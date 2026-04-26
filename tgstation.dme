@@ -265,6 +265,7 @@
 #include "code\__HELPERS\dna.dm"
 #include "code\__HELPERS\do_after.dm"
 #include "code\__HELPERS\donator_groupings.dm"
+#include "code\__HELPERS\emergency_shuttle_transit.dm"
 #include "code\__HELPERS\files.dm"
 #include "code\__HELPERS\filters.dm"
 #include "code\__HELPERS\game.dm"
