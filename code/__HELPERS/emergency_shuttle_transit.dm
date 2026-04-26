@@ -21,6 +21,6 @@
 		return 0.25
 	if(istype(E, /datum/round_event_control/supernova))
 		return 0.25
-	if(istype(E, /datum/round_event_control/carp_migration) || istype(E, /datum/round_event_control/space_dragon) || istype(E, /datum/round_event_control/rogue_drones) || istype(E, /datum/round_event_control/blob))
+	if(istype(E, /datum/round_event_control/carp_migration) || istype(E, /datum/round_event_control/space_dragon) || istype(E, /datum/round_event_control/rogue_drone) || istype(E, /datum/round_event_control/blob))
 		return 0.3
 	return 1
